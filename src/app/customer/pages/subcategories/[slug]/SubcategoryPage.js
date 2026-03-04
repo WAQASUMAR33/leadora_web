@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FiFilter, FiX, FiPlus, FiChevronRight, FiSearch, FiDownload, FiShoppingCart } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../../../../store/cartSlice';
+import { addToCart } from '../../../../store/cartSlice';
 import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
 import { AnimatePresence } from 'framer-motion';
 

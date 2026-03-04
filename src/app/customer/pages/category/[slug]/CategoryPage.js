@@ -10,7 +10,7 @@ import { FiChevronRight, FiSearch, FiShoppingCart, FiChevronDown, FiMaximize2, F
 import { GoStarFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../../store/cartSlice';
-import DigitalCheckoutModal from '../../../../components/DigitalCheckoutModal';
+import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
 
 const CategoryPage = () => {
   const { slug } = useParams();
