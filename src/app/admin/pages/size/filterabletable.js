@@ -95,6 +95,10 @@ const FilterableTable = ({ sizes = [], fetchSizes }) => {
   }, [filter, sizes]);
 
   const handleAddOrUpdateSize = async () => {
+    if (!currentSize.name.trim()) {
+      alert("Size name cannot be empty.");
+      return;
+    }
     setIsLoading(true);
     try {
       const method = currentSize.id ? "PUT" : "POST";
@@ -111,10 +115,12 @@ const FilterableTable = ({ sizes = [], fetchSizes }) => {
         setIsModalOpen(false);
         setCurrentSize({ id: null, name: "" });
       } else {
-        console.error("Failed to save size");
+        const result = await response.json();
+        alert(`Failed to save size: ${result.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error saving size:", error);
+      alert(`Error saving size: ${error.message}`);
     }
     setIsLoading(false);
   };

@@ -148,7 +148,7 @@ const FilterableTable = ({ subcategories = [], fetchSubcategories }) => {
         imageUrl,
       };
 
-      const response = newSubcategory.slug
+      const response = newSubcategory.id
         ? await fetch(`/api/subcategories/${newSubcategory.slug}`, {
           method: 'PUT',
           headers: {
@@ -430,7 +430,7 @@ const FilterableTable = ({ subcategories = [], fetchSubcategories }) => {
           }}
         >
           <Typography variant="h6" sx={{ mb: 4, fontWeight: 'bold' }}>
-            {newSubcategory.slug ? 'Edit Subcategory' : 'Add New Subcategory'}
+            {newSubcategory.id ? 'Edit Subcategory' : 'Add New Subcategory'}
           </Typography>
 
           <Grid container spacing={3}>
@@ -555,7 +555,7 @@ const FilterableTable = ({ subcategories = [], fetchSubcategories }) => {
               color="primary"
               sx={{ bgcolor: 'blue.500', '&:hover': { bgcolor: 'blue.700' } }}
             >
-              {newSubcategory.slug ? 'Update' : 'Add'}
+              {newSubcategory.id ? 'Update' : 'Add'}
             </Button>
           </Box>
         </Box>

@@ -98,8 +98,13 @@ const FilterableTable = ({ colors = [], fetchColors }) => {
   }, [filter, colors]);
 
   const handleAddNewColor = async () => {
-    const ntcResult = ntc.name(newColorHex);
-    const generatedName = ntcResult[1]; // Get the closest color name from ntc.js
+    let generatedName;
+    try {
+      const ntcResult = ntc.name(newColorHex);
+      generatedName = ntcResult[1];
+    } catch (e) {
+      generatedName = newColorHex;
+    }
 
     setIsLoading(true);
     try {
@@ -115,17 +120,24 @@ const FilterableTable = ({ colors = [], fetchColors }) => {
         setNewColorName("");
         setNewColorHex("#000000");
       } else {
-        console.error("Failed to add color");
+        const result = await response.json();
+        alert(`Failed to add color: ${result.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error adding color:", error);
+      alert(`Error adding color: ${error.message}`);
     }
     setIsLoading(false);
   };
 
   const handleUpdateColor = async () => {
-    const ntcResult = ntc.name(newColorHex);
-    const generatedName = ntcResult[1]; // Get the closest color name from ntc.js
+    let generatedName;
+    try {
+      const ntcResult = ntc.name(newColorHex);
+      generatedName = ntcResult[1];
+    } catch (e) {
+      generatedName = newColorHex;
+    }
 
     setIsLoading(true);
     try {
@@ -142,10 +154,12 @@ const FilterableTable = ({ colors = [], fetchColors }) => {
         setNewColorHex("#000000");
         setEditColorId(null);
       } else {
-        console.error("Failed to update color");
+        const result = await response.json();
+        alert(`Failed to update color: ${result.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error updating color:", error);
+      alert(`Error updating color: ${error.message}`);
     }
     setIsLoading(false);
   };
@@ -313,7 +327,14 @@ const FilterableTable = ({ colors = [], fetchColors }) => {
               fullWidth
               variant="outlined"
               value={newColorHex}
-              onChange={(e) => setNewColorHex(e.target.value)}
+              onChange={(e) => {
+                const hex = e.target.value;
+                setNewColorHex(hex);
+                try {
+                  const ntcResult = ntc.name(hex);
+                  setNewColorName(ntcResult[1]);
+                } catch (_) {}
+              }}
             />
           </Box>
         </DialogContent>
