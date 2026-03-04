@@ -169,15 +169,40 @@ const NewArrivals = () => {
                   {product.name}
                 </h3>
 
-                {/* Reinforced Price Container for Alignment */}
-                <div className="flex flex-col mt-auto justify-end">
+                {/* Price */}
+                <div className="flex flex-col mt-auto justify-end mb-3">
                   <p className="text-base md:text-xl font-black text-black leading-none">CA${formatPrice(product.price)}</p>
                   {product.discount > 0 ? (
                     <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(originalPrice)}</p>
                   ) : (
-                    <div className="h-[12px]"></div> // Placeholder
+                    <div className="h-[12px]"></div>
                   )}
                 </div>
+
+                {/* Action Buttons */}
+                {product.productType === 'digital' ? (
+                  <button
+                    className="w-full bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-blue-700 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
+                    onClick={(e) => { e.stopPropagation(); setSelectedDigitalProduct(product); setIsDigitalModalOpen(true); }}
+                  >
+                    <FiDownload size={12} /> Download
+                  </button>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                      onClick={(e) => handleAddToCart(product, e)}
+                    >
+                      <FiShoppingCart size={12} /> Add
+                    </button>
+                    <button
+                      className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                      onClick={(e) => handleBuyNow(product, e)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )
