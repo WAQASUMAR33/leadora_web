@@ -283,9 +283,9 @@ const CategoryPage = () => {
 
                       {/* Reinforced Price Container for Alignment */}
                       <div className="flex flex-col mt-auto justify-end mb-3">
-                        <p className="text-sm md:text-base font-black text-black leading-none">Rs.{formatPrice(product.price)}</p>
+                        <p className="text-sm md:text-base font-black text-black leading-none">CA${formatPrice(product.price)}</p>
                         {product.discount > 0 ? (
-                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">Rs.{formatPrice(originalPrice)}</p>
+                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(originalPrice)}</p>
                         ) : (
                           <div className="h-[14px]"></div> // Placeholder
                         )}
@@ -366,7 +366,7 @@ const CategoryPage = () => {
                 )}
               </div>
               <h4 className="text-[12px] md:text-base font-black truncate group-hover:text-orange-500 transition-colors uppercase tracking-tight mb-1">{p.name}</h4>
-              <p className="text-lg md:text-xl font-black">Rs.{formatPrice(p.price)}</p>
+              <p className="text-lg md:text-xl font-black">CA${formatPrice(p.price)}</p>
             </div>
           ))}
         </div>

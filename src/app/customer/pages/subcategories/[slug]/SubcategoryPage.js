@@ -215,15 +215,15 @@ const SubcategoryPage = () => {
                       {product.discount ? (
                         <div className="flex items-center justify-center gap-3 flex-row-reverse">
                           <p className="text-xs font-normal text-gray-700 line-through">
-                            Rs.{formatPrice(product.price)}
+                            CA${formatPrice(product.price)}
                           </p>
                           <p className="text-md font-bold text-red-700">
-                            Rs.{formatPrice(discountedPrice)}
+                            CA${formatPrice(discountedPrice)}
                           </p>
                         </div>
                       ) : (
                         <p className="text-md font-bold text-gray-700">
-                          Rs.{formatPrice(product.price)}
+                          CA${formatPrice(product.price)}
                         </p>
                       )}
                     </div>

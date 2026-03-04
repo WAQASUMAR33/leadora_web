@@ -100,8 +100,8 @@ const FlashSale = () => {
             <div className="p-3 flex flex-col flex-grow">
               <h4 className="text-[11px] font-bold text-gray-800 line-clamp-2 mb-2 leading-tight h-[2.5em]">{product.name}</h4>
               <div className="mt-auto flex flex-col items-start">
-                <p className="text-sm font-black text-red-600 leading-none">Rs.{product.price}</p>
-                <p className="text-[9px] text-gray-400 line-through font-bold mt-1">Rs.{product.originalPrice}</p>
+                <p className="text-sm font-black text-red-600 leading-none">CA${product.price}</p>
+                <p className="text-[9px] text-gray-400 line-through font-bold mt-1">CA${product.originalPrice}</p>
               </div>
             </div>
           </div>

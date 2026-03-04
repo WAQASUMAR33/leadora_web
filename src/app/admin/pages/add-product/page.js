@@ -1222,7 +1222,7 @@ const AddProductPageContent = () => {
                 <TextField
                   id="product-price"
                   fullWidth
-                  label="Display Price (Rs.)"
+                  label="Display Price (CA$)"
                   type="number"
                   value={newProduct.price}
                   onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}

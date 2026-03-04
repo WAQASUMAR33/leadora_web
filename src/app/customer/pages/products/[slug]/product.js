@@ -435,11 +435,11 @@ const ProductPage = ({ productData }) => {
           <div className="mb-6">
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-black text-gray-900">
-                Rs.{formatPrice(calculateOriginalPrice(product.price, product.discount))}
+                CA${formatPrice(calculateOriginalPrice(product.price, product.discount))}
               </span>
               {product?.discount > 0 && (
                 <span className="text-base text-gray-400 line-through font-medium">
-                  Rs.{formatPrice(product.price)}
+                  CA${formatPrice(product.price)}
                 </span>
               )}
             </div>
@@ -733,7 +733,7 @@ const ProductPage = ({ productData }) => {
                   </div>
                   <div className="flex items-start gap-4 text-[14px] text-gray-700 font-medium leading-relaxed">
                     <FiTruck className="text-gray-400 mt-0.5 flex-shrink-0" size={18} />
-                    <p>Delivery cost: <span className="font-bold">Rs. 450</span></p>
+                    <p>Delivery cost: <span className="font-bold">CA$450</span></p>
                   </div>
                   <div className="flex items-start gap-4 text-[14px] text-gray-700 font-medium leading-relaxed">
                     <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" size={18} />
@@ -909,9 +909,9 @@ const RelatedProductsSection = memo(({ relatedProducts, calculateOriginalPrice, 
 
                 {/* Price */}
                 <div className="flex flex-col mt-auto justify-end">
-                  <p className="text-base font-bold text-black leading-none">Rs.{formatPrice(product.price)}</p>
+                  <p className="text-base font-bold text-black leading-none">CA${formatPrice(product.price)}</p>
                   {product.discount > 0 && (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">Rs.{formatPrice(originalPrice)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(originalPrice)}</p>
                   )}
                 </div>
               </div>

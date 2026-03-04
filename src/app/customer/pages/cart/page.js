@@ -815,7 +815,7 @@ const CartPage = () => {
                         </button>
                       </div>
                       <div className="flex justify-between items-center mt-1">
-                        <p className="font-bold text-xs">Rs.{Math.round(item.price).toLocaleString()}</p>
+                        <p className="font-bold text-xs">CA${Math.round(item.price).toLocaleString()}</p>
                         <div className="flex items-center bg-gray-50 rounded-lg px-2 py-1 gap-3">
                           <button onClick={() => updateItemQuantity(item.id, item.quantity - 1)} className="text-gray-400 hover:text-black">-</button>
                           <span className="text-[10px] font-black">{item.quantity}</span>
@@ -852,33 +852,33 @@ const CartPage = () => {
               <div className="space-y-4 border-t border-gray-100 pt-8 mt-2">
                 <div className="flex justify-between text-gray-400 text-[11px] font-black uppercase tracking-widest">
                   <span>Subtotal</span>
-                  <span className="text-black font-black">Rs.{Math.round(subtotal).toLocaleString()}</span>
+                  <span className="text-black font-black">CA${Math.round(subtotal).toLocaleString()}</span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-orange-600 text-[11px] font-black uppercase tracking-widest">
                     <span>Discount</span>
-                    <span>-Rs.{Math.round(discount).toLocaleString()}</span>
+                    <span>-CA${Math.round(discount).toLocaleString()}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-400 text-[11px] font-black uppercase tracking-widest">
                   <span>Shipping</span>
-                  <span className="text-black font-black">Rs.{deliveryCharge}</span>
+                  <span className="text-black font-black">CA${deliveryCharge}</span>
                 </div>
                 {paymentMethod === 'Cash on Delivery' && (
                   <div className="flex justify-between text-gray-400 text-[11px] font-black uppercase tracking-widest">
                     <span>COD Surcharge</span>
-                    <span className="text-orange-500 font-black">+Rs.{extraDeliveryCharge}</span>
+                    <span className="text-orange-500 font-black">+CA${extraDeliveryCharge}</span>
                   </div>
                 )}
                 {taxRate > 0 && (
                   <div className="flex justify-between text-gray-400 text-[11px] font-black uppercase tracking-widest">
                     <span>Tax</span>
-                    <span className="text-black font-black">Rs.{Math.round((subtotal - discount) * taxRate).toLocaleString()}</span>
+                    <span className="text-black font-black">CA${Math.round((subtotal - discount) * taxRate).toLocaleString()}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center pt-6 mt-6 border-t-2 border-dashed border-gray-100">
                   <span className="font-black text-sm uppercase tracking-widest">Final Total</span>
-                  <span className="font-black text-2xl text-orange-500">Rs.{Math.round(total).toLocaleString()}</span>
+                  <span className="font-black text-2xl text-orange-500">CA${Math.round(total).toLocaleString()}</span>
                 </div>
               </div>
 

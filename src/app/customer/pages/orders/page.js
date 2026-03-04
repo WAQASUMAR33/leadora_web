@@ -161,7 +161,7 @@ const UserOrders = () => {
                         ))}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        Rs.{total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        CA${total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
@@ -213,7 +213,7 @@ const UserOrders = () => {
                       <div className="flex justify-between items-center w-full">
                         <h3 className="text-md font-semibold text-gray-600">{item.product.name.toUpperCase()}</h3>
                         <div className="flex flex-col items-end">
-                          <p className="text-md font-bold text-gray-600">Rs.{item.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                          <p className="text-md font-bold text-gray-600">CA${item.price.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                           {item.product.productType === 'digital' && (
                             <button
                               onClick={() => window.location.href = `/api/download?id=${item.product.id}`}
@@ -244,20 +244,20 @@ const UserOrders = () => {
                     <>
                       <div className="flex justify-between">
                         <p className="text-md font-medium text-gray-700">Subtotal:</p>
-                        <p className="text-xl text-gray-700">Rs.{subtotalLessDiscount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                        <p className="text-xl text-gray-700">CA${subtotalLessDiscount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                       </div>
                       <div className="flex justify-between">
                         <p className="text-md font-medium text-gray-700">Delivery Charges:</p>
-                        <p className="text-md text-gray-700">Rs.{(selectedOrder.deliveryCharge ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                        <p className="text-md text-gray-700">CA${(selectedOrder.deliveryCharge ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                       </div>
                       <div className="flex justify-between">
                         <p className="text-md font-medium text-gray-700">Cash on Delivery Charge:</p>
-                        <p className="text-md text-gray-700">Rs.{(selectedOrder.extraDeliveryCharge ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                        <p className="text-md text-gray-700">CA${(selectedOrder.extraDeliveryCharge ?? 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                       </div>
                       <hr className="my-2" />
                       <div className="flex justify-between mt-4">
                         <p className="text-xl font-bold text-gray-700">Total:</p>
-                        <p className="text-xl text-gray-700">Rs.{total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                        <p className="text-xl text-gray-700">CA${total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
                       </div>
 
 

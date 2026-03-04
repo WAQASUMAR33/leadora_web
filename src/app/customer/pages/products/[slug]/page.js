@@ -162,7 +162,7 @@ const ProductDetailsPage = async ({ params }) => {
       offers: {
         '@type': 'Offer',
         url: `${baseUrl}/customer/pages/products/${product.slug}`,
-        priceCurrency: 'PKR',
+        priceCurrency: 'CAD',
         price: product.price,
         availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       },

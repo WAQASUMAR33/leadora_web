@@ -662,7 +662,7 @@ const FilterableTable = ({
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: '#3B82F6' }}>
-                          Rs.{parseFloat(item.price || 0).toLocaleString()}
+                          CA${parseFloat(item.price || 0).toLocaleString()}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -827,7 +827,7 @@ const FilterableTable = ({
                     </Box>
                     <Divider sx={{ mb: 2 }} />
                     <Stack spacing={2}>
-                      <TextField fullWidth size="small" label="Price (Rs.)" name="price" type="number" value={productForm.price} onChange={handleFormChange} sx={inputStyles} />
+                      <TextField fullWidth size="small" label="Price (CA$)" name="price" type="number" value={productForm.price} onChange={handleFormChange} sx={inputStyles} />
                       <TextField fullWidth size="small" label="Discount (%)" name="discount" type="number" value={productForm.discount} onChange={(e) => setProductForm({ ...productForm, discount: roundToTwoDecimalPlaces(parseFloat(e.target.value) || 0) })} sx={inputStyles} />
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 1.5, border: '1px solid #E5E7EB', bgcolor: '#F9FAFB' }}>
                         <Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>Stock</Typography>

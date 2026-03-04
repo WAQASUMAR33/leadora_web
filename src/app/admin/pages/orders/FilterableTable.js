@@ -433,8 +433,7 @@ const FilterableTable = ({ data = [], fetchData }) => {
                       </Box>
                     </TableCell>
                     <TableCell sx={{ fontWeight: 700, color: '#111827', fontSize: '0.8rem' }}>
-                      {item.total?.toLocaleString() || 0} Rs.
-                    </TableCell>
+                      {item.total?.toLocaleString() || 0} CA$</TableCell>
                     <TableCell sx={{ textAlign: 'center', fontSize: '0.8rem' }}>
                       <Chip
                         label={item.status}
@@ -583,7 +582,7 @@ const FilterableTable = ({ data = [], fetchData }) => {
                 onChange={(e) => setNewItem({ ...newItem, total: e.target.value })}
                 variant="outlined"
                 InputProps={{
-                  startAdornment: <Typography sx={{ mr: 1, color: '#9CA3AF', fontWeight: 600 }}>Rs.</Typography>
+                  startAdornment: <Typography sx={{ mr: 1, color: '#9CA3AF', fontWeight: 600 }}>CA$</Typography>
                 }}
                 sx={{
                   '& .MuiOutlinedInput-root': {

@@ -121,7 +121,7 @@ const OrderInfoPage = () => {
               <div className="space-y-6 mb-8">
                 <div className="flex justify-between items-baseline">
                   <span className="text-[11px] font-black uppercase tracking-widest text-gray-400">Shipping</span>
-                  <span className="text-xs font-black text-gray-900">{deliveryMethod === 'Express' ? 'Rs.1,500' : 'FREE'}</span>
+                  <span className="text-xs font-black text-gray-900">{deliveryMethod === 'Express' ? 'CA$1,500' : 'FREE'}</span>
                 </div>
                 <div className="h-px bg-gray-50" />
                 <div className="flex justify-between items-center pt-2">

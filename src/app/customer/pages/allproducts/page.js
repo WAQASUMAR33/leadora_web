@@ -252,9 +252,9 @@ const AllProducts = () => {
                     </h4>
 
                     <div className="flex flex-col mt-auto justify-end mb-3">
-                      <p className="text-base font-bold text-gray-900 leading-none">Rs.{formatPrice(product.price)}</p>
+                      <p className="text-base font-bold text-gray-900 leading-none">CA${formatPrice(product.price)}</p>
                       {product.discount > 0 && (
-                        <p className="text-[9px] text-gray-400 line-through mt-1 font-medium">Rs.{formatPrice(originalPrice)}</p>
+                        <p className="text-[9px] text-gray-400 line-through mt-1 font-medium">CA${formatPrice(originalPrice)}</p>
                       )}
                     </div>
 

@@ -122,9 +122,9 @@ const DiscountedProducts = () => {
 
                 {/* Reinforced Price Container for Alignment */}
                 <div className="flex flex-col mt-auto justify-end">
-                  <p className="text-base md:text-xl font-black text-black leading-none">Rs.{formatPrice(calculateOriginalPrice(product.price, product.discount))}</p>
+                  <p className="text-base md:text-xl font-black text-black leading-none">CA${formatPrice(calculateOriginalPrice(product.price, product.discount))}</p>
                   {product.discount > 0 ? (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">Rs.{formatPrice(product.price)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
                   ) : (
                     <div className="h-[12px]"></div> // Placeholder
                   )}

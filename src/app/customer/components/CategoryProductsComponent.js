@@ -139,7 +139,7 @@ const SubcategoryProductsComponent = () => {
                   <div className="p-4 flex flex-col flex-grow">
                     <h4 className="text-base font-black text-gray-800 line-clamp-2 mb-2 leading-tight h-[2.5em] group-hover:text-black transition-colors">{product.name}</h4>
                     <div className="mt-auto flex justify-between items-end">
-                      <p className="text-base font-black text-black leading-none">Rs.{product.price}</p>
+                      <p className="text-base font-black text-black leading-none">CA${product.price}</p>
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">Stock: {product.stock}</p>
                     </div>
                   </div>

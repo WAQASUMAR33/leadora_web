@@ -455,8 +455,7 @@ export default function Home() {
                         {stat.value} <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#6B7280' }}>Orders</span>
                       </Typography>
                       <Typography variant="caption" sx={{ color: stat.color, fontWeight: 700, fontSize: '0.8rem', mt: 0.5, display: 'block' }}>
-                        {(stat.amount || 0).toLocaleString()} Rs.
-                      </Typography>
+                        {(stat.amount || 0).toLocaleString()} CA$</Typography>
                     </Box>
                   </CardContent>
                   {/* Subtle accent bar aligned to the bottom for uniformity */}
@@ -533,8 +532,7 @@ export default function Home() {
                     Total Revenue
                   </Typography>
                   <Typography variant="h6" sx={{ fontWeight: 800, color: '#3B82F6' }}>
-                    {totalAmount.toLocaleString()} Rs.
-                  </Typography>
+                    {totalAmount.toLocaleString()} CA$</Typography>
                 </Box>
               </Box>
             </Paper>

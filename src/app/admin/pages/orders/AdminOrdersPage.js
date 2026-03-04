@@ -622,12 +622,12 @@ const AdminOrdersPage = () => {
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" sx={{ color: '#4B5563' }}>
-                          Rs.{item.price.toLocaleString()}
+                          CA${item.price.toLocaleString()}
                         </Typography>
                       </TableCell>
                       <TableCell sx={{ textAlign: 'right' }}>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: '#111827' }}>
-                          Rs.{(item.quantity * item.price).toLocaleString()}
+                          CA${(item.quantity * item.price).toLocaleString()}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -652,14 +652,14 @@ const AdminOrdersPage = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ fontWeight: 600, color: '#6B7280' }}>Subtotal</Typography>
                   <Typography variant="body2" sx={{ fontWeight: 700, color: '#111827' }}>
-                    Rs.{subtotal.toLocaleString()}
+                    CA${subtotal.toLocaleString()}
                   </Typography>
                 </Box>
                 {order.discount > 0 && (
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" sx={{ fontWeight: 600, color: '#EF4444' }}>Discount</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 700, color: '#EF4444' }}>
-                      - Rs.{order.discount.toLocaleString()}
+                      - CA${order.discount.toLocaleString()}
                     </Typography>
                   </Box>
                 )}
@@ -668,7 +668,7 @@ const AdminOrdersPage = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ fontWeight: 600, color: '#6B7280' }}>Delivery Charge</Typography>
                   <Typography variant="body2" sx={{ fontWeight: 700, color: '#111827' }}>
-                    Rs.{((order.deliveryCharge ?? 0) + (order.extraDeliveryCharge ?? 0)).toLocaleString()}
+                    CA${((order.deliveryCharge ?? 0) + (order.extraDeliveryCharge ?? 0)).toLocaleString()}
                   </Typography>
                 </Box>
 
@@ -676,7 +676,7 @@ const AdminOrdersPage = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" sx={{ fontWeight: 600, color: '#6B7280' }}>Tax</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 700, color: '#111827' }}>
-                      Rs.{order.tax.toLocaleString()}
+                      CA${order.tax.toLocaleString()}
                     </Typography>
                   </Box>
                 )}
@@ -685,7 +685,7 @@ const AdminOrdersPage = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="body2" sx={{ fontWeight: 600, color: '#6B7280' }}>Other Charges</Typography>
                     <Typography variant="body2" sx={{ fontWeight: 700, color: '#111827' }}>
-                      Rs.{order.otherCharges.toLocaleString()}
+                      CA${order.otherCharges.toLocaleString()}
                     </Typography>
                   </Box>
                 )}
@@ -728,7 +728,7 @@ const AdminOrdersPage = () => {
                     </Box>
                   </Box>
                   <Typography variant="h5" sx={{ fontWeight: 900, color: '#fff', letterSpacing: '-0.5px' }}>
-                    Rs.{total.toLocaleString()}
+                    CA${total.toLocaleString()}
                   </Typography>
                 </Box>
               </Box>

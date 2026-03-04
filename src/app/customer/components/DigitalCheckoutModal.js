@@ -275,7 +275,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
                             <div>
                                 <h4 className="font-bold text-sm text-gray-900 line-clamp-1">{product.name}</h4>
                                 <p className="text-orange-600 font-black">
-                                    Rs.{product.discount
+                                    CA${product.discount
                                         ? (product.price - (product.price * product.discount / 100)).toLocaleString()
                                         : product.price.toLocaleString()}
                                 </p>
