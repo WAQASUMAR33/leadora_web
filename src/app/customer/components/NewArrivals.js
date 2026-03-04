@@ -182,7 +182,7 @@ const NewArrivals = () => {
                 {/* Action Buttons */}
                 {product.productType === 'digital' ? (
                   <button
-                    className="w-full bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-blue-700 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
+                    className="w-full bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
                     onClick={(e) => { e.stopPropagation(); setSelectedDigitalProduct(product); setIsDigitalModalOpen(true); }}
                   >
                     <FiDownload size={12} /> Download
