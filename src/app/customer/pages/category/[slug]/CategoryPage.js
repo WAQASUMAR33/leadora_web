@@ -6,10 +6,11 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThreeDots } from 'react-loader-spinner';
 import Image from 'next/image';
-import { FiChevronRight, FiSearch, FiShoppingCart, FiChevronDown, FiMaximize2, FiShoppingBag, FiFilter, FiX, FiPlus } from 'react-icons/fi';
+import { FiChevronRight, FiSearch, FiShoppingCart, FiChevronDown, FiMaximize2, FiShoppingBag, FiFilter, FiX, FiPlus, FiDownload } from 'react-icons/fi';
 import { GoStarFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../../store/cartSlice';
+import DigitalCheckoutModal from '../../../../components/DigitalCheckoutModal';
 
 const CategoryPage = () => {
   const { slug } = useParams();
@@ -27,6 +28,8 @@ const CategoryPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [tempSortOption, setTempSortOption] = useState("newest");
   const [tempStatusFilter, setTempStatusFilter] = useState("all");
+  const [isDigitalModalOpen, setIsDigitalModalOpen] = useState(false);
+  const [selectedDigitalProduct, setSelectedDigitalProduct] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -292,20 +295,29 @@ const CategoryPage = () => {
                       </div>
 
                       {/* Actions */}
-                      <div className="grid grid-cols-2 gap-2 mt-2">
+                      {product.productType === 'digital' ? (
                         <button
-                          className="flex-1 border border-orange-500 text-orange-500 text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center gap-1.5"
-                          onClick={(e) => handleAddToCart(product, e)}
+                          className="w-full mt-2 bg-blue-600 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-blue-700 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
+                          onClick={(e) => { e.stopPropagation(); setSelectedDigitalProduct(product); setIsDigitalModalOpen(true); }}
                         >
-                          <FiShoppingCart size={12} /> <span className="hidden sm:inline">Add</span>
+                          <FiDownload size={12} /> Download
                         </button>
-                        <button
-                          className="flex-1 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95 shadow-orange-500/20"
-                          onClick={(e) => handleBuyNow(product, e)}
-                        >
-                          Buy Now
-                        </button>
-                      </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-2 mt-2">
+                          <button
+                            className="flex-1 border border-orange-500 text-orange-500 text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center gap-1.5"
+                            onClick={(e) => handleAddToCart(product, e)}
+                          >
+                            <FiShoppingCart size={12} /> <span className="hidden sm:inline">Add</span>
+                          </button>
+                          <button
+                            className="flex-1 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95 shadow-orange-500/20"
+                            onClick={(e) => handleBuyNow(product, e)}
+                          >
+                            Buy Now
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -501,6 +513,19 @@ const CategoryPage = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Digital Checkout Modal */}
+      {selectedDigitalProduct && (
+        <DigitalCheckoutModal
+          isOpen={isDigitalModalOpen}
+          onRequestClose={() => setIsDigitalModalOpen(false)}
+          product={selectedDigitalProduct}
+          onSuccess={() => {
+            setIsDigitalModalOpen(false);
+            router.push(`/customer/pages/products/${selectedDigitalProduct.slug}`);
+          }}
+        />
+      )}
     </div >
   );
 };

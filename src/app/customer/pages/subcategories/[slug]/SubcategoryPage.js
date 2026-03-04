@@ -6,7 +6,10 @@ import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { FiFilter, FiX, FiPlus, FiChevronRight, FiSearch } from 'react-icons/fi';
+import { FiFilter, FiX, FiPlus, FiChevronRight, FiSearch, FiDownload, FiShoppingCart } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../../../store/cartSlice';
+import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
 import { AnimatePresence } from 'framer-motion';
 
 const SubcategoryPage = () => {
@@ -23,7 +26,10 @@ const SubcategoryPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [tempSortOption, setTempSortOption] = useState("newest");
   const [tempStatusFilter, setTempStatusFilter] = useState("all");
+  const [isDigitalModalOpen, setIsDigitalModalOpen] = useState(false);
+  const [selectedDigitalProduct, setSelectedDigitalProduct] = useState(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductsAndSubcategory = async () => {
@@ -240,6 +246,29 @@ const SubcategoryPage = () => {
                   >
                     {product.name.toUpperCase()}
                   </h4>
+                  {product.productType === 'digital' ? (
+                    <button
+                      className="w-full mt-2 bg-blue-600 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-blue-700 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
+                      onClick={(e) => { e.stopPropagation(); setSelectedDigitalProduct(product); setIsDigitalModalOpen(true); }}
+                    >
+                      <FiDownload size={12} /> Download
+                    </button>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <button
+                        className="flex-1 border border-orange-500 text-orange-500 text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center gap-1.5"
+                        onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); }}
+                      >
+                        <FiShoppingCart size={12} /> Add
+                      </button>
+                      <button
+                        className="flex-1 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                        onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); router.push('/customer/pages/cart'); }}
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -357,6 +386,19 @@ const SubcategoryPage = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Digital Checkout Modal */}
+      {selectedDigitalProduct && (
+        <DigitalCheckoutModal
+          isOpen={isDigitalModalOpen}
+          onRequestClose={() => setIsDigitalModalOpen(false)}
+          product={selectedDigitalProduct}
+          onSuccess={() => {
+            setIsDigitalModalOpen(false);
+            router.push(`/customer/pages/products/${selectedDigitalProduct.slug}`);
+          }}
+        />
+      )}
     </div>
   );
 };
