@@ -909,9 +909,9 @@ const RelatedProductsSection = memo(({ relatedProducts, calculateOriginalPrice, 
 
                 {/* Price */}
                 <div className="flex flex-col mt-auto justify-end">
-                  <p className="text-base font-bold text-black leading-none">CA${formatPrice(product.price)}</p>
+                  <p className="text-base font-bold text-black leading-none">CA${formatPrice(originalPrice)}</p>
                   {product.discount > 0 && (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(originalPrice)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
                   )}
                 </div>
               </div>

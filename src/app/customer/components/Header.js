@@ -558,15 +558,15 @@ const Header = () => {
                                 {product.discount > 0 ? (
                                   <>
                                     <span className="block text-sm font-bold text-[#F25C2C]">
-                                      CA${(product.price - (product.price * product.discount) / 100).toLocaleString()}
+                                      CA${(product.price - (product.price * product.discount) / 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </span>
                                     <span className="block text-[10px] text-gray-400 line-through">
-                                      CA${product.price.toLocaleString()}
+                                      CA${product.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </span>
                                   </>
                                 ) : (
                                   <span className="block text-sm font-bold text-gray-900">
-                                    CA${product.price.toLocaleString()}
+                                    CA${product.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                   </span>
                                 )}
                               </div>
@@ -832,7 +832,7 @@ const Header = () => {
                             <div className="flex-1 min-w-0">
                               <h4 className="text-xs font-bold text-gray-900 truncate">{product.name}</h4>
                               <p className="text-[10px] font-bold text-orange-500">
-                                CA${(product.price - (product.price * product.discount) / 100).toLocaleString()}
+                                CA${(product.price - (product.price * product.discount) / 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                               </p>
                             </div>
                           </div>

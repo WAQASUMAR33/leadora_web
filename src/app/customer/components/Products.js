@@ -106,9 +106,9 @@ const Products = () => {
     return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
   };
 
-  const calculateOriginalPrice = (price, discount) => {
+  const calculateSalePrice = (price, discount) => {
     if (typeof price === 'number' && typeof discount === 'number' && discount > 0) {
-      return price / (1 - discount / 100);
+      return price - (price * discount / 100);
     }
     return price;
   };
@@ -204,7 +204,7 @@ const Products = () => {
                 <div className="relative w-full">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {visibleProducts.map((product) => {
-                      const originalPrice = calculateOriginalPrice(product.price, product.discount);
+                      const salePrice = calculateSalePrice(product.price, product.discount);
                       return (
                         <div
                           key={product.slug}
@@ -285,9 +285,9 @@ const Products = () => {
 
                             {/* Price */}
                             <div className="flex flex-col mt-auto justify-end mb-3">
-                              <p className="text-base md:text-lg font-black text-black leading-none">CA${formatPrice(product.price)}</p>
+                              <p className="text-base md:text-lg font-black text-black leading-none">CA${formatPrice(salePrice)}</p>
                               {product.discount > 0 ? (
-                                <p className="text-[9px] text-gray-400 line-through mt-1">CA${formatPrice(originalPrice)}</p>
+                                <p className="text-[9px] text-gray-400 line-through mt-1">CA${formatPrice(product.price)}</p>
                               ) : (
                                 <div className="h-[12px]"></div>
                               )}

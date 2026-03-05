@@ -113,7 +113,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                             </div>
 
                                             <div className="flex items-end justify-between mt-2">
-                                                <span className="font-bold text-gray-900 text-sm">CA${item.price.toLocaleString()}</span>
+                                                <span className="font-bold text-gray-900 text-sm">CA${item.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
 
                                                 {/* Quantity Control */}
                                                 <div className="flex items-center bg-gray-100 rounded-lg h-8 px-1">
@@ -143,7 +143,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             <div className="p-5 border-t border-gray-100 bg-white space-y-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-gray-500 font-medium">Subtotal:</span>
-                                    <span className="text-xl font-extrabold text-gray-900">CA${subtotal.toLocaleString()}</span>
+                                    <span className="text-xl font-extrabold text-gray-900">CA${subtotal.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
 
                                 <Link

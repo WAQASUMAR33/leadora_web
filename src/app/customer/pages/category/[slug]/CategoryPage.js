@@ -68,7 +68,7 @@ const CategoryPage = () => {
   }, [slug]);
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-IN').format(price);
+    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
   };
 
   const handleAddToCart = (product, e) => {
@@ -226,7 +226,7 @@ const CategoryPage = () => {
           {filteredProductsList.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
               {filteredProductsList.map((product) => {
-                const originalPrice = product.price / (1 - product.discount / 100);
+                const salePrice = product.price - (product.price * product.discount / 100);
                 return (
                   <div
                     key={product.id}
@@ -286,9 +286,9 @@ const CategoryPage = () => {
 
                       {/* Reinforced Price Container for Alignment */}
                       <div className="flex flex-col mt-auto justify-end mb-3">
-                        <p className="text-sm md:text-base font-black text-black leading-none">CA${formatPrice(product.price)}</p>
+                        <p className="text-sm md:text-base font-black text-black leading-none">CA${formatPrice(salePrice)}</p>
                         {product.discount > 0 ? (
-                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(originalPrice)}</p>
+                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
                         ) : (
                           <div className="h-[14px]"></div> // Placeholder
                         )}
