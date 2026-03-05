@@ -219,7 +219,7 @@ const ProductPage = ({ productData }) => {
     return (url || '').includes('data.tascpa.ca');
   }, []);
 
-  const formatPrice = (price) => Number(price || 0).toLocaleString('en-PK', { maximumFractionDigits: 0 });
+  const formatPrice = (price) => Number(price || 0).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const calculateOriginalPrice = (price, discount) => {
     const p = Number(price) || 0;
