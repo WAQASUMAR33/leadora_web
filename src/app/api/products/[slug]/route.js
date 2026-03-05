@@ -9,6 +9,7 @@ export async function PUT(request, { params }) {
     const { slug } = await params;
     const {
       name,
+      slug: newSlug,
       description,
       price,
       stock,
@@ -17,48 +18,51 @@ export async function PUT(request, { params }) {
       sizes,
       discount,
       isTopRated = false,
-      images, // Array of image filenames
+      images, // Array of image filenames or URLs
       meta_title,
       meta_description,
       meta_keywords,
       sku,
     } = await request.json();
 
-    // Ensure that images are passed as an array of filenames (without URLs)
-    const imageFilenames = images.map((filename) =>
-      filename.includes('/') ? filename.split('/').pop() : filename
-    );
+    // Preserve full URLs (https://...), strip path only from relative paths
+    const imageUrls = (Array.isArray(images) ? images : [])
+      .filter((url) => typeof url === 'string' && url.trim() !== '')
+      .map((url) => {
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return url.includes('/') ? url.split('/').pop() : url;
+      });
 
-    console.log("Image filenames being processed:", imageFilenames);
+    // Continue with updating the product
+    const updateData = {
+      name,
+      description,
+      price: parseFloat(price),
+      stock: parseInt(stock, 10),
+      subcategorySlug,
+      colors: JSON.stringify(colors),
+      sizes: JSON.stringify(sizes),
+      discount: discount ? parseFloat(discount) : null,
+      isTopRated,
+      meta_title,
+      meta_description,
+      meta_keywords,
+      sku: sku || null,
+      images: {
+        deleteMany: {},
+        create: imageUrls.map((url) => ({ url })),
+      },
+      updatedAt: new Date(),
+    };
 
-    // Validate image filenames
-    if (!Array.isArray(imageFilenames) || imageFilenames.some(filename => typeof filename !== 'string')) {
-      throw new Error("Each image must be a valid filename string.");
+    // Update slug only if a new one is provided and it differs from the current
+    if (newSlug && newSlug !== slug) {
+      updateData.slug = newSlug;
     }
 
-    // Continue with updating the product using filenames
     const updatedProduct = await prisma.product.update({
       where: { slug },
-      data: {
-        name,
-        description,
-        price: parseFloat(price),
-        stock: parseInt(stock, 10),
-        subcategorySlug: subcategorySlug,
-        colors: JSON.stringify(colors),
-        sizes: JSON.stringify(sizes),
-        discount: discount ? parseFloat(discount) : null,
-        isTopRated,
-        meta_title,
-        meta_description,
-        meta_keywords,
-        sku,
-        images: {
-          deleteMany: {}, // Delete existing images
-          create: imageFilenames.map((filename) => ({ url: filename })), // Store only filenames
-        },
-        updatedAt: new Date(),
-      },
+      data: updateData,
     });
 
     // Revalidate the product page and potentially listing pages

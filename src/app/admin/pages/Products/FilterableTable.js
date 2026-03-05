@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 // MUI Imports
 import {
+  Alert,
   Backdrop,
   Box,
   Button,
@@ -26,6 +27,7 @@ import {
   MenuItem,
   Paper,
   Select as MuiSelect,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -173,6 +175,7 @@ const FilterableTable = ({
   });
 
   const [existingImages, setExistingImages] = useState([]);
+  const [updateError, setUpdateError] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const fileInputRef = useRef(null);
@@ -300,7 +303,7 @@ const FilterableTable = ({
       meta_title: item.meta_title || '',
       meta_description: item.meta_description || '',
       meta_keywords: item.meta_keywords || '',
-      sku: item.sku,
+      sku: item.sku || '',
     });
     setExistingImages(item.images.map((img) => img.url));
   };
@@ -322,6 +325,7 @@ const FilterableTable = ({
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setUpdateError('');
     try {
       const uploadedImages = await Promise.all(
         productForm.images.map(async (file) => {
@@ -363,9 +367,13 @@ const FilterableTable = ({
         });
         setExistingImages([]);
         if (fileInputRef.current) fileInputRef.current.value = '';
+      } else {
+        const errData = await response.json().catch(() => ({}));
+        setUpdateError(errData.error || errData.message || `Update failed (${response.status})`);
       }
     } catch (error) {
       console.error('Error updating product:', error);
+      setUpdateError(error.message || 'An unexpected error occurred');
     }
     setIsLoading(false);
   };
@@ -958,6 +966,18 @@ const FilterableTable = ({
           </DialogActions>
         </Dialog>
       )}
+
+      {/* Error Snackbar */}
+      <Snackbar
+        open={Boolean(updateError)}
+        autoHideDuration={6000}
+        onClose={() => setUpdateError('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setUpdateError('')} severity="error" sx={{ width: '100%', fontWeight: 600 }}>
+          {updateError}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
