@@ -63,7 +63,7 @@ const SubcategoryPage = () => {
   };
 
   const formatPrice = (price) => {
-    return price.toLocaleString('en-PK', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   const handleFilter = () => {

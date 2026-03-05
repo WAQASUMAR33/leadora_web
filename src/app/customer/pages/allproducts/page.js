@@ -75,7 +75,7 @@ const AllProducts = () => {
   };
 
   const formatPrice = (price) => {
-    return price ? price.toLocaleString('en-PK', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0';
+    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
   };
 
   const calculateOriginalPrice = (price, discount) => {
