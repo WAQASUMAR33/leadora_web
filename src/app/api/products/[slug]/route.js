@@ -23,6 +23,8 @@ export async function PUT(request, { params }) {
       meta_description,
       meta_keywords,
       sku,
+      productType,
+      digitalData,
     } = await request.json();
 
     // Preserve full URLs (https://...), strip path only from relative paths
@@ -38,7 +40,7 @@ export async function PUT(request, { params }) {
       name,
       description,
       price: parseFloat(price),
-      stock: parseInt(stock, 10),
+      stock: parseInt(stock, 10) || 0,
       subcategorySlug,
       colors: JSON.stringify(colors),
       sizes: JSON.stringify(sizes),
@@ -48,6 +50,8 @@ export async function PUT(request, { params }) {
       meta_description,
       meta_keywords,
       sku: sku || null,
+      productType: productType || 'tangible',
+      digitalData: digitalData ? JSON.stringify(digitalData) : null,
       images: {
         deleteMany: {},
         create: imageUrls.map((url) => ({ url })),
