@@ -365,10 +365,11 @@ const FilterableTable = ({
         const uploadedDigitalFiles = await Promise.all(
           digitalFiles.map(async (file) => {
             const fileBase64 = await convertToBase64(file);
+            const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
             const response = await fetch('/api/upload', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ image: fileBase64 }),
+              body: JSON.stringify({ image: fileBase64, type: ext }),
             });
             const result = await response.json();
             if (response.ok) return result.image_url;
