@@ -113,14 +113,17 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
 
     const handleDownloadComplete = () => {
         setIsDownloading(false);
-        const filename = product.name || 'download';
-        const proxyUrl = `/api/download?id=${product.id}`;
-        window.location.assign(proxyUrl);
-
-        // Optionally close the checkout modal after some time
+        if (activeUrl) {
+            const a = document.createElement('a');
+            a.href = `/api/download?url=${encodeURIComponent(activeUrl)}&filename=${encodeURIComponent(product.name || 'download')}`;
+            a.download = product.name || 'download';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
         setTimeout(() => {
             onRequestClose();
-            onSuccess(); // Ensure state updates on parent
+            onSuccess();
         }, 1500);
     };
 
@@ -172,7 +175,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
             let dUrl = '';
             if (product?.digitalData) {
                 const data = typeof product.digitalData === 'string' ? JSON.parse(product.digitalData) : product.digitalData;
-                const fileUrl = data.files?.[0]?.url;
+                const fileUrl = data.files?.[0];
                 if (fileUrl) {
                     dUrl = fileUrl.startsWith('http') ? fileUrl : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${fileUrl}`;
                     setDownloadUrl(dUrl);

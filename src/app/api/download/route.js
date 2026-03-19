@@ -28,7 +28,7 @@ export async function GET(request) {
             }
 
             const data = typeof product.digitalData === 'string' ? JSON.parse(product.digitalData) : product.digitalData;
-            const fileUrl = data?.files?.[0]?.url;
+            const fileUrl = data?.files?.[0];
 
             if (!fileUrl) {
                 return NextResponse.json({ error: 'No digital file associated with this product' }, { status: 404 });
