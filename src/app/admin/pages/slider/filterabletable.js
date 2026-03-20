@@ -83,6 +83,7 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [editSlider, setEditSlider] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [sliderForm, setSliderForm] = useState({ imgurl: '', link: '' });
   const [existingImage, setExistingImage] = useState('');
   const fileInputRef = useRef(null);
@@ -97,7 +98,9 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
     );
   }, [filter, sliders]);
 
-  const handleDeleteItem = async (id) => {
+  const handleDeleteItem = async () => {
+    const id = confirmDeleteId;
+    setConfirmDeleteId(null);
     setIsLoading(true);
     try {
       const response = await fetch(`/api/slider/${id}`, {
@@ -105,7 +108,7 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
         headers: { 'Content-Type': 'application/json' },
       });
       if (response.ok) {
-        fetchSliders();
+        await fetchSliders();
       } else {
         console.error('Failed to delete slider');
       }
@@ -278,7 +281,7 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
                       <IconButton onClick={() => handleEditItem(item)} color="primary" size="small">
                         <EditIcon fontSize="small" />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteItem(item.id)} color="error" size="small">
+                      <IconButton onClick={() => setConfirmDeleteId(item.id)} color="error" size="small">
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Box>
@@ -365,6 +368,39 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
             </Button>
           </DialogActions>
         </Box>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={confirmDeleteId !== null}
+        onClose={() => setConfirmDeleteId(null)}
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{ square: true }}
+      >
+        <DialogTitle>
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Delete Slider</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this slider image? This action cannot be undone.</Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2, gap: 1 }}>
+          <Button
+            onClick={() => setConfirmDeleteId(null)}
+            variant="contained"
+            sx={{ bgcolor: 'grey.300', color: 'grey.800', '&:hover': { bgcolor: 'grey.400' }, borderRadius: 0 }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteItem}
+            variant="contained"
+            color="error"
+            sx={{ borderRadius: 0 }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );
