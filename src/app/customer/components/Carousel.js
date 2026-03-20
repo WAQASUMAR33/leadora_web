@@ -72,6 +72,7 @@ function Slider() {
                 alt={`Slide ${index}`}
                 priority={index === 0}
                 loading={index === 0 ? 'eager' : 'lazy'}
+                unoptimized
               />
               <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none bg-gradient-to-t from-orange-900/40 to-transparent">
                 <h1 className='text-2xl md:text-4xl lg:text-5xl font-bold text-white pb-3 text-center px-2'>
