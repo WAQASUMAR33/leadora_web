@@ -22,9 +22,19 @@ export async function PUT(request, { params }) {
     const id = parseInt(params.id);
     const body = await request.json();
     const { imgurl, link } = body;
+
+    // Only update the fields that were explicitly sent
+    const data = {};
+    if (link !== undefined) data.link = link;
+    if (imgurl !== undefined) data.imgurl = imgurl;
+
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json({ error: 'Nothing to update' }, { status: 400 });
+    }
+
     const updatedSlider = await prisma.slider.update({
-      where: { id: id },
-      data: { imgurl, link },
+      where: { id },
+      data,
     });
     return NextResponse.json(updatedSlider);
   } catch (error) {

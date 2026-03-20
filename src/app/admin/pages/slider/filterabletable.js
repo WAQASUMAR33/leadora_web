@@ -99,9 +99,11 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
     setIsLoading(true);
 
     try {
-      let uploadedImageUrl = existingImage;
+      const hasNewFile = fileInputRef.current?.files?.length > 0;
+      let newImageUrl = null;
 
-      if (fileInputRef.current?.files?.length > 0) {
+      // Upload new image only if a file was selected
+      if (hasNewFile) {
         const file = fileInputRef.current.files[0];
         const reader = new FileReader();
         const imageBase64 = await new Promise((resolve, reject) => {
@@ -117,16 +119,22 @@ const FilterableSliderTable = ({ sliders = [], fetchSliders }) => {
         });
         const uploadData = await uploadRes.json();
         if (!uploadRes.ok) throw new Error(uploadData.error || 'Image upload failed');
-        uploadedImageUrl = uploadData.image_url;
+        newImageUrl = uploadData.image_url;
       }
 
       const method = editSlider ? 'PUT' : 'POST';
       const url = editSlider ? `/api/slider/${editSlider.id}` : '/api/slider';
 
+      // For PUT: only send imgurl if a new image was uploaded
+      // For POST: always send both (new slider requires an image)
+      const body = editSlider
+        ? { link: sliderForm.link, ...(newImageUrl && { imgurl: newImageUrl }) }
+        : { link: sliderForm.link, imgurl: newImageUrl || existingImage };
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imgurl: uploadedImageUrl, link: sliderForm.link }),
+        body: JSON.stringify(body),
       });
 
       if (res.ok) {
