@@ -29,15 +29,6 @@ export const getTransporter = () => {
         }
     });
 
-    // Test the connection immediately
-    transporter.verify((error, success) => {
-        if (error) {
-            console.error('[SMTP] Verification failed:', error);
-        } else {
-            console.log('[SMTP] Server is ready to take our messages');
-        }
-    });
-
     return transporter;
 };
 
