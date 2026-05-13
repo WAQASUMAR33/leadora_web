@@ -11,9 +11,9 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch('/api/products', { cache: 'no-store' });
       const data = await response.json();
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -23,7 +23,7 @@ const ProductPage = () => {
     try {
       const response = await fetch('/api/categories');
       const data = await response.json();
-      setCategories(data);
+      setCategories(Array.isArray(data) ? data : (data?.data && Array.isArray(data.data) ? data.data : []));
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -49,7 +49,7 @@ const ProductPage = () => {
     try {
       const response = await fetch('/api/colors');
       const data = await response.json();
-      setColors(data);
+      setColors(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching colors:', error);
     }
@@ -59,7 +59,7 @@ const ProductPage = () => {
     try {
       const response = await fetch('/api/sizes');
       const data = await response.json();
-      setSizes(data);
+      setSizes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching sizes:', error);
     }

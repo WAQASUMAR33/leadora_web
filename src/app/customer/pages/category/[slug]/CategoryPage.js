@@ -10,12 +10,14 @@ import { FiChevronRight, FiSearch, FiShoppingCart, FiChevronDown, FiMaximize2, F
 import { GoStarFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../../store/cartSlice';
+import { useCurrency } from '../../../../../lib/useCurrency';
 import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
 
 const CategoryPage = () => {
   const { slug } = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { formatPrice } = useCurrency();
   const [categoryData, setCategoryData] = useState(null);
   const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -67,9 +69,6 @@ const CategoryPage = () => {
     fetchData();
   }, [slug]);
 
-  const formatPrice = (price) => {
-    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
-  };
 
   const handleAddToCart = (product, e) => {
     e.stopPropagation();
@@ -286,9 +285,9 @@ const CategoryPage = () => {
 
                       {/* Reinforced Price Container for Alignment */}
                       <div className="flex flex-col mt-auto justify-end mb-3">
-                        <p className="text-sm md:text-base font-black text-black leading-none">CA${formatPrice(salePrice)}</p>
+                        <p className="text-sm md:text-base font-black text-black leading-none">{formatPrice(salePrice)}</p>
                         {product.discount > 0 ? (
-                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
+                          <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">{formatPrice(product.price)}</p>
                         ) : (
                           <div className="h-[14px]"></div> // Placeholder
                         )}
@@ -378,7 +377,7 @@ const CategoryPage = () => {
                 )}
               </div>
               <h4 className="text-[12px] md:text-base font-black truncate group-hover:text-orange-500 transition-colors uppercase tracking-tight mb-1">{p.name}</h4>
-              <p className="text-lg md:text-xl font-black">CA${formatPrice(p.price)}</p>
+              <p className="text-lg md:text-xl font-black">{formatPrice(p.price)}</p>
             </div>
           ))}
         </div>

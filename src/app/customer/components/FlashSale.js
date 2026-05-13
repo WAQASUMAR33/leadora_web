@@ -1,7 +1,8 @@
-'use client'
+'use client';
 import React from 'react';
 import 'tailwindcss/tailwind.css';
 import Image from 'next/image';
+import { useCurrency } from '../../../lib/useCurrency';
 
 const products = [
   {
@@ -50,6 +51,7 @@ const products = [
 ];
 
 const FlashSale = () => {
+  const { formatPrice } = useCurrency();
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
@@ -100,8 +102,8 @@ const FlashSale = () => {
             <div className="p-3 flex flex-col flex-grow">
               <h4 className="text-[11px] font-bold text-gray-800 line-clamp-2 mb-2 leading-tight h-[2.5em]">{product.name}</h4>
               <div className="mt-auto flex flex-col items-start">
-                <p className="text-sm font-black text-red-600 leading-none">CA${product.price}</p>
-                <p className="text-[9px] text-gray-400 line-through font-bold mt-1">CA${product.originalPrice}</p>
+                <p className="text-sm font-black text-red-600 leading-none">{formatPrice(product.price)}</p>
+                <p className="text-[9px] text-gray-400 line-through font-bold mt-1">{formatPrice(product.originalPrice)}</p>
               </div>
             </div>
           </div>

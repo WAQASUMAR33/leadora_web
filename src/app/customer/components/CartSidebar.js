@@ -6,12 +6,14 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCart } from '../../store/cartSlice'; // Adjust path if needed
+import { setCart } from '../../store/cartSlice';
+import { useCurrency } from '../../../lib/useCurrency';
 import { toast } from 'react-toastify';
 
 const CartSidebar = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.items);
+    const { formatPrice, symbol } = useCurrency();
 
     const getImageUrl = (url) => {
         if (!url) return '/placeholder-image.png';
@@ -113,7 +115,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                             </div>
 
                                             <div className="flex items-end justify-between mt-2">
-                                                <span className="font-bold text-gray-900 text-sm">CA${item.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                                <span className="font-bold text-gray-900 text-sm">{formatPrice(item.price)}</span>
 
                                                 {/* Quantity Control */}
                                                 <div className="flex items-center bg-gray-100 rounded-lg h-8 px-1">
@@ -143,7 +145,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             <div className="p-5 border-t border-gray-100 bg-white space-y-4">
                                 <div className="flex items-center justify-between">
                                     <span className="text-gray-500 font-medium">Subtotal:</span>
-                                    <span className="text-xl font-extrabold text-gray-900">CA${subtotal.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                    <span className="text-xl font-extrabold text-gray-900">{formatPrice(subtotal)}</span>
                                 </div>
 
                                 <Link
@@ -154,7 +156,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                     View Cart
                                 </Link>
                                 <div className="text-center text-[10px] text-gray-400">
-                                    Free shipping on orders over CA$5000
+                                    Free shipping on orders over {symbol}5,000
                                 </div>
                             </div>
                         )}

@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { FiFilter, FiX, FiPlus, FiChevronRight, FiSearch, FiDownload, FiShoppingCart } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../../store/cartSlice';
+import { useCurrency } from '../../../../../lib/useCurrency';
 import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
 import { AnimatePresence } from 'framer-motion';
 
@@ -30,6 +31,7 @@ const SubcategoryPage = () => {
   const [selectedDigitalProduct, setSelectedDigitalProduct] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchProductsAndSubcategory = async () => {
@@ -62,9 +64,6 @@ const SubcategoryPage = () => {
     router.push(`/customer/pages/products/${productSlug}`);
   };
 
-  const formatPrice = (price) => {
-    return price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
 
   const handleFilter = () => {
     const filtered = products
@@ -221,15 +220,15 @@ const SubcategoryPage = () => {
                       {product.discount ? (
                         <div className="flex items-center justify-center gap-3 flex-row-reverse">
                           <p className="text-xs font-normal text-gray-700 line-through">
-                            CA${formatPrice(product.price)}
+                            {formatPrice(product.price)}
                           </p>
                           <p className="text-md font-bold text-red-700">
-                            CA${formatPrice(discountedPrice)}
+                            {formatPrice(discountedPrice)}
                           </p>
                         </div>
                       ) : (
                         <p className="text-md font-bold text-gray-700">
-                          CA${formatPrice(product.price)}
+                          {formatPrice(product.price)}
                         </p>
                       )}
                     </div>

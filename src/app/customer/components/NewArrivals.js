@@ -6,6 +6,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cartSlice';
+import { useCurrency } from '../../../lib/useCurrency';
 import Image from 'next/image';
 import { FiShoppingCart, FiChevronRight, FiMaximize2, FiShoppingBag, FiDownload } from 'react-icons/fi';
 import DigitalCheckoutModal from './DigitalCheckoutModal';
@@ -19,6 +20,7 @@ const NewArrivals = () => {
   const [selectedDigitalProduct, setSelectedDigitalProduct] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,9 +55,6 @@ const NewArrivals = () => {
     router.push('/customer/pages/cart');
   };
 
-  const formatPrice = (price) => {
-    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
-  };
 
   const calculateSalePrice = (price, discount) => {
     if (typeof price === 'number' && typeof discount === 'number' && discount > 0) {
@@ -171,9 +170,9 @@ const NewArrivals = () => {
 
                 {/* Price */}
                 <div className="flex flex-col mt-auto justify-end mb-3">
-                  <p className="text-base md:text-xl font-black text-black leading-none">CA${formatPrice(salePrice)}</p>
+                  <p className="text-base md:text-xl font-black text-black leading-none">{formatPrice(salePrice)}</p>
                   {product.discount > 0 ? (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">{formatPrice(product.price)}</p>
                   ) : (
                     <div className="h-[12px]"></div>
                   )}

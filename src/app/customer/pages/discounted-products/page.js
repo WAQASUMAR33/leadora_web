@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ThreeDots } from 'react-loader-spinner';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../store/cartSlice';
+import { useCurrency } from '../../../../lib/useCurrency';
 import Image from 'next/image';
 import { FiMaximize2, FiShoppingBag, FiStar } from 'react-icons/fi';
 import { GoStarFill } from 'react-icons/go';
@@ -16,6 +17,7 @@ const DiscountedProducts = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,9 +42,6 @@ const DiscountedProducts = () => {
     alert(`${product.name} has been added to the cart.`);
   };
 
-  const formatPrice = (price) => {
-    return price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
 
   const calculateOriginalPrice = (price, discount) => {
     if (typeof price === 'number' && typeof discount === 'number') {
@@ -122,9 +121,9 @@ const DiscountedProducts = () => {
 
                 {/* Reinforced Price Container for Alignment */}
                 <div className="flex flex-col mt-auto justify-end">
-                  <p className="text-base md:text-xl font-black text-black leading-none">CA${formatPrice(calculateOriginalPrice(product.price, product.discount))}</p>
+                  <p className="text-base md:text-xl font-black text-black leading-none">{formatPrice(calculateOriginalPrice(product.price, product.discount))}</p>
                   {product.discount > 0 ? (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">{formatPrice(product.price)}</p>
                   ) : (
                     <div className="h-[12px]"></div> // Placeholder
                   )}

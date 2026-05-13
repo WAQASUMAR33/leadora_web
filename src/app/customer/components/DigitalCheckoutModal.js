@@ -7,8 +7,10 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ThreeDots } from 'react-loader-spinner';
 import { jwtDecode } from 'jwt-decode';
+import { useCurrency } from '../../../lib/useCurrency';
 
 const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) => {
+    const { formatPrice } = useCurrency();
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [userEmail, setUserEmail] = useState('');
@@ -278,9 +280,9 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
                             <div>
                                 <h4 className="font-bold text-sm text-gray-900 line-clamp-1">{product.name}</h4>
                                 <p className="text-orange-600 font-black">
-                                    CA${product.discount
-                                        ? (product.price - (product.price * product.discount / 100)).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                                        : product.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    {product.discount
+                                        ? formatPrice(product.price - (product.price * product.discount / 100))
+                                        : formatPrice(product.price)}
                                 </p>
                             </div>
                         </div>

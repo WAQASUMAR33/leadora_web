@@ -70,12 +70,6 @@ const nextConfig = {
     ];
   },
 
-  // Fix workspace root detection
-  experimental: {
-    turbopack: {
-      root: '.',
-    },
-  },
 };
 
 export default nextConfig;

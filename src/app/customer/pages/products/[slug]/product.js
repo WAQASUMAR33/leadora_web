@@ -11,6 +11,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from '../../../../store/cartSlice';
+import { useCurrency } from '../../../../../lib/useCurrency';
 import { ThreeDots } from 'react-loader-spinner';
 import { FiMinus, FiPlus, FiShoppingBag, FiMaximize2, FiChevronDown, FiInfo, FiHeart, FiCalendar, FiTruck, FiMapPin, FiChevronUp, FiSearch, FiRefreshCw } from 'react-icons/fi';
 import { FaShare, FaTimes, FaFacebookF, FaTwitter, FaPinterestP, FaRegHeart } from 'react-icons/fa';
@@ -31,6 +32,7 @@ const ProductPage = ({ productData }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const prevcart = useSelector(state => state.cart.items);
+  const { formatPrice } = useCurrency();
 
   // State management
   const [product, setProduct] = useState(productData?.product || null);
@@ -219,7 +221,6 @@ const ProductPage = ({ productData }) => {
     return (url || '').includes('data.tascpa.ca');
   }, []);
 
-  const formatPrice = (price) => Number(price || 0).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const calculateOriginalPrice = (price, discount) => {
     const p = Number(price) || 0;
@@ -435,11 +436,11 @@ const ProductPage = ({ productData }) => {
           <div className="mb-6">
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-black text-gray-900">
-                CA${formatPrice(calculateOriginalPrice(product.price, product.discount))}
+                {formatPrice(calculateOriginalPrice(product.price, product.discount))}
               </span>
               {product?.discount > 0 && (
                 <span className="text-base text-gray-400 line-through font-medium">
-                  CA${formatPrice(product.price)}
+                  {formatPrice(product.price)}
                 </span>
               )}
             </div>
@@ -733,7 +734,7 @@ const ProductPage = ({ productData }) => {
                   </div>
                   <div className="flex items-start gap-4 text-[14px] text-gray-700 font-medium leading-relaxed">
                     <FiTruck className="text-gray-400 mt-0.5 flex-shrink-0" size={18} />
-                    <p>Delivery cost: <span className="font-bold">CA$450</span></p>
+                    <p>Delivery cost: <span className="font-bold">{formatPrice(450)}</span></p>
                   </div>
                   <div className="flex items-start gap-4 text-[14px] text-gray-700 font-medium leading-relaxed">
                     <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" size={18} />
@@ -909,9 +910,9 @@ const RelatedProductsSection = memo(({ relatedProducts, calculateOriginalPrice, 
 
                 {/* Price */}
                 <div className="flex flex-col mt-auto justify-end">
-                  <p className="text-base font-bold text-black leading-none">CA${formatPrice(originalPrice)}</p>
+                  <p className="text-base font-bold text-black leading-none">{formatPrice(originalPrice)}</p>
                   {product.discount > 0 && (
-                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">CA${formatPrice(product.price)}</p>
+                    <p className="text-[9px] text-gray-400 line-through mt-1 font-bold">{formatPrice(product.price)}</p>
                   )}
                 </div>
               </div>

@@ -7,6 +7,7 @@ import { FiChevronLeft, FiChevronRight, FiHeart, FiMaximize2, FiShoppingBag, FiS
 import { GoStarFill } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cartSlice';
+import { useCurrency } from '../../../lib/useCurrency';
 import { ThreeDots } from 'react-loader-spinner';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -20,6 +21,7 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { formatPrice } = useCurrency();
 
   const [productIndices, setProductIndices] = useState({});
   const [windowWidth, setWindowWidth] = useState(0);
@@ -102,9 +104,6 @@ const Products = () => {
     });
   };
 
-  const formatPrice = (price) => {
-    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
-  };
 
   const calculateSalePrice = (price, discount) => {
     if (typeof price === 'number' && typeof discount === 'number' && discount > 0) {
@@ -285,9 +284,9 @@ const Products = () => {
 
                             {/* Price */}
                             <div className="flex flex-col mt-auto justify-end mb-3">
-                              <p className="text-base md:text-lg font-black text-black leading-none">CA${formatPrice(salePrice)}</p>
+                              <p className="text-base md:text-lg font-black text-black leading-none">{formatPrice(salePrice)}</p>
                               {product.discount > 0 ? (
-                                <p className="text-[9px] text-gray-400 line-through mt-1">CA${formatPrice(product.price)}</p>
+                                <p className="text-[9px] text-gray-400 line-through mt-1">{formatPrice(product.price)}</p>
                               ) : (
                                 <div className="h-[12px]"></div>
                               )}

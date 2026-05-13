@@ -24,6 +24,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Paper,
   Select as MuiSelect,
@@ -400,7 +401,7 @@ const FilterableTable = ({
       });
 
       if (response.ok) {
-        fetchProducts();
+        await fetchProducts();
         setEditProduct(null);
         setProductForm({
           name: '', slug: '', description: '', price: '', stock: '',
@@ -775,7 +776,7 @@ const FilterableTable = ({
       {editProduct && (
         <Dialog
           open={Boolean(editProduct)}
-          onClose={handleCancelEdit}
+          onClose={isLoading ? undefined : handleCancelEdit}
           maxWidth="lg"
           fullWidth
           PaperProps={{ square: true, sx: { bgcolor: '#F9FAFB' } }}
@@ -798,10 +799,21 @@ const FilterableTable = ({
               </Box>
               <Typography variant="caption" sx={{ color: '#6B7280' }}>Product ID: #{editProduct.id}</Typography>
             </Box>
-            <IconButton onClick={handleCancelEdit} sx={{ borderRadius: 0, bgcolor: '#F3F4F6', '&:hover': { bgcolor: '#E5E7EB' } }}>
+            <IconButton onClick={handleCancelEdit} disabled={isLoading} sx={{ borderRadius: 0, bgcolor: '#F3F4F6', '&:hover': { bgcolor: '#E5E7EB' } }}>
               <CloseIcon sx={{ fontSize: '1.1rem' }} />
             </IconButton>
           </DialogTitle>
+
+          {/* Loading bar — visible only while update is in progress */}
+          {isLoading && (
+            <LinearProgress
+              sx={{
+                height: 3,
+                bgcolor: '#DBEAFE',
+                '& .MuiLinearProgress-bar': { bgcolor: '#3B82F6' },
+              }}
+            />
+          )}
 
           <DialogContent sx={{ p: 3 }}>
             <Grid container spacing={3} sx={{ mt: 0 }}>
@@ -978,7 +990,7 @@ const FilterableTable = ({
                               </Box>
                             )}
                           >
-                            {colors.map((color) => (
+                            {(Array.isArray(colors) ? colors : []).map((color) => (
                               <MenuItem key={color.id} value={{ value: color.id, label: color.name, hex: color.hex }}>
                                 <Checkbox checked={productForm.colors.some((c) => c.value === color.id)} size="small" />
                                 <Box sx={{ width: 10, height: 10, bgcolor: color.hex, mr: 1, border: '1px solid #E5E7EB', flexShrink: 0 }} />
@@ -1003,7 +1015,7 @@ const FilterableTable = ({
                               </Box>
                             )}
                           >
-                            {sizes.map((size) => (
+                            {(Array.isArray(sizes) ? sizes : []).map((size) => (
                               <MenuItem key={size.id} value={{ value: size.id, label: size.name }}>
                                 <Checkbox checked={productForm.sizes.some((s) => s.value === size.id)} size="small" />
                                 {size.name}
@@ -1093,16 +1105,30 @@ const FilterableTable = ({
           </DialogContent>
 
           <DialogActions sx={{ p: 2.5, bgcolor: '#fff', borderTop: '1px solid #E5E7EB', gap: 1 }}>
-            <Button onClick={handleCancelEdit} sx={{ textTransform: 'none', fontWeight: 600, color: '#6B7280', borderRadius: 0 }}>
+            <Button
+              onClick={handleCancelEdit}
+              disabled={isLoading}
+              sx={{ textTransform: 'none', fontWeight: 600, color: '#6B7280', borderRadius: 0 }}
+            >
               Cancel
             </Button>
             <Button
               onClick={handleFormSubmit}
               variant="contained"
-              startIcon={<SaveIcon />}
-              sx={{ textTransform: 'none', borderRadius: 0, px: 3, fontWeight: 700, bgcolor: '#3B82F6', '&:hover': { bgcolor: '#2563EB' } }}
+              disabled={isLoading}
+              startIcon={isLoading ? <CircularProgress size={16} sx={{ color: '#fff' }} /> : <SaveIcon />}
+              sx={{
+                textTransform: 'none',
+                borderRadius: 0,
+                px: 3,
+                fontWeight: 700,
+                bgcolor: '#3B82F6',
+                '&:hover': { bgcolor: '#2563EB' },
+                '&.Mui-disabled': { bgcolor: '#93C5FD', color: '#fff' },
+                minWidth: 150,
+              }}
             >
-              Update Product
+              {isLoading ? 'Updating…' : 'Update Product'}
             </Button>
           </DialogActions>
         </Dialog>

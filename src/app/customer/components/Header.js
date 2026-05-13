@@ -14,6 +14,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../../store/cartSlice';
+import { setCurrency } from '../../store/currencySlice';
+import { CURRENCIES } from '../../../lib/currencies';
+import { useCurrency } from '../../../lib/useCurrency';
 // import { setCart } from '@/app/store/cartSlice';
 import { FaSearch, FaTiktok } from 'react-icons/fa';
 import { FiChevronRight, FiFacebook, FiInstagram } from 'react-icons/fi';
@@ -43,9 +46,14 @@ const Header = () => {
   const searchInputRef = useRef(null);
   const searchContainerRef = useRef(null); // Ref for click outside logic
 
+  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+  const [currencySearch, setCurrencySearch] = useState('');
+  const currencyDropdownRef = useRef(null);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const { symbol: currencySymbol, code: currencyCode, formatPrice } = useCurrency();
 
   const [totalQuantityOfItems, setTotalQuantityOfItems] = useState(0);
   const [socialMediaLinks, setSocialMediaLinks] = useState({
@@ -55,6 +63,30 @@ const Header = () => {
     tiktok: '',
   });
   const [loadingSocial, setLoadingSocial] = useState(true);
+
+  // Auto-detect currency from visitor location (only if user hasn't manually chosen one)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !localStorage.getItem('selectedCurrency')) {
+      fetch('/api/geo')
+        .then((r) => r.json())
+        .then((data) => {
+          const detected = CURRENCIES[data.currencyCode];
+          if (detected) dispatch(setCurrency(detected));
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  // Close currency dropdown on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (currencyDropdownRef.current && !currencyDropdownRef.current.contains(e.target)) {
+        setIsCurrencyDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   // Debounced Search Effect
   useEffect(() => {
@@ -558,15 +590,15 @@ const Header = () => {
                                 {product.discount > 0 ? (
                                   <>
                                     <span className="block text-sm font-bold text-[#F25C2C]">
-                                      CA${(product.price - (product.price * product.discount) / 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                      {formatPrice(product.price - (product.price * product.discount) / 100)}
                                     </span>
                                     <span className="block text-[10px] text-gray-400 line-through">
-                                      CA${product.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                      {formatPrice(product.price)}
                                     </span>
                                   </>
                                 ) : (
                                   <span className="block text-sm font-bold text-gray-900">
-                                    CA${product.price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    {formatPrice(product.price)}
                                   </span>
                                 )}
                               </div>
@@ -609,6 +641,54 @@ const Header = () => {
 
         {/* Right Side: Icons - Grouped with consistent spacing */}
         <div className="hidden lg:flex items-center space-x-4 xl:space-x-5 ml-auto">
+
+          {/* Currency Selector */}
+          <div className="relative" ref={currencyDropdownRef}>
+            <button
+              onClick={() => { setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen); setCurrencySearch(''); }}
+              className="flex items-center gap-1 text-[11px] font-bold text-gray-600 hover:text-black transition-colors uppercase tracking-wide"
+            >
+              {currencySymbol} {currencyCode}
+              <MdExpandMore size={14} className={`transition-transform ${isCurrencyDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isCurrencyDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-52 bg-white shadow-2xl rounded-2xl border border-gray-100 z-[80] overflow-hidden">
+                {/* Search */}
+                <div className="p-2 border-b border-gray-100">
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search currency…"
+                    value={currencySearch}
+                    onChange={(e) => setCurrencySearch(e.target.value)}
+                    className="w-full px-3 py-1.5 text-[11px] bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-orange-400"
+                  />
+                </div>
+                {/* List */}
+                <div className="overflow-y-auto max-h-60 py-1">
+                  {Object.values(CURRENCIES)
+                    .filter((c) =>
+                      currencySearch === '' ||
+                      c.code.toLowerCase().includes(currencySearch.toLowerCase()) ||
+                      c.name.toLowerCase().includes(currencySearch.toLowerCase())
+                    )
+                    .map((c) => (
+                      <button
+                        key={c.code}
+                        onClick={() => { dispatch(setCurrency(c)); setIsCurrencyDropdownOpen(false); setCurrencySearch(''); }}
+                        className={`w-full text-left px-3.5 py-1.5 text-[11px] transition-colors flex items-center justify-between gap-2 ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-orange-50' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        <span className="truncate">{c.name}</span>
+                        <span className="font-bold shrink-0">{c.symbol} {c.code}</span>
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="h-4 w-[1px] bg-gray-200"></div>
+
           {!isSearchOpen && (
             <>
               <button
@@ -832,7 +912,7 @@ const Header = () => {
                             <div className="flex-1 min-w-0">
                               <h4 className="text-xs font-bold text-gray-900 truncate">{product.name}</h4>
                               <p className="text-[10px] font-bold text-orange-500">
-                                CA${(product.price - (product.price * product.discount) / 100).toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {formatPrice(product.price - (product.price * product.discount) / 100)}
                               </p>
                             </div>
                           </div>
@@ -845,6 +925,46 @@ const Header = () => {
 
               {/* Categories and Nav Links */}
               <nav className="flex flex-col px-4 pb-8">
+                {/* Currency Selector (mobile) */}
+                <div className="mb-5 px-3">
+                  <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em] mb-2">Currency</p>
+                  {/* Selected currency pill */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-[#F25C2C] text-white">
+                      {currencySymbol} {currencyCode}
+                    </span>
+                    <span className="text-xs text-gray-500">{CURRENCIES[currencyCode]?.name}</span>
+                  </div>
+                  {/* Search + scrollable list */}
+                  <input
+                    type="text"
+                    placeholder="Search currency…"
+                    value={currencySearch}
+                    onChange={(e) => setCurrencySearch(e.target.value)}
+                    className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-orange-400 mb-2"
+                  />
+                  <div className="max-h-40 overflow-y-auto rounded-xl border border-gray-100 divide-y divide-gray-50">
+                    {Object.values(CURRENCIES)
+                      .filter((c) =>
+                        currencySearch === '' ||
+                        c.code.toLowerCase().includes(currencySearch.toLowerCase()) ||
+                        c.name.toLowerCase().includes(currencySearch.toLowerCase())
+                      )
+                      .map((c) => (
+                        <button
+                          key={c.code}
+                          onClick={() => { dispatch(setCurrency(c)); setCurrencySearch(''); }}
+                          className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between transition-colors ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-orange-50' : 'text-gray-700 hover:bg-gray-50'}`}
+                        >
+                          <span className="truncate">{c.name}</span>
+                          <span className="font-bold shrink-0 ml-2">{c.symbol} {c.code}</span>
+                        </button>
+                      ))}
+                  </div>
+                </div>
+
+                <div className="h-px bg-gray-100 mb-5 mx-2"></div>
+
                 {/* Primary Links */}
                 <div className="flex flex-col space-y-1 mb-6">
                   <Link href="/" className="text-gray-900 font-bold py-3 px-3 text-[14px] hover:bg-gray-50 rounded-xl transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>

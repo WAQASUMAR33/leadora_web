@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ThreeDots } from 'react-loader-spinner';
 import { useDispatch } from 'react-redux';
 import { addToCart, setCart } from '../../../store/cartSlice';
+import { useCurrency } from '../../../../lib/useCurrency';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FiChevronRight, FiSearch, FiShoppingCart, FiChevronDown, FiMaximize2, FiShoppingBag, FiFilter, FiX, FiPlus } from 'react-icons/fi';
@@ -24,6 +25,7 @@ const AllProducts = () => {
   const [tempStatusFilter, setTempStatusFilter] = useState("all");
   const dispatch = useDispatch();
   const router = useRouter();
+  const { formatPrice } = useCurrency();
 
   const fetchProducts = useCallback(async (query) => {
     setLoading(true);
@@ -74,9 +76,6 @@ const AllProducts = () => {
     router.push(`/customer/pages/products/${slug}`);
   };
 
-  const formatPrice = (price) => {
-    return price ? price.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
-  };
 
   const calculateSalePrice = (price, discount) => {
     if (typeof price === 'number' && typeof discount === 'number' && discount > 0) {
@@ -252,9 +251,9 @@ const AllProducts = () => {
                     </h4>
 
                     <div className="flex flex-col mt-auto justify-end mb-3">
-                      <p className="text-base font-bold text-gray-900 leading-none">CA${formatPrice(salePrice)}</p>
+                      <p className="text-base font-bold text-gray-900 leading-none">{formatPrice(salePrice)}</p>
                       {product.discount > 0 && (
-                        <p className="text-[9px] text-gray-400 line-through mt-1 font-medium">CA${formatPrice(product.price)}</p>
+                        <p className="text-[9px] text-gray-400 line-through mt-1 font-medium">{formatPrice(product.price)}</p>
                       )}
                     </div>
 
