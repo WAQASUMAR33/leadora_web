@@ -53,9 +53,12 @@ const Header = () => {
   const handleLogout = () => {
     Cookies.remove("token");
     localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("role");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
     handleMenuClose();
-    window.location.href = "/admin"; // Force reload to clear all state
+    window.location.href = "/login";
   };
 
   // Render nothing until authentication status is known
