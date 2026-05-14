@@ -369,7 +369,7 @@ const FilterableTable = ({
       productType: item.productType || 'tangible',
       digitalDataSize: parsedDigitalData?.size || '',
     });
-    setExistingImages(item.images.map((img) => img.url));
+    setExistingImages(item.images.map((img) => img.url).filter(Boolean));
     setExistingDigitalFiles(
       (parsedDigitalData?.files || []).map(f => (typeof f === 'string' ? f : (f?.url || ''))).filter(Boolean)
     );
@@ -1043,7 +1043,7 @@ const FilterableTable = ({
                       {existingImages.map((img, index) => (
                         <Grid item xs={4} key={`existing-${index}`}>
                           <Box sx={{ position: 'relative', pt: '100%', overflow: 'hidden', border: '1px solid #E5E7EB' }}>
-                            <Image fill src={img.startsWith('https://') ? img : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${img}`} alt="" style={{ objectFit: 'cover' }} />
+                            <Image fill unoptimized src={img?.startsWith('http') ? img : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL || ''}/${img}`} alt="" style={{ objectFit: 'cover' }} />
                             <IconButton size="small" onClick={() => handleRemoveExistingImage(index)} sx={{ position: 'absolute', top: 2, right: 2, borderRadius: 0, bgcolor: 'rgba(255,255,255,0.9)', p: 0.25, '&:hover': { bgcolor: '#FEE2E2', color: '#EF4444' } }}>
                               <CloseIcon sx={{ fontSize: '0.8rem' }} />
                             </IconButton>
