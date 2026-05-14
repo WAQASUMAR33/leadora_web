@@ -158,6 +158,8 @@ const FilterableTable = ({
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [itemSlugToDelete, setItemSlugToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [optimisticStatuses, setOptimisticStatuses] = useState({});
+  const [togglingSlug, setTogglingSlug] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [productForm, setProductForm] = useState({
@@ -265,12 +267,39 @@ const FilterableTable = ({
     setItemSlugToDelete(null);
   };
 
-  const handleToggleStatus = async (slug) => {
+  const getEffectiveStatus = (item) =>
+    optimisticStatuses.hasOwnProperty(item.slug)
+      ? optimisticStatuses[item.slug]
+      : (item.isActive ?? true);
+
+  const handleToggleStatus = async (slug, currentActive) => {
+    const newStatus = !currentActive;
+
+    // Flip UI instantly
+    setOptimisticStatuses(prev => ({ ...prev, [slug]: newStatus }));
+    setTogglingSlug(slug);
+
     try {
-      await fetch(`/api/products/status/${slug}`, { method: 'PATCH' });
-      await fetchProducts();
+      const res = await fetch(`/api/products/status/${slug}`, { method: 'PATCH' });
+      if (!res.ok) throw new Error('API error');
+      // Sync in background without blocking
+      fetchProducts().then(() => {
+        setOptimisticStatuses(prev => {
+          const next = { ...prev };
+          delete next[slug];
+          return next;
+        });
+      });
     } catch (error) {
+      // Revert on failure
+      setOptimisticStatuses(prev => {
+        const next = { ...prev };
+        delete next[slug];
+        return next;
+      });
       console.error('Error toggling product status:', error);
+    } finally {
+      setTogglingSlug(null);
     }
   };
 
@@ -756,22 +785,41 @@ const FilterableTable = ({
                         <StockDisplay stock={item.stock} />
                       </TableCell>
                       <TableCell>
-                        <Tooltip title={(item.isActive ?? true) ? 'Click to deactivate' : 'Click to activate'} placement="top">
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Switch
-                              size="small"
-                              checked={item.isActive ?? true}
-                              onChange={() => handleToggleStatus(item.slug)}
-                              sx={{
-                                '& .MuiSwitch-switchBase.Mui-checked': { color: '#10B981' },
-                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: '#10B981' },
-                              }}
-                            />
-                            <Typography variant="caption" sx={{ fontWeight: 700, color: (item.isActive ?? true) ? '#10B981' : '#EF4444' }}>
-                              {(item.isActive ?? true) ? 'Active' : 'Inactive'}
-                            </Typography>
-                          </Box>
-                        </Tooltip>
+                        {(() => {
+                          const active = getEffectiveStatus(item);
+                          const toggling = togglingSlug === item.slug;
+                          return (
+                            <Tooltip title={active ? 'Click to deactivate' : 'Click to activate'} placement="top">
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <Switch
+                                  size="small"
+                                  checked={active}
+                                  disabled={toggling}
+                                  onChange={() => handleToggleStatus(item.slug, active)}
+                                  sx={{
+                                    opacity: toggling ? 0.6 : 1,
+                                    transition: 'opacity 0.2s',
+                                    '& .MuiSwitch-switchBase': { transition: 'transform 0.2s ease' },
+                                    '& .MuiSwitch-switchBase.Mui-checked': { color: '#10B981' },
+                                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: '#10B981' },
+                                    '& .MuiSwitch-track': { transition: 'background-color 0.2s ease' },
+                                  }}
+                                />
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    fontWeight: 700,
+                                    minWidth: 48,
+                                    color: active ? '#10B981' : '#EF4444',
+                                    transition: 'color 0.2s ease',
+                                  }}
+                                >
+                                  {active ? 'Active' : 'Inactive'}
+                                </Typography>
+                              </Box>
+                            </Tooltip>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell>
                         <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
