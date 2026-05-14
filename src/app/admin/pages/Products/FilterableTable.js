@@ -189,7 +189,17 @@ const FilterableTable = ({
   const [digitalDimensions, setDigitalDimensions] = useState({ height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
   const [updateError, setUpdateError] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+
+  // Restore pagination from sessionStorage after mount
+  useEffect(() => {
+    try {
+      const savedPage = sessionStorage.getItem('adminProductsPage');
+      const savedRows = sessionStorage.getItem('adminProductsRowsPerPage');
+      if (savedRows) setRowsPerPage(parseInt(savedRows, 10));
+      if (savedPage) setPage(parseInt(savedPage, 10));
+    } catch (_) {}
+  }, []);
   const fileInputRef = useRef(null);
   const digitalFileInputRef = useRef(null);
   const router = useRouter();
@@ -502,11 +512,19 @@ const FilterableTable = ({
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handleChangePage = (event, newPage) => setPage(newPage);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    try { sessionStorage.setItem('adminProductsPage', String(newPage)); } catch (_) {}
+  };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    const rows = parseInt(event.target.value, 10);
+    setRowsPerPage(rows);
     setPage(0);
+    try {
+      sessionStorage.setItem('adminProductsRowsPerPage', String(rows));
+      sessionStorage.setItem('adminProductsPage', '0');
+    } catch (_) {}
   };
 
   const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -857,7 +875,7 @@ const FilterableTable = ({
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 15, 25, 50]}
+              rowsPerPageOptions={[25, 50, 100]}
               component="div"
               count={filteredData.length}
               rowsPerPage={rowsPerPage}
