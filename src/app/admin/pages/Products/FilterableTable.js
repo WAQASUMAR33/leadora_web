@@ -60,7 +60,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
-import 'react-quill-new/dist/quill.snow.css';
 
 const ModernProgress = styled(Box)(() => ({
   width: '300px',
@@ -408,7 +407,7 @@ const FilterableTable = ({
       productType: item.productType || 'tangible',
       digitalDataSize: parsedDigitalData?.size || '',
     });
-    setExistingImages(item.images.map((img) => img.url).filter(Boolean));
+    setExistingImages((Array.isArray(item.images) ? item.images : []).map((img) => img.url).filter(Boolean));
     setExistingDigitalFiles(
       (parsedDigitalData?.files || []).map(f => (typeof f === 'string' ? f : (f?.url || ''))).filter(Boolean)
     );
@@ -800,7 +799,7 @@ const FilterableTable = ({
               <TableBody>
                 {Array.isArray(paginatedData) && paginatedData.length > 0 ? (
                   paginatedData.map((item) => (
-                    <TableRow key={item.slug} sx={{ '&:hover': { bgcolor: '#FAFAFA' } }}>
+                    <TableRow key={item.id ?? item.slug} sx={{ '&:hover': { bgcolor: '#FAFAFA' } }}>
                       <TableCell sx={{ fontWeight: 600, color: '#9CA3AF', fontSize: '0.8rem' }}>#{item.id}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -873,7 +872,12 @@ const FilterableTable = ({
                       </TableCell>
                       <TableCell>
                         <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
-                          {new Date(item.updatedAt).toLocaleDateString()}
+                          {item.updatedAt
+                            ? (() => {
+                                const d = new Date(item.updatedAt);
+                                return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString();
+                              })()
+                            : '—'}
                         </Typography>
                       </TableCell>
                       <TableCell>

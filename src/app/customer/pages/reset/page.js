@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 export default function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -50,7 +49,6 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
-      <ToastContainer /> {/* Toast Container for displaying toasts */}
       <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <input

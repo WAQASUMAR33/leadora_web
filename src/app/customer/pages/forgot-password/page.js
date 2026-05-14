@@ -2,8 +2,7 @@
 // src/app/auth/forgot-password/page.js
 
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Image from 'next/image';
 
 export default function ForgotPassword() {
@@ -32,7 +31,6 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <ToastContainer /> {/* Toast Container for displaying toasts */}
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
         <div className="text-center mb-6">
           {/* Logo Section */}

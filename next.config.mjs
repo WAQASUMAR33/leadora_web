@@ -49,6 +49,25 @@ const nextConfig = {
           },
         ],
       },
+      // Do not tell CDNs to cache product catalog (admin uses ?showInactive=true; stale JSON/HTML breaks the UI).
+      {
+        source: '/api/products',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'private, no-store, must-revalidate',
+          },
+        ],
+      },
+      {
+        source: '/api/products/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'private, no-store, must-revalidate',
+          },
+        ],
+      },
       {
         source: '/api/:path*',
         headers: [

@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import 'tailwindcss/tailwind.css';
 import Image from 'next/image';
 import { useCurrency } from '../../../lib/useCurrency';
 

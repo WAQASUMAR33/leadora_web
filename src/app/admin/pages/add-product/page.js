@@ -51,7 +51,6 @@ import {
 
 // React Quill (dynamically imported as in your code)
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
-import 'react-quill-new/dist/quill.snow.css';
 
 const ModernProgress = styled(Box)(() => ({
   width: '300px',

@@ -3,8 +3,7 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { FiPlus, FiMinus, FiX, FiUser, FiHome, FiMapPin, FiPhone, FiMail, FiTag, FiCreditCard } from 'react-icons/fi';
 import { removeFromCart, updateQuantity, setCart } from '../../../store/cartSlice';
@@ -956,7 +955,6 @@ const CartPage = () => {
         </div>
       </Modal>
 
-      <ToastContainer position="bottom-right" />
     </div>
   );
 };

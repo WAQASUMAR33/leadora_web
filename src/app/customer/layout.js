@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import TopBar from './components/TopBar';
 import Header from './components/Header';
-import BrowseCategories from './components/BrowseCategories';
 import Footer from './components/Footer';
-import '../globals.css'; // Assuming you have global styles
 import WhatsAppButton from './components/whatsappbutton';
 
 const CustomerLayout = ({ children }) => {

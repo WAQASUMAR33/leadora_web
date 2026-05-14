@@ -27,8 +27,7 @@ import {
   FiEye,
   FiEyeOff
 } from 'react-icons/fi';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -164,7 +163,6 @@ const Register = () => {
       minHeight: '100vh', display: 'flex', alignItems: 'center',
       justifyContent: 'center', py: 8, px: 2, background: '#fff'
     }}>
-      <ToastContainer />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

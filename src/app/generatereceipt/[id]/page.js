@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import html2pdf from "html2pdf.js";
 import { MdDangerous } from "react-icons/md";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Image from 'next/image';
 
 export default function Invoice({ params }) {
@@ -211,7 +210,6 @@ export default function Invoice({ params }) {
 
     return (
         <div className="bg-white w-full h-full flex flex-col justify-center items-center">
-             <ToastContainer />
             {/* Invoice Content */}
             {description === "Success" && transactionStatus === "Initiated" && (
                 <div>

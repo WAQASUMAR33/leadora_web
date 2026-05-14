@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from 'react-modal';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const modalStyles = {
   content: {
@@ -132,7 +131,6 @@ const ProfilePage = () => {
 
   return (
     <div className="container mx-auto p-6 flex flex-col md:flex-row items-center justify-between min-h-screen">
-      <ToastContainer />
 
       {/* Left side: Image */}
       <div className="w-full md:w-1/2 h-screen flex justify-center items-center">

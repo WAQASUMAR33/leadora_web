@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode'; // Ensure jwt-decode is imported correctly
 import { ThreeDots } from 'react-loader-spinner';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Image from 'next/image';
 
 const LoginForm = () => {
@@ -87,7 +86,6 @@ const LoginForm = () => {
         </div>
       )}
       <div className={`bg-white p-8 rounded-lg w-full max-w-xl ${loading ? 'opacity-50' : ''}`}>
-        <ToastContainer />
         <div className="flex justify-center flex-col items-center mb-6">
           <Image
             width={1000}

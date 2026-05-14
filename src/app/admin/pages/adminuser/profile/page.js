@@ -25,8 +25,7 @@ import {
   ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -137,7 +136,6 @@ const ProfilePage = () => {
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: '#F9FAFB', minHeight: '100vh' }}>
-      <ToastContainer position="top-right" autoClose={3000} />
 
       {/* Loading Overlay */}
       <Backdrop

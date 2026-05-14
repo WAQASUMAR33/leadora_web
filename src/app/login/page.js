@@ -18,8 +18,7 @@ import {
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -118,7 +117,6 @@ const LoginPage = () => {
 
     return (
         <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
-            <ToastContainer />
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
                 <Paper sx={{ width: '100%', maxWidth: 450, p: { xs: 4, md: 5 }, borderRadius: '32px', ...glassStyle }}>
                     <Box sx={{ textAlign: 'center', mb: 4 }}>

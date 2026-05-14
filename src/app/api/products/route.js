@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import prisma from '../../util/prisma';
 import { revalidatePath } from 'next/cache';
 
+/** Admin and live inventory lists must not be cached at CDN (stale / wrong body breaks the admin UI). */
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(request) {
   try {
@@ -156,7 +159,11 @@ export async function GET(request) {
         images: true, // Include related images
       },
     });
-    return NextResponse.json(products);
+    return NextResponse.json(products, {
+      headers: {
+        'Cache-Control': 'private, no-store, must-revalidate',
+      },
+    });
   } catch (error) {
     console.log('Error fetching products:', error);
     return NextResponse.json(

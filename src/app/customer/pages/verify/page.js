@@ -3,8 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 export default function VerifyPage() {
   const [loading, setLoading] = useState(true);
@@ -49,7 +48,6 @@ export default function VerifyPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <ToastContainer />
       <h1 className="text-2xl font-bold mb-4">Email Verification</h1>
       {loading && (
         <div className="flex justify-center items-center">

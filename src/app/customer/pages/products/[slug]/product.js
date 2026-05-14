@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCart } from '../../../../store/cartSlice';
 import { useCurrency } from '../../../../../lib/useCurrency';
@@ -332,7 +331,6 @@ const ProductPage = ({ productData }) => {
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-4 font-sans text-[#333] max-w-7xl">
-      <ToastContainer />
 
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-[11px] font-bold text-gray-400 mb-8 overflow-hidden whitespace-nowrap">
