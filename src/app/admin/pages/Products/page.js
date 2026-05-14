@@ -11,7 +11,7 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/products', { cache: 'no-store' });
+      const response = await fetch('/api/products?showInactive=true', { cache: 'no-store' });
       const data = await response.json();
       setProducts(Array.isArray(data) ? data : []);
     } catch (error) {

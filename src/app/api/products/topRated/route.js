@@ -9,7 +9,7 @@ export async function GET(request) {
             throw new Error('Prisma client unavailable');
         }
         const topRatedProducts = await prisma.product.findMany({
-            where: { isTopRated: true },
+            where: { isTopRated: true, isActive: true },
             include: {
                 images: true,
                 subcategory: {

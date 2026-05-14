@@ -34,21 +34,21 @@ export async function GET(request, { params }) {
     `).join(' OR ');
 
     const productQuery = `
-      SELECT 
-        Product.id, 
+      SELECT
+        Product.id,
         Product.slug,
-        Product.name, 
-        Product.description, 
-        Product.price, 
-        Product.discount, 
+        Product.name,
+        Product.description,
+        Product.price,
+        Product.discount,
         Product.subcategorySlug,
         Product.stock,
         COALESCE(
-          (SELECT JSON_ARRAYAGG(Image.url) FROM Image WHERE Image.productId = Product.id), 
+          (SELECT JSON_ARRAYAGG(Image.url) FROM Image WHERE Image.productId = Product.id),
           JSON_ARRAY()
         ) AS images
-      FROM Product 
-      WHERE (${productConditions})
+      FROM Product
+      WHERE Product.isActive = 1 AND (${productConditions})
     `;
 
     // 2. Search Categories

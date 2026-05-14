@@ -7,9 +7,8 @@ export async function GET(request) {
     try {
         const discountedProducts = await prisma.product.findMany({
             where: {
-                discount: {
-                    gt: 0, // Fetch products with discount greater than 0
-                }
+                isActive: true,
+                discount: { gt: 0 },
             },
             include: {
                 images: true, // Include related images

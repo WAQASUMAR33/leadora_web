@@ -145,10 +145,10 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const subcategorySlug = searchParams.get('subcategorySlug');
 
+    const showInactive = searchParams.get('showInactive') === 'true';
     const where = {};
-    if (subcategorySlug) {
-      where.subcategorySlug = subcategorySlug;
-    }
+    if (subcategorySlug) where.subcategorySlug = subcategorySlug;
+    if (!showInactive) where.isActive = true;
 
     const products = await prisma.product.findMany({
       where,

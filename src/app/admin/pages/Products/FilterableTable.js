@@ -29,6 +29,7 @@ import {
   Paper,
   Select as MuiSelect,
   Snackbar,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -37,6 +38,7 @@ import {
   TableRow,
   TablePagination,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
@@ -149,6 +151,7 @@ const FilterableTable = ({
   const [filter, setFilter] = useState('');
   const [stockFilter, setStockFilter] = useState('all');
   const [topRatedFilter, setTopRatedFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [filteredData, setFilteredData] = useState(products);
   const [filteredSubcategories, setFilteredSubcategories] = useState([]);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -168,6 +171,7 @@ const FilterableTable = ({
     sizes: [],
     discount: '',
     isTopRated: false,
+    isActive: true,
     images: [],
     meta_title: '',
     meta_description: '',
@@ -217,9 +221,14 @@ const FilterableTable = ({
       result = result.filter((item) => item.isTopRated === isTop);
     }
 
+    if (statusFilter !== 'all') {
+      const active = statusFilter === 'active';
+      result = result.filter((item) => (item.isActive ?? true) === active);
+    }
+
     setFilteredData(result);
     setPage(0);
-  }, [filter, stockFilter, topRatedFilter, products]);
+  }, [filter, stockFilter, topRatedFilter, statusFilter, products]);
 
   useEffect(() => {
     if (subcategories.length) {
@@ -254,6 +263,15 @@ const FilterableTable = ({
   const handleCancelDelete = () => {
     setIsPopupVisible(false);
     setItemSlugToDelete(null);
+  };
+
+  const handleToggleStatus = async (slug) => {
+    try {
+      await fetch(`/api/products/status/${slug}`, { method: 'PATCH' });
+      await fetchProducts();
+    } catch (error) {
+      console.error('Error toggling product status:', error);
+    }
   };
 
   const roundToTwoDecimalPlaces = (num) => Math.round(num * 100) / 100;
@@ -313,6 +331,7 @@ const FilterableTable = ({
       sizes: existingSizes,
       discount: item.discount || '',
       isTopRated: item.isTopRated || false,
+      isActive: item.isActive ?? true,
       images: [],
       meta_title: item.meta_title || '',
       meta_description: item.meta_description || '',
@@ -406,7 +425,7 @@ const FilterableTable = ({
         setProductForm({
           name: '', slug: '', description: '', price: '', stock: '',
           subcategorySlug: '', colors: [], sizes: [], discount: '',
-          isTopRated: false, images: [], meta_title: '', meta_description: '',
+          isTopRated: false, isActive: true, images: [], meta_title: '', meta_description: '',
           meta_keywords: '', sku: '', productType: 'tangible', digitalDataSize: '',
         });
         setExistingImages([]);
@@ -430,7 +449,7 @@ const FilterableTable = ({
     setProductForm({
       name: '', slug: '', description: '', price: '', stock: '',
       subcategorySlug: '', colors: [], sizes: [], discount: '',
-      isTopRated: false, images: [], meta_title: '', meta_description: '',
+      isTopRated: false, isActive: true, images: [], meta_title: '', meta_description: '',
       meta_keywords: '', sku: '', productType: 'tangible', digitalDataSize: '',
     });
     setExistingDigitalFiles([]);
@@ -669,9 +688,19 @@ const FilterableTable = ({
                 </MuiSelect>
               </FormControl>
             </Box>
+            <Box sx={{ minWidth: '140px', flex: 1 }}>
+              <FormControl fullWidth size="small" sx={inputStyles}>
+                <InputLabel>Status</InputLabel>
+                <MuiSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} label="Status" MenuProps={selectMenuProps}>
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="active">Active</MenuItem>
+                  <MenuItem value="inactive">Inactive</MenuItem>
+                </MuiSelect>
+              </FormControl>
+            </Box>
             <Button
               variant="text"
-              onClick={() => { setFilter(''); setStockFilter('all'); setTopRatedFilter('all'); }}
+              onClick={() => { setFilter(''); setStockFilter('all'); setTopRatedFilter('all'); setStatusFilter('all'); }}
               sx={{ textTransform: 'none', fontWeight: 600, color: '#EF4444', borderRadius: 0, '&:hover': { bgcolor: '#FEF2F2' } }}
             >
               Reset
@@ -683,7 +712,7 @@ const FilterableTable = ({
             <Table size="small">
               <TableHead>
                 <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                  {['ID', 'Product', 'SKU', 'Price', 'Inventory', 'Updated', 'Actions'].map((head) => (
+                  {['ID', 'Product', 'SKU', 'Price', 'Inventory', 'Status', 'Updated', 'Actions'].map((head) => (
                     <TableCell key={head} sx={{ color: '#4B5563', fontWeight: 700, fontSize: '0.75rem', textTransform: 'uppercase', py: 1.5, borderBottom: '2px solid #E5E7EB' }}>
                       {head}
                     </TableCell>
@@ -727,6 +756,24 @@ const FilterableTable = ({
                         <StockDisplay stock={item.stock} />
                       </TableCell>
                       <TableCell>
+                        <Tooltip title={(item.isActive ?? true) ? 'Click to deactivate' : 'Click to activate'} placement="top">
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Switch
+                              size="small"
+                              checked={item.isActive ?? true}
+                              onChange={() => handleToggleStatus(item.slug)}
+                              sx={{
+                                '& .MuiSwitch-switchBase.Mui-checked': { color: '#10B981' },
+                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { bgcolor: '#10B981' },
+                              }}
+                            />
+                            <Typography variant="caption" sx={{ fontWeight: 700, color: (item.isActive ?? true) ? '#10B981' : '#EF4444' }}>
+                              {(item.isActive ?? true) ? 'Active' : 'Inactive'}
+                            </Typography>
+                          </Box>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>
                         <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
                           {new Date(item.updatedAt).toLocaleDateString()}
                         </Typography>
@@ -745,7 +792,7 @@ const FilterableTable = ({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} align="center" sx={{ py: 6 }}>
+                    <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
                       <Box sx={{ opacity: 0.4, textAlign: 'center' }}>
                         <InventoryIcon sx={{ fontSize: '2.5rem', mb: 1, color: '#9CA3AF' }} />
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>No products found</Typography>

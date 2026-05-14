@@ -18,7 +18,8 @@ export async function PUT(request, { params }) {
       sizes,
       discount,
       isTopRated = false,
-      images, // Array of image filenames or URLs
+      isActive,
+      images,
       meta_title,
       meta_description,
       meta_keywords,
@@ -46,6 +47,7 @@ export async function PUT(request, { params }) {
       sizes: JSON.stringify(sizes),
       discount: discount ? parseFloat(discount) : null,
       isTopRated,
+      ...(isActive !== undefined && { isActive }),
       meta_title,
       meta_description,
       meta_keywords,
@@ -110,8 +112,8 @@ export async function GET(request, { params }) {
       },
     });
 
-    if (!product) {
-      console.log("Product not found for slug:", decodedSlug);
+    if (!product || product.isActive === false) {
+      console.log("Product not found or inactive for slug:", decodedSlug);
       return NextResponse.json(
         { message: 'Product not found.' },
         { status: 404 }
@@ -165,6 +167,7 @@ export async function GET(request, { params }) {
     const relatedProducts = await prisma.product.findMany({
       where: {
         subcategorySlug: product.subcategorySlug,
+        isActive: true,
         NOT: { slug: product.slug },
       },
       take: 6,

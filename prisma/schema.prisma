@@ -75,6 +75,7 @@ model Product {
   description      String      @db.LongText
   discount         Float?
   isTopRated       Boolean?
+  isActive         Boolean     @default(true)
   price            Float
   stock            Int
   subcategorySlug  String
