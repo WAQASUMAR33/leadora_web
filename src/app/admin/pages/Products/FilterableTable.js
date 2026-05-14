@@ -202,6 +202,8 @@ const FilterableTable = ({
   }, []);
   const fileInputRef = useRef(null);
   const digitalFileInputRef = useRef(null);
+  const filterResetSkipFirstRef = useRef(true);
+  const clampPageSkipFirstRef = useRef(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -239,8 +241,35 @@ const FilterableTable = ({
     }
 
     setFilteredData(result);
-    setPage(0);
   }, [filter, stockFilter, topRatedFilter, statusFilter, products]);
+
+  // Reset pagination when the user changes filters (not when products refetch).
+  useEffect(() => {
+    if (filterResetSkipFirstRef.current) {
+      filterResetSkipFirstRef.current = false;
+      return;
+    }
+    setPage(0);
+    try {
+      sessionStorage.setItem('adminProductsPage', '0');
+    } catch (_) {}
+  }, [filter, stockFilter, topRatedFilter, statusFilter]);
+
+  // If the list shrinks (delete, filter), keep the page index valid.
+  useEffect(() => {
+    if (clampPageSkipFirstRef.current) {
+      clampPageSkipFirstRef.current = false;
+      return;
+    }
+    setPage((prev) => {
+      const maxPage = Math.max(0, Math.ceil((filteredData.length || 0) / rowsPerPage) - 1);
+      if (prev <= maxPage) return prev;
+      try {
+        sessionStorage.setItem('adminProductsPage', String(maxPage));
+      } catch (_) {}
+      return maxPage;
+    });
+  }, [filteredData.length, rowsPerPage]);
 
   useEffect(() => {
     if (subcategories.length) {
