@@ -756,11 +756,12 @@ const FilterableTable = ({
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                           <Box sx={{ width: 40, height: 40, overflow: 'hidden', border: '1px solid #E5E7EB', bgcolor: '#F9FAFB', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {item.images && item.images.length > 0 ? (
+                            {item.images && item.images.length > 0 && item.images[0]?.url ? (
                               <Image
                                 width={40}
                                 height={40}
-                                src={item.images[0].url.startsWith('https://') ? item.images[0].url : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${item.images[0].url}`}
+                                unoptimized
+                                src={item.images[0].url.startsWith('http') ? item.images[0].url : `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL || ''}/${item.images[0].url}`}
                                 alt=""
                                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                               />

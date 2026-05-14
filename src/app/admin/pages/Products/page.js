@@ -8,14 +8,22 @@ const ProductPage = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [fetchError, setFetchError] = useState('');
 
   const fetchProducts = async () => {
     try {
+      setFetchError('');
       const response = await fetch('/api/products?showInactive=true', { cache: 'no-store' });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        setFetchError(errData.message || `Server error ${response.status}`);
+        return;
+      }
       const data = await response.json();
       setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setFetchError(error.message || 'Failed to load products');
     }
   };
 
@@ -74,14 +82,22 @@ const ProductPage = () => {
   }, []);
 
   return (
-    <FilterableTable
-      products={products}
-      fetchProducts={fetchProducts}
-      categories={categories}
-      subcategories={subcategories}
-      colors={colors}
-      sizes={sizes}
-    />
+    <>
+      {fetchError && (
+        <div style={{ margin: '16px', padding: '12px 16px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8, color: '#DC2626', fontSize: 14 }}>
+          <strong>Error loading products:</strong> {fetchError}
+          <button onClick={fetchProducts} style={{ marginLeft: 12, padding: '4px 10px', background: '#EF4444', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13 }}>Retry</button>
+        </div>
+      )}
+      <FilterableTable
+        products={products}
+        fetchProducts={fetchProducts}
+        categories={categories}
+        subcategories={subcategories}
+        colors={colors}
+        sizes={sizes}
+      />
+    </>
   );
 };
 
