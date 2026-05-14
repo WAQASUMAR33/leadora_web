@@ -33,12 +33,12 @@ const Header = () => {
 
   // Check if the user is authenticated by looking for the token in localStorage
   useEffect(() => {
-    const token = Cookies.get("token") || localStorage.getItem("token"); // Consistent token check
+    const token = Cookies.get("token") || localStorage.getItem("token") || localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
-      router.push('/admin'); // Redirect to login if not authenticated
+      router.push('/login');
     }
   }, [router]);
 

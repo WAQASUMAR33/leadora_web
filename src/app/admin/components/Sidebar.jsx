@@ -137,8 +137,8 @@ const Sidebar = ({ open, onToggle }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const token = Cookies.get("token") || localStorage.getItem("token");
-    if (!token) router.push("/admin");
+    const token = Cookies.get("token") || localStorage.getItem("token") || localStorage.getItem("authToken");
+    if (!token) router.push("/login");
   }, [router]);
 
   useEffect(() => {
@@ -183,8 +183,11 @@ const Sidebar = ({ open, onToggle }) => {
   const handleLogout = () => {
     Cookies.remove("token");
     localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("role");
-    window.location.href = "/admin";
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    window.location.href = "/login";
   };
 
   const isActive = (href) => pathname === href;
