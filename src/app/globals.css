@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 /* Shimmer loading animation */
 @keyframes shimmer {
   0% {

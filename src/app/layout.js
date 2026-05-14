@@ -7,6 +7,12 @@ const poppins = Poppins({
   subsets: ['latin'],
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://store2u.ca'),
   title: 'Store2U - Your Gateway to Digital & Physical Goods',

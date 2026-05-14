@@ -372,9 +372,9 @@ const Header = () => {
 
   return (
     <header className="bg-white py-4 md:py-5 sticky top-0 z-50 shadow-sm border-b border-gray-100 transition-all">
-      <div className="container mx-auto flex items-center px-8 lg:px-12 max-w-[1536px]">
+      <div className="container mx-auto flex items-center px-4 sm:px-6 lg:px-12 max-w-[1536px]">
         {/* Left Side: Logo */}
-        <div className="flex-shrink-0 mr-8 xl:mr-12">
+        <div className="flex-shrink-0 mr-4 sm:mr-6 xl:mr-12">
           <Link href="/">
             <Image
               width={130}
