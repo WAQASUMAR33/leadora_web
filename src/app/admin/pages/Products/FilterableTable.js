@@ -370,7 +370,9 @@ const FilterableTable = ({
       digitalDataSize: parsedDigitalData?.size || '',
     });
     setExistingImages(item.images.map((img) => img.url));
-    setExistingDigitalFiles(parsedDigitalData?.files || []);
+    setExistingDigitalFiles(
+      (parsedDigitalData?.files || []).map(f => (typeof f === 'string' ? f : (f?.url || ''))).filter(Boolean)
+    );
     setDigitalFiles([]);
     setDigitalDimensions(parsedDigitalData?.dimensions || { height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
   };
@@ -1165,7 +1167,7 @@ const FilterableTable = ({
                               {existingDigitalFiles.map((url, i) => (
                                 <Box key={i} sx={{ p: 1.5, border: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#F9FAFB' }}>
                                   <Typography variant="caption" sx={{ color: '#374151', wordBreak: 'break-all' }}>
-                                    {url.split('/').pop()}
+                                    {String(url).split('/').pop()}
                                   </Typography>
                                   <IconButton size="small" onClick={() => setExistingDigitalFiles((prev) => prev.filter((_, idx) => idx !== i))} sx={{ borderRadius: 0, color: '#EF4444' }}>
                                     <CloseIcon sx={{ fontSize: '0.8rem' }} />
