@@ -2,10 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary:        #D63384;
+  --color-primary-light:  #F48FB1;
+  --color-primary-dark:   #A0005E;
+  --color-secondary:      #9C27B0;
+  --color-secondary-light:#CE93D8;
+  --color-bg:             #FDF2F8;
+  --color-bg-paper:       #ffffff;
+  --color-text:           #1a1a1a;
+}
+
 html,
 body {
   overflow-x: hidden;
   max-width: 100vw;
+  background-color: var(--color-bg);
 }
 
 /* Shimmer loading animation */

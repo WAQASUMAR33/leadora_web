@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import FilterableTable from './FilterableTable';
 
-const CHUNK_RELOAD_KEY = 'adminProductsChunkReload';
-
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -12,73 +10,20 @@ const ProductPage = () => {
   const [sizes, setSizes] = useState([]);
   const [fetchError, setFetchError] = useState('');
 
-  // After a deploy, browsers can briefly reference removed JS chunks; one reload usually fixes it.
-  useEffect(() => {
-    const isChunkLoadMessage = (msg) =>
-      String(msg).includes('Loading chunk') || String(msg).includes('ChunkLoadError');
-
-    const onChunkFailure = (reason) => {
-      if (!isChunkLoadMessage(reason?.message ?? reason ?? '')) return;
-      try {
-        if (sessionStorage.getItem(CHUNK_RELOAD_KEY) === '1') return;
-        sessionStorage.setItem(CHUNK_RELOAD_KEY, '1');
-        window.location.reload();
-      } catch (_) {
-        /* ignore */
-      }
-    };
-    const onRejection = (e) => onChunkFailure(e.reason);
-    const onError = (e) => onChunkFailure(e?.error ?? e?.message);
-    window.addEventListener('unhandledrejection', onRejection);
-    window.addEventListener('error', onError);
-    return () => {
-      window.removeEventListener('unhandledrejection', onRejection);
-      window.removeEventListener('error', onError);
-    };
-  }, []);
-
   const fetchProducts = async () => {
     try {
       setFetchError('');
-      const response = await fetch('/api/products?showInactive=true', {
-        cache: 'no-store',
-        credentials: 'same-origin',
-      });
-      const raw = await response.text();
-      let data;
-      try {
-        data = raw ? JSON.parse(raw) : null;
-      } catch {
-        setFetchError(
-          'Products API returned invalid data (often a cached HTML page after a deploy). Try a hard refresh (Ctrl+Shift+R) or clear site data for this domain.'
-        );
-        setProducts([]);
-        return;
-      }
+      const response = await fetch('/api/products?showInactive=true', { cache: 'no-store' });
       if (!response.ok) {
-        const msg = (data && typeof data === 'object' && data.message) || `Server error ${response.status}`;
-        setFetchError(msg);
-        setProducts([]);
+        const errData = await response.json().catch(() => ({}));
+        setFetchError(errData.message || `Server error ${response.status}`);
         return;
       }
-      if (!Array.isArray(data)) {
-        setFetchError(
-          (data && typeof data === 'object' && data.message) ||
-            'Unexpected response from products API (not a list). Check server logs.'
-        );
-        setProducts([]);
-        return;
-      }
-      try {
-        sessionStorage.removeItem(CHUNK_RELOAD_KEY);
-      } catch (_) {
-        /* ignore */
-      }
-      setProducts(data);
+      const data = await response.json();
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching products:', error);
       setFetchError(error.message || 'Failed to load products');
-      setProducts([]);
     }
   };
 
