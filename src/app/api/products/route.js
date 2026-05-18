@@ -25,8 +25,6 @@ export async function POST(request) {
       meta_description,
       meta_keywords,
       sku,
-      productType,
-      digitalData,
     } = await request.json();
 
     // Validate required fields
@@ -37,10 +35,10 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    if (productType !== 'digital' && stock === undefined) {
+    if (stock === undefined) {
       return NextResponse.json({
         status: false,
-        message: "Stock is required for tangible products.",
+        message: "Stock is required.",
       }, { status: 400 });
     }
 
@@ -94,8 +92,7 @@ export async function POST(request) {
         meta_keywords,
         meta_keywords,
         sku,
-        productType: productType || 'tangible',
-        digitalData: digitalData ? JSON.stringify(digitalData) : null,
+        productType: 'tangible',
       },
       include: {
         images: true, // Optional: Include images in the response

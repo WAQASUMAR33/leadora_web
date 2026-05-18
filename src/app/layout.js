@@ -15,8 +15,8 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://store2u.ca'),
-  title: 'Store2U - Your Gateway to Digital & Physical Goods',
-  description: 'Shop the latest digital and physical products on Store2U.',
+  title: 'Store2U - Your Gateway to Quality Products',
+  description: 'Shop the latest products on Store2U.',
   manifest: '/manifest.json',
   icons: {
     icon: '/store2ulogo.png',

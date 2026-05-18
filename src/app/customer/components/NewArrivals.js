@@ -8,16 +8,13 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/cartSlice';
 import { useCurrency } from '../../../lib/useCurrency';
 import Image from 'next/image';
-import { FiShoppingCart, FiChevronRight, FiMaximize2, FiShoppingBag, FiDownload } from 'react-icons/fi';
-import DigitalCheckoutModal from './DigitalCheckoutModal';
+import { FiShoppingCart, FiChevronRight, FiMaximize2, FiShoppingBag } from 'react-icons/fi';
 import { GoStarFill } from 'react-icons/go';
 
 const NewArrivals = () => {
   const [products, setProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState(10);
   const [loading, setLoading] = useState(true);
-  const [isDigitalModalOpen, setIsDigitalModalOpen] = useState(false);
-  const [selectedDigitalProduct, setSelectedDigitalProduct] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const { formatPrice } = useCurrency();
@@ -116,20 +113,11 @@ const NewArrivals = () => {
                     <FiMaximize2 size={14} />
                   </button>
                   <button
-                    className={`bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110 ${product.productType === 'digital' ? 'text-blue-600' : ''}`}
-                    onClick={(e) => {
-                      if (product.productType === 'digital') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setSelectedDigitalProduct(product);
-                        setIsDigitalModalOpen(true);
-                      } else {
-                        handleAddToCart(product, e);
-                      }
-                    }}
-                    title={product.productType === 'digital' ? 'Pay to Download' : 'Add to Cart'}
+                    className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110"
+                    onClick={(e) => handleAddToCart(product, e)}
+                    title="Add to Cart"
                   >
-                    {product.productType === 'digital' ? <FiDownload size={14} /> : <FiShoppingBag size={14} />}
+                    <FiShoppingBag size={14} />
                   </button>
                 </div>
 
@@ -179,47 +167,26 @@ const NewArrivals = () => {
                 </div>
 
                 {/* Action Buttons */}
-                {product.productType === 'digital' ? (
+                <div className="grid grid-cols-2 gap-2">
                   <button
-                    className="w-full bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
-                    onClick={(e) => { e.stopPropagation(); setSelectedDigitalProduct(product); setIsDigitalModalOpen(true); }}
+                    className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                    onClick={(e) => handleAddToCart(product, e)}
                   >
-                    <FiDownload size={12} /> Download
+                    <FiShoppingCart size={12} /> Add
                   </button>
-                ) : (
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
-                      onClick={(e) => handleAddToCart(product, e)}
-                    >
-                      <FiShoppingCart size={12} /> Add
-                    </button>
-                    <button
-                      className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
-                      onClick={(e) => handleBuyNow(product, e)}
-                    >
-                      Buy Now
-                    </button>
-                  </div>
-                )}
+                  <button
+                    className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                    onClick={(e) => handleBuyNow(product, e)}
+                  >
+                    Buy Now
+                  </button>
+                </div>
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* Digital Checkout Modal */}
-      {selectedDigitalProduct && (
-        <DigitalCheckoutModal
-          isOpen={isDigitalModalOpen}
-          onRequestClose={() => setIsDigitalModalOpen(false)}
-          product={selectedDigitalProduct}
-          onSuccess={() => {
-            setIsDigitalModalOpen(false);
-            router.push(`/customer/pages/products/${selectedDigitalProduct.slug}`);
-          }}
-        />
-      )}
     </div>
   );
 };

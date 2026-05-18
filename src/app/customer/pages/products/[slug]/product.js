@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback, memo, useRef } from 'react';
-import DigitalCheckoutModal from '../../../components/DigitalCheckoutModal';
-import DownloadProgressModal from '../../../components/DownloadProgressModal';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -61,63 +59,6 @@ const ProductPage = ({ productData }) => {
   const [linkShare, setLinkShare] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
-  // Digital Product State
-  const isDigital = useMemo(() => product?.productType === 'digital' || product?.type === 'digital', [product]);
-  const [isPurchased, setIsPurchased] = useState(false);
-  const [isDigitalPaymentOpen, setIsDigitalPaymentOpen] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [activeDownloadUrl, setActiveDownloadUrl] = useState('');
-
-  // Check purchase status
-  useEffect(() => {
-    if (isDigital && typeof window !== 'undefined') {
-      const userId = localStorage.getItem('userId');
-      if (userId && product?.id) {
-        axios.post('/api/orders/check-purchase', { userId, productId: product.id })
-          .then(res => {
-            if (res.data.purchased) setIsPurchased(true);
-          })
-          .catch(err => console.error("Error checking purchase", err));
-      }
-    }
-  }, [isDigital, product]);
-
-  const handleDownload = () => {
-    if (product?.digitalData) {
-      try {
-        const data = typeof product.digitalData === 'string' ? JSON.parse(product.digitalData) : product.digitalData;
-        const fileUrl = data.files?.[0]?.url;
-        if (fileUrl) {
-          const downloadUrl = getFileUrl(fileUrl);
-          setActiveDownloadUrl(downloadUrl);
-          setIsDownloading(true);
-        } else {
-          toast.error("Download link not found.");
-        }
-      } catch (e) {
-        console.error("Error parsing digital data", e);
-        toast.error("Process error.");
-      }
-    }
-  };
-
-  const onDownloadComplete = () => {
-    // Revert button to "Pay Now" logic
-    setIsPurchased(false);
-    setIsDownloading(false);
-
-    // Trigger actual download via the proxy
-    const filename = product?.name || 'download';
-    const proxyUrl = `/api/download?id=${product.id}`;
-    window.location.assign(proxyUrl);
-  };
-
-  // Helper to resolve file URL (reuses image logic or separate)
-  const getFileUrl = (url) => {
-    if (url.startsWith('http')) return url;
-    return `${process.env.NEXT_PUBLIC_UPLOADED_IMAGE_URL}/${url}`;
-  };
 
   // Fetch all categories for the navigation row
   useEffect(() => {
@@ -249,8 +190,7 @@ const ProductPage = ({ productData }) => {
     name: product.name,
     discount: product.discount,
     slug: product.slug,
-    productType: product.productType || product.type || 'tangible',
-    digitalData: product.digitalData || null
+    productType: 'tangible',
   });
 
   const handleAddToCart = () => {
@@ -272,11 +212,6 @@ const ProductPage = ({ productData }) => {
   };
 
   const handleBuyNow = () => {
-    if (isDigital) {
-      setIsDigitalPaymentOpen(true);
-      return;
-    }
-
     if (product.stock === 0) return toast.error("Out of stock");
     if (sizes.length > 0 && !selectedSize) return toast.error("Select size");
     if (colors.length > 0 && !selectedColor) return toast.error("Select color");
@@ -452,65 +387,37 @@ const ProductPage = ({ productData }) => {
           {/* Selection Area */}
           <div className="space-y-6 mb-8">
             {/* Color Selector */}
-            {isDigital ? (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">Height</label>
-                  <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center text-sm font-bold text-gray-500">
-                    {(() => {
-                      try {
-                        const data = typeof product?.digitalData === 'string' ? JSON.parse(product.digitalData) : product?.digitalData;
-                        return `${data?.dimensions?.height?.value || 'N/A'} ${data?.dimensions?.height?.unit || ''}`;
-                      } catch (e) { return 'N/A'; }
-                    })()}
-                  </div>
+            <div>
+              <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">
+                Color {selectedColor && <span className="text-gray-400 font-medium ml-2">— {selectedColor}</span>}
+              </label>
+              {colors.length > 0 ? (
+                <div className="flex flex-wrap gap-4 items-center">
+                  {colors.map((c, i) => (
+                    <div key={i} className="flex flex-col items-center gap-1.5">
+                      <button
+                        onClick={() => setSelectedColor(c.name)}
+                        className={`w-8 h-8 rounded-full border border-gray-200 transition-all duration-200 hover:scale-110 active:scale-95 ${selectedColor === c.name ? 'ring-2 ring-offset-2 ring-black' : ''}`}
+                        style={{ backgroundColor: c.hex || '#ccc' }}
+                        title={c.name}
+                      />
+                      {selectedColor === c.name && (
+                        <div className="w-4 h-0.5 bg-black rounded-full" />
+                      )}
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">Width</label>
-                  <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center text-sm font-bold text-gray-500">
-                    {(() => {
-                      try {
-                        const data = typeof product?.digitalData === 'string' ? JSON.parse(product.digitalData) : product?.digitalData;
-                        return `${data?.dimensions?.width?.value || 'N/A'} ${data?.dimensions?.width?.unit || ''}`;
-                      } catch (e) { return 'N/A'; }
-                    })()}
-                  </div>
+              ) : (
+                <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center gap-2 text-sm font-bold text-gray-500 ring-1 ring-orange-50/50">
+                  <div className="w-3 h-3 rounded-full bg-orange-400" /> Neutral (Standard)
                 </div>
-              </div>
-            ) : (
-              <div>
-                <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">
-                  Color {selectedColor && <span className="text-gray-400 font-medium ml-2">— {selectedColor}</span>}
-                </label>
-                {colors.length > 0 ? (
-                  <div className="flex flex-wrap gap-4 items-center">
-                    {colors.map((c, i) => (
-                      <div key={i} className="flex flex-col items-center gap-1.5">
-                        <button
-                          onClick={() => setSelectedColor(c.name)}
-                          className={`w-8 h-8 rounded-full border border-gray-200 transition-all duration-200 hover:scale-110 active:scale-95 ${selectedColor === c.name ? 'ring-2 ring-offset-2 ring-black' : ''
-                            }`}
-                          style={{ backgroundColor: c.hex || '#ccc' }}
-                          title={c.name}
-                        />
-                        {selectedColor === c.name && (
-                          <div className="w-4 h-0.5 bg-black rounded-full" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center gap-2 text-sm font-bold text-gray-500 ring-1 ring-orange-50/50">
-                    <div className="w-3 h-3 rounded-full bg-orange-400" /> Neutral (Standard)
-                  </div>
-                )}
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Size Selector */}
             <div>
               <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">
-                {isDigital ? 'Product Size / Pages' : 'Size'} {selectedSize && <span className="text-gray-400 font-medium ml-2">— {selectedSize}</span>}
+                Size {selectedSize && <span className="text-gray-400 font-medium ml-2">— {selectedSize}</span>}
               </label>
               {sizes.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
@@ -530,79 +437,52 @@ const ProductPage = ({ productData }) => {
                 </div>
               ) : (
                 <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center text-sm font-bold text-gray-500">
-                  {isDigital ? (
-                    (() => {
-                      try {
-                        const data = typeof product?.digitalData === 'string' ? JSON.parse(product.digitalData) : product?.digitalData;
-                        return data?.size || 'Digital Standard';
-                      } catch (e) {
-                        return 'Digital Standard';
-                      }
-                    })()
-                  ) : 'One Size fits all'}
+                  One Size fits all
                 </div>
               )}
             </div>
 
-            {/* Quantity Selector - Plus/Minus Buttons */}
-            {!isDigital && (
-              <div>
-                <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">Quantity</label>
-                <div className="flex items-center w-32 h-12 border border-gray-200 rounded-xl overflow-hidden">
-                  <button
-                    onClick={handleQuantityDecrease}
-                    className="flex-1 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-200"
-                    aria-label="Decrease quantity"
-                  >
-                    <FiMinus size={14} />
-                  </button>
-                  <div className="flex-1 h-full flex items-center justify-center text-sm font-bold text-gray-900 bg-white">
-                    {quantity}
-                  </div>
-                  <button
-                    onClick={handleQuantityIncrease}
-                    className="flex-1 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-200"
-                    aria-label="Increase quantity"
-                  >
-                    <FiPlus size={14} />
-                  </button>
+            {/* Quantity Selector */}
+            <div>
+              <label className="text-xs font-black uppercase tracking-widest text-gray-900 block mb-3">Quantity</label>
+              <div className="flex items-center w-32 h-12 border border-gray-200 rounded-xl overflow-hidden">
+                <button
+                  onClick={handleQuantityDecrease}
+                  className="flex-1 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-200"
+                  aria-label="Decrease quantity"
+                >
+                  <FiMinus size={14} />
+                </button>
+                <div className="flex-1 h-full flex items-center justify-center text-sm font-bold text-gray-900 bg-white">
+                  {quantity}
                 </div>
+                <button
+                  onClick={handleQuantityIncrease}
+                  className="flex-1 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-200"
+                  aria-label="Increase quantity"
+                >
+                  <FiPlus size={14} />
+                </button>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-3 mt-4">
-            {!isPurchased ? (
-              <>
-                <button
-                  onClick={handleBuyNow}
-                  disabled={loading || (!isDigital && product?.stock === 0)}
-                  className="w-full bg-orange-600 text-white h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-orange-700 transition-all shadow-xl shadow-orange-900/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    {isDigital ? 'Download Now' : 'Buy it now'}
-                  </span>
-                </button>
-
-                {!isDigital && (
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={loading || product?.stock === 0}
-                    className="w-full bg-white text-black border-2 border-black h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-gray-50 transition-all active:scale-[0.98] disabled:opacity-50"
-                  >
-                    {product?.stock === 0 ? 'Out of Stock' : 'Add to basket'}
-                  </button>
-                )}
-              </>
-            ) : (
-              <button
-                onClick={handleDownload}
-                className="w-full bg-[#1E4C2F] text-white h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-[#153a23] transition-all shadow-xl shadow-green-900/10 active:scale-[0.98]"
-              >
-                Download product
-              </button>
-            )}
+            <button
+              onClick={handleBuyNow}
+              disabled={loading || product?.stock === 0}
+              className="w-full bg-orange-600 text-white h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-orange-700 transition-all shadow-xl shadow-orange-900/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Buy it now
+            </button>
+            <button
+              onClick={handleAddToCart}
+              disabled={loading || product?.stock === 0}
+              className="w-full bg-white text-black border-2 border-black h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-gray-50 transition-all active:scale-[0.98] disabled:opacity-50"
+            >
+              {product?.stock === 0 ? 'Out of Stock' : 'Add to basket'}
+            </button>
           </div>
 
 
@@ -807,26 +687,6 @@ const ProductPage = ({ productData }) => {
         </Modal>
       )}
 
-      {/* Digital Payment Modal */}
-      {isDigitalPaymentOpen && product && (
-        <DigitalCheckoutModal
-          isOpen={isDigitalPaymentOpen}
-          onRequestClose={() => setIsDigitalPaymentOpen(false)}
-          product={product}
-          onSuccess={() => {
-            setIsPurchased(true);
-            setIsDigitalPaymentOpen(false);
-          }}
-        />
-      )}
-
-      {/* Download Progress Modal */}
-      <DownloadProgressModal
-        isOpen={isDownloading}
-        onRequestClose={() => setIsDownloading(false)}
-        fileName={product?.name}
-        onComplete={onDownloadComplete}
-      />
     </div>
   );
 };

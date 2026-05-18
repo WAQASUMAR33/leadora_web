@@ -31,8 +31,6 @@ import {
   Snackbar,
   Stack,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/system';
@@ -122,21 +120,6 @@ const AddProductPageContent = () => {
     productType: 'tangible', // Default to tangible
   });
 
-  const [digitalFiles, setDigitalFiles] = useState([]);
-  const [digitalDimensions, setDigitalDimensions] = useState({
-    height: { value: '', unit: 'px' },
-    width: { value: '', unit: 'px' }
-  });
-  const [digitalTags, setDigitalTags] = useState([]); // Array for tags
-  const [digitalMaterials, setDigitalMaterials] = useState([]); // Array for materials
-  const [personalization, setPersonalization] = useState({ enabled: false, instruction: '' });
-  const [settings, setSettings] = useState({
-    shopSection: '',
-    featureListing: false,
-    renewalOption: 'automatic'
-  });
-  const [colorsMeta, setColorsMeta] = useState({ primary: '', secondary: '' });
-
   const [categories, setCategories] = useState([]);
   const [filteredSubcategories, setFilteredSubcategories] = useState([]);
   const [colors, setColors] = useState([]);
@@ -154,13 +137,6 @@ const AddProductPageContent = () => {
       imageUrl: '', discount: '', isTopRated: false, meta_title: '',
       meta_description: '', meta_keywords: '', sku: '', productType: 'tangible',
     });
-    setDigitalFiles([]);
-    setDigitalDimensions({ height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
-    setDigitalTags([]);
-    setDigitalMaterials([]);
-    setPersonalization({ enabled: false, instruction: '' });
-    setSettings({ shopSection: '', featureListing: false, renewalOption: 'automatic' });
-    setColorsMeta({ primary: '', secondary: '' });
     setImages([]);
     setExistingImages([]);
     setFilteredSubcategories([]);
@@ -299,16 +275,13 @@ const AddProductPageContent = () => {
       { name: 'subcategorySlug', label: 'Subcategory' },
     ];
 
-    if (newProduct.productType === 'tangible') {
-      requiredFields.push({ name: 'stock', label: 'Stock' });
-    }
+    requiredFields.push({ name: 'stock', label: 'Stock' });
 
     let missingFields = requiredFields
       .filter((field) => typeof newProduct[field.name] === 'string' && !newProduct[field.name].trim())
       .map((field) => field.label);
 
-    // Specific check for stock as number
-    if (newProduct.productType === 'tangible' && (newProduct.stock === '' || newProduct.stock === null || newProduct.stock === undefined)) {
+    if (newProduct.stock === '' || newProduct.stock === null || newProduct.stock === undefined) {
       if (!missingFields.includes('Stock')) missingFields.push('Stock');
     }
 
@@ -366,49 +339,8 @@ const AddProductPageContent = () => {
       const imageUrls = [...existingImageUrls, ...uploadedImages.map((filename) => `${filename}`)];
       console.log('[Product] Final image URLs:', imageUrls);
 
-      // Upload Digital Files
-      console.log('[Product] Uploading', digitalFiles.length, 'digital file(s)...');
-      let uploadedDigitalFiles = [];
-      if (digitalFiles.length > 0) {
-        try {
-          uploadedDigitalFiles = await Promise.all(
-            digitalFiles.map(async (file) => {
-              const fileBase64 = await convertToBase64(file);
-              const response = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: fileBase64 }),
-              });
-              let result;
-              try { result = await response.json(); } catch { result = {}; }
-              if (response.ok) return { name: file.name, url: result.image_url };
-              throw new Error(result.error || `Digital file upload failed with status ${response.status}`);
-            })
-          );
-        } catch (uploadError) {
-          console.error('[Product] Digital file upload error:', uploadError);
-          alert(`Digital file upload failed: ${uploadError.message}`);
-          setIsLoading(false);
-          return;
-        }
-      }
-
-      const digitalData = {
-        files: uploadedDigitalFiles,
-        dimensions: digitalDimensions,
-        tags: digitalTags,
-        materials: digitalMaterials,
-        personalization: personalization,
-        settings: settings,
-        size: newProduct.digitalData?.size || ''
-      };
-
-      const colorValues = newProduct.productType === 'tangible'
-        ? newProduct.colors.map((color) => color.value)
-        : [];
-      const sizeValues = newProduct.productType === 'tangible'
-        ? newProduct.sizes.map((size) => size.value)
-        : [];
+      const colorValues = newProduct.colors.map((color) => color.value);
+      const sizeValues = newProduct.sizes.map((size) => size.value);
 
       if (isEditing) {
         // PUT /api/products/[slug] for updating an existing product
@@ -417,7 +349,7 @@ const AddProductPageContent = () => {
           name: newProduct.name,
           description: newProduct.richDescription,
           price: parseFloat(newProduct.price),
-          stock: newProduct.productType === 'tangible' ? parseInt(newProduct.stock, 10) : 0,
+          stock: parseInt(newProduct.stock, 10),
           subcategorySlug: newProduct.subcategorySlug,
           colors: colorValues,
           sizes: sizeValues,
@@ -453,7 +385,7 @@ const AddProductPageContent = () => {
           slug: newProduct.slug,
           description: newProduct.richDescription,
           price: parseFloat(newProduct.price),
-          stock: newProduct.productType === 'tangible' ? parseInt(newProduct.stock, 10) : 0,
+          stock: parseInt(newProduct.stock, 10),
           subcategorySlug: newProduct.subcategorySlug,
           colors: colorValues,
           sizes: sizeValues,
@@ -464,8 +396,7 @@ const AddProductPageContent = () => {
           meta_description: newProduct.meta_description,
           meta_keywords: newProduct.meta_keywords,
           sku: newProduct.sku,
-          productType: newProduct.productType,
-          digitalData: newProduct.productType === 'digital' ? digitalData : null,
+          productType: 'tangible',
         };
 
         console.log('[Product] Sending POST with data:', JSON.stringify(productToSubmit).substring(0, 200));
@@ -647,27 +578,6 @@ const AddProductPageContent = () => {
         </Box>
       </Box>
 
-      <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
-        <ToggleButtonGroup
-          value={newProduct.productType}
-          exclusive
-          onChange={(e, newType) => {
-            if (newType !== null) {
-              setNewProduct({ ...newProduct, productType: newType });
-            }
-          }}
-          aria-label="product type"
-          sx={{ bgcolor: '#fff', borderRadius: 0, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}
-        >
-          <ToggleButton value="tangible" sx={{ px: 4, py: 1.5, borderRadius: 0, textTransform: 'none', fontWeight: 600 }}>
-            Tangible Product
-          </ToggleButton>
-          <ToggleButton value="digital" sx={{ px: 4, py: 1.5, borderRadius: 0, textTransform: 'none', fontWeight: 600 }}>
-            Digital Product
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
-
       <Grid container spacing={3}>
         {/* Left Column: General & Description & Attributes */}
         <Grid item xs={12} lg={8}>
@@ -686,12 +596,11 @@ const AddProductPageContent = () => {
                   <TextField
                     id="product-name"
                     fullWidth
-                    label={newProduct.productType === 'digital' ? "Title *" : "Product Name *"}
+                    label="Product Name *"
                     value={newProduct.name}
-                    onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value.slice(0, 140) })}
-                    placeholder={newProduct.productType === 'digital' ? "e.g. Low Battery Santa PNG Funny Christmas Shirt" : "Enter a descriptive product name"}
+                    onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                    placeholder="Enter a descriptive product name"
                     sx={inputStyles}
-                    helperText={newProduct.productType === 'digital' ? `${newProduct.name.length}/140. A good title focuses on your item and doesn't use repetitive or subjective words, or info about pricing or shipping.` : ""}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -783,9 +692,8 @@ const AddProductPageContent = () => {
 
 
 
-            {/* Attributes & Options (Tangible) */}
-            {newProduct.productType === 'tangible' && (
-              <Paper square elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB' }}>
+            {/* Attributes & Options */}
+            <Paper square elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB' }}>
                 <Box sx={sectionHeaderStyles}>
                   <Box sx={{ p: 1, bgcolor: '#FEF3C7', borderRadius: 0, color: '#D97706', display: 'flex' }}>
                     <StyleIcon sx={{ fontSize: '1.25rem' }} />
@@ -865,203 +773,6 @@ const AddProductPageContent = () => {
                   </FormControl>
                 </Stack>
               </Paper>
-            )}
-
-            {/* Digital Files & Core Details Card */}
-            {newProduct.productType === 'digital' && (
-              <Paper square elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB' }}>
-                <Box sx={sectionHeaderStyles}>
-                  <Box sx={{ p: 1, bgcolor: '#DBEAFE', borderRadius: 0, color: '#3B82F6', display: 'flex' }}>
-                    <CloudUploadIcon sx={{ fontSize: '1.25rem' }} />
-                  </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', fontSize: '1rem' }}>Digital files *</Typography>
-                </Box>
-                <Typography variant="body2" sx={{ mb: 2, color: '#6B7280' }}>
-                  Buyers can download these files as soon as they complete their purchase. Add up to 5 files.
-                </Typography>
-                <Stack spacing={4}>
-                  <Box>
-                    <Box
-                      onClick={() => document.getElementById('digital-file-input').click()}
-                      sx={{
-                        border: '2px dashed #D1D5DB',
-                        borderRadius: 0,
-                        p: 4,
-                        textAlign: 'center',
-                        cursor: 'pointer',
-                        '&:hover': { bgcolor: '#F9FAFB', borderColor: '#3B82F6' },
-                        transition: 'all 0.2s',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 1
-                      }}
-                    >
-                      <CloudUploadIcon sx={{ fontSize: '2rem', color: '#9CA3AF' }} />
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>Drag and drop or click to add files</Typography>
-                      <input
-                        id="digital-file-input"
-                        type="file"
-                        hidden
-                        onChange={(e) => {
-                          const files = Array.from(e.target.files);
-                          if (digitalFiles.length + files.length > 5) {
-                            alert('You can only upload up to 5 files.');
-                            return;
-                          }
-                          setDigitalFiles(prev => [...prev, ...files]);
-                        }}
-                        multiple
-                      />
-                    </Box>
-                    <Grid container spacing={1.5} sx={{ mt: 2 }}>
-                      {digitalFiles.map((file, i) => (
-                        <Grid item xs={12} key={i}>
-                          <Box sx={{ p: 2, border: '1px solid #e5e7eb', borderRadius: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#fff' }}>
-                            <Stack direction="row" spacing={2} alignItems="center">
-                              <DescriptionIcon sx={{ color: '#9CA3AF' }} />
-                              <Box>
-                                <Typography variant="body2" sx={{ fontWeight: 600 }}>{file.name}</Typography>
-                                <Typography variant="caption" sx={{ color: '#9CA3AF' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</Typography>
-                              </Box>
-                            </Stack>
-                            <IconButton size="small" onClick={() => setDigitalFiles(prev => prev.filter((_, idx) => idx !== i))}>
-                              <CloseIcon fontSize="small" />
-                            </IconButton>
-                          </Box>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Box>
-
-                  <Box sx={{ borderTop: '1px solid #F3F4F6', pt: 3 }}>
-                    <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 700, color: '#111827' }}>Core details *</Typography>
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', p: 2, bgcolor: '#F9FAFB', borderRadius: 0, border: '1px solid #E5E7EB' }}>
-                      <Box sx={{ p: 1, bgcolor: '#fff', borderRadius: 0, border: '1px solid #E5E7EB' }}>
-                        <CloudUploadIcon sx={{ color: '#3B82F6' }} />
-                      </Box>
-                      <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 700 }}>Digital files</Typography>
-                        <Typography variant="body2" sx={{ color: '#6B7280' }}>Instant download</Typography>
-                        <Typography variant="caption" sx={{ color: '#9CA3AF' }}>I did • A finished product • 2020 - 2026</Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Stack>
-              </Paper>
-            )}
-
-            {/* Attributes Section (Digital) */}
-            {newProduct.productType === 'digital' && (
-              <Paper square elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB' }}>
-                <Box sx={sectionHeaderStyles}>
-                  <Box sx={{ p: 1, bgcolor: '#FEF3C7', borderRadius: 0, color: '#D97706', display: 'flex' }}>
-                    <StyleIcon sx={{ fontSize: '1.25rem' }} />
-                  </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', fontSize: '1rem' }}>Attributes</Typography>
-                </Box>
-                <Stack spacing={4}>
-                  {/* Digital Attribute: Size */}
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Product Size / No. of Pages (e.g. 1920x1080, A4, 5MB, 50 Pages)"
-                        value={newProduct.digitalData?.size || ''}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          // If digitalData doesn't exist yet, initialize it
-                          setNewProduct(prev => ({
-                            ...prev,
-                            digitalData: {
-                              ...(prev.digitalData || {}),
-                              size: val
-                            }
-                          }));
-                        }}
-                        placeholder="Mention the size of this digital product"
-                        sx={inputStyles}
-                        helperText="This size will be displayed on the product detail page."
-                      />
-                    </Grid>
-                  </Grid>
-
-
-                  {/* Dimensions */}
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} md={6}>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <TextField
-                          label="Height"
-                          value={digitalDimensions.height.value}
-                          onChange={(e) => setDigitalDimensions({
-                            ...digitalDimensions,
-                            height: { ...digitalDimensions.height, value: e.target.value }
-                          })}
-                          sx={inputStyles}
-                          fullWidth
-                        />
-                        <FormControl sx={{ minWidth: 100, ...inputStyles }}>
-                          <Select
-                            value={digitalDimensions.height.unit}
-                            onChange={(e) => setDigitalDimensions({
-                              ...digitalDimensions,
-                              height: { ...digitalDimensions.height, unit: e.target.value }
-                            })}
-                            MenuProps={selectMenuProps}
-                          >
-                            <MenuItem value="px">px</MenuItem>
-                            <MenuItem value="inch">in</MenuItem>
-                            <MenuItem value="cm">cm</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <TextField
-                          label="Width"
-                          value={digitalDimensions.width.value}
-                          onChange={(e) => setDigitalDimensions({
-                            ...digitalDimensions,
-                            width: { ...digitalDimensions.width, value: e.target.value }
-                          })}
-                          sx={inputStyles}
-                          fullWidth
-                        />
-                        <FormControl sx={{ minWidth: 100, ...inputStyles }}>
-                          <Select
-                            value={digitalDimensions.width.unit}
-                            onChange={(e) => setDigitalDimensions({
-                              ...digitalDimensions,
-                              width: { ...digitalDimensions.width, unit: e.target.value }
-                            })}
-                            MenuProps={selectMenuProps}
-                          >
-                            <MenuItem value="px">px</MenuItem>
-                            <MenuItem value="inch">in</MenuItem>
-                            <MenuItem value="cm">cm</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </Grid>
-                  </Grid>
-
-                </Stack>
-              </Paper>
-            )}
-
-            {/* Variations Notice (Digital) */}
-            {newProduct.productType === 'digital' && (
-              <Paper square elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderStyle: 'dashed', bgcolor: '#F9FAFB' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <InfoIcon sx={{ color: '#9CA3AF' }} />
-                  <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500 }}>
-                    Variations are not available for digital items.
-                  </Typography>
-                </Box>
-              </Paper>
-            )}
 
           </Stack>
         </Grid>
@@ -1099,30 +810,28 @@ const AddProductPageContent = () => {
                   InputProps={{ inputProps: { min: 0, max: 100, step: 0.01 } }}
                 />
 
-                {newProduct.productType === 'tangible' && (
-                  <Box sx={{
-                    bgcolor: '#F9FAFB',
-                    p: 2,
-                    borderRadius: 0,
-                    border: '1px solid #E5E7EB',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <InventoryIcon sx={{ color: '#6B7280' }} />
-                      <Typography variant="body2" sx={{ fontWeight: 700, color: '#4B5563' }}>Current Stock</Typography>
-                    </Box>
-                    <TextField
-                      id="product-stock"
-                      type="number"
-                      size="small"
-                      value={newProduct.stock}
-                      onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
-                      sx={{ width: '100px', '& .MuiOutlinedInput-root': { borderRadius: 0, bgcolor: '#fff' } }}
-                    />
+                <Box sx={{
+                  bgcolor: '#F9FAFB',
+                  p: 2,
+                  borderRadius: 0,
+                  border: '1px solid #E5E7EB',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <InventoryIcon sx={{ color: '#6B7280' }} />
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#4B5563' }}>Current Stock</Typography>
                   </Box>
-                )}
+                  <TextField
+                    id="product-stock"
+                    type="number"
+                    size="small"
+                    value={newProduct.stock}
+                    onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                    sx={{ width: '100px', '& .MuiOutlinedInput-root': { borderRadius: 0, bgcolor: '#fff' } }}
+                  />
+                </Box>
 
                 <FormControlLabel
                   control={
@@ -1162,10 +871,10 @@ const AddProductPageContent = () => {
               >
                 <CloudUploadIcon sx={{ fontSize: '2.5rem', color: '#9CA3AF', mb: 1.5 }} />
                 <Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>
-                  {newProduct.productType === 'digital' ? "Drag and drop files or click to upload" : "Click to upload images"}
+                  Click to upload images
                 </Typography>
                 <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
-                  {newProduct.productType === 'digital' ? "Add up to 20 photos and 1 video" : "Multiple images supported (JPG, PNG)"}
+                  Multiple images supported (JPG, PNG)
                 </Typography>
                 <input
                   id="image-upload-input"

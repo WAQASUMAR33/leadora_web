@@ -28,7 +28,6 @@ const CartPage = () => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [isMixedCartModalOpen, setIsMixedCartModalOpen] = useState(false);
-  const [digitalItemsToDownload, setDigitalItemsToDownload] = useState([]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -191,53 +190,11 @@ const CartPage = () => {
     }
   };
 
-  // Check cart composition
-  const hasDigital = cart.some(item => item.productType === 'digital' || item.isDigital);
-  const hasTangible = cart.some(item => item.productType !== 'digital' && !item.isDigital);
-  const isDigitalOnly = hasDigital && !hasTangible;
-  const isMixedCart = hasDigital && hasTangible;
-
-  const triggerBatchDownload = (items) => {
-    const digitalItems = items.filter(item => item.productType === 'digital' || item.isDigital);
-    if (digitalItems.length === 0) return;
-
-    toast.info(`Preparing ${digitalItems.length} download${digitalItems.length > 1 ? 's' : ''}...`);
-
-    digitalItems.forEach((item, index) => {
-      if (item.digitalData) {
-        try {
-          const data = typeof item.digitalData === 'string' ? JSON.parse(item.digitalData) : item.digitalData;
-          const fileUrl = data.files?.[0]?.url;
-          if (fileUrl) {
-            const proxyUrl = `/api/download?id=${item.id}`;
-
-            // Trigger download with a delay to prevent browser blocking multiple popups
-            setTimeout(() => {
-              const link = document.createElement('a');
-              link.href = proxyUrl;
-              link.setAttribute('download', filename);
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }, index * 2000);
-          }
-        } catch (e) {
-          console.error("Error parsing digital data for item", item.name, e);
-        }
-      } else {
-        console.warn("Digital item missing digitalData:", item.name);
-      }
-    });
-  };
-
   const calculateFinalTotal = (currentSubtotal = subtotal) => {
     const subtotalAfterDiscount = (Number(currentSubtotal) || 0) - (Number(discount) || 0);
     const tax = subtotalAfterDiscount * (Number(taxRate) || 0);
-
-    // No delivery charge for digital items
-    const applicableDeliveryCharge = isDigitalOnly ? 0 : (Number(deliveryCharge) || 0);
-    const effectiveCodCharge = paymentMethod === 'Cash on Delivery' && !isDigitalOnly ? (Number(extraDeliveryCharge) || 0) : 0;
-
+    const applicableDeliveryCharge = Number(deliveryCharge) || 0;
+    const effectiveCodCharge = paymentMethod === 'Cash on Delivery' ? (Number(extraDeliveryCharge) || 0) : 0;
     const final = subtotalAfterDiscount + tax + applicableDeliveryCharge + effectiveCodCharge;
     return Math.max(0, final) || 0;
   };
@@ -250,25 +207,6 @@ const CartPage = () => {
   }, [cart, discount, taxRate, deliveryCharge, extraDeliveryCharge, paymentMethod]);
 
   const validateForm = () => {
-    // If digital only, we only need basic info (email/name), skip address
-    if (isDigitalOnly) {
-      const { recipientName, email } = shippingAddress;
-      const errors = {};
-      if (!recipientName?.trim()) errors.recipientName = true;
-      if (!email?.trim()) errors.email = true;
-      // Basic email regex
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (email && !emailRegex.test(email)) errors.emailInvalid = true;
-
-      setFormErrors(errors);
-      if (Object.keys(errors).length > 0) {
-        toast.error('Please provide Name and Email for digital delivery.');
-        return false;
-      }
-      return true;
-    }
-
-    // Existing validation for physical goods
     const { recipientName, streetAddress, city, state, zip, phoneNumber, email } = shippingAddress;
     const errors = {};
 
@@ -334,12 +272,6 @@ const CartPage = () => {
     if (e) e.preventDefault();
     if (!validateForm()) return;
 
-    // Mixed cart confirmation check
-    if (isMixedCart && !isMixedCartModalOpen) {
-      setIsMixedCartModalOpen(true);
-      return;
-    }
-
     if (paymentMethod === 'Credit Card') {
       setIsReadyForPayment(true);
       toast.info('Please complete payment via PayPal below.');
@@ -385,11 +317,6 @@ const CartPage = () => {
 
       console.log('Placing COD order with details:', orderDetails);
       const response = await axios.post('/api/orders', orderDetails);
-
-      // Trigger digital downloads if any
-      if (hasDigital) {
-        triggerBatchDownload(cart);
-      }
 
       setIsModalOpen(true);
       localStorage.removeItem('cart');
@@ -491,11 +418,6 @@ const CartPage = () => {
             console.log('Saving PayPal order with details:', orderDetails);
             const response = await axios.post('/api/orders', orderDetails);
 
-            // Trigger digital downloads if any
-            if (hasDigital) {
-              triggerBatchDownload(cart);
-            }
-
             setIsModalOpen(true);
             localStorage.removeItem('cart');
             dispatch(setCart([]));
@@ -583,7 +505,7 @@ const CartPage = () => {
             <div className="bg-white p-8 rounded-3xl shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
-                {isDigitalOnly ? 'Customer Details (Digital Delivery)' : 'Shipping Information'}
+                Shipping Information
               </h4>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -626,9 +548,7 @@ const CartPage = () => {
                 </div>
               </div>
 
-              {!isDigitalOnly && (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1.5 flex flex-col">
                       <div className="flex justify-between items-center px-1">
                         <label className="text-[11px] font-black uppercase tracking-widest text-gray-400">Phone Number <span className="text-red-500">*</span></label>
@@ -728,8 +648,6 @@ const CartPage = () => {
                       </select>
                     </div>
                   </div>
-                </>
-              )}
             </div>
 
             {/* Payment Method */}
@@ -888,48 +806,6 @@ const CartPage = () => {
 
         </div>
       </div>
-
-      {/* Mixed Cart Confirmation Modal */}
-      <Modal
-        isOpen={isMixedCartModalOpen}
-        onRequestClose={() => setIsMixedCartModalOpen(false)}
-        className="bg-white p-12 rounded-[3rem] shadow-2xl max-w-lg w-full m-4 outline-none relative"
-        overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center"
-      >
-        <div className="text-center">
-          <div className="w-20 h-20 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-8">
-            <FiCreditCard size={40} />
-          </div>
-          <h4 className="text-2xl font-black uppercase tracking-tight mb-4 text-gray-900">Mixed Cart detected</h4>
-          <p className="text-gray-500 text-sm font-medium mb-10 leading-relaxed">
-            Your cart contains both <span className="text-black font-bold">tangible</span> and <span className="text-black font-bold">digital</span> items.
-            Proceeding will place an order for the tangible items and start downloads for the digital items.
-            Are you sure you want to continue?
-          </p>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setIsMixedCartModalOpen(false)}
-              className="flex-1 bg-gray-100 text-gray-600 font-black uppercase tracking-widest py-4 rounded-2xl hover:bg-gray-200 transition-all"
-            >
-              No, Wait
-            </button>
-            <button
-              onClick={() => {
-                setIsMixedCartModalOpen(false);
-                if (paymentMethod === 'Credit Card') {
-                  setIsReadyForPayment(true);
-                  toast.info('Please complete payment via PayPal below.');
-                } else {
-                  executeOrderPlacement();
-                }
-              }}
-              className="flex-1 bg-black text-white font-black uppercase tracking-widest py-4 rounded-2xl hover:bg-gray-800 transition-all shadow-xl"
-            >
-              Yes, Proceed
-            </button>
-          </div>
-        </div>
-      </Modal>
 
       {/* Success Modal */}
       <Modal

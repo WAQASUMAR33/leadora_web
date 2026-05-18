@@ -179,13 +179,9 @@ const FilterableTable = ({
     meta_keywords: '',
     sku: '',
     productType: 'tangible',
-    digitalDataSize: '',
   });
 
   const [existingImages, setExistingImages] = useState([]);
-  const [digitalFiles, setDigitalFiles] = useState([]);
-  const [existingDigitalFiles, setExistingDigitalFiles] = useState([]);
-  const [digitalDimensions, setDigitalDimensions] = useState({ height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
   const [updateError, setUpdateError] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -200,7 +196,6 @@ const FilterableTable = ({
     } catch (_) {}
   }, []);
   const fileInputRef = useRef(null);
-  const digitalFileInputRef = useRef(null);
   const filterResetSkipFirstRef = useRef(true);
   const clampPageSkipFirstRef = useRef(true);
   const router = useRouter();
@@ -380,13 +375,6 @@ const FilterableTable = ({
       .filter((size) => itemSizes.includes(size.id))
       .map((size) => ({ value: size.id, label: size.name }));
 
-    let parsedDigitalData = null;
-    try {
-      if (item.digitalData) {
-        parsedDigitalData = typeof item.digitalData === 'string' ? JSON.parse(item.digitalData) : item.digitalData;
-      }
-    } catch (e) { parsedDigitalData = null; }
-
     setProductForm({
       name: item.name,
       slug: item.slug,
@@ -404,15 +392,9 @@ const FilterableTable = ({
       meta_description: item.meta_description || '',
       meta_keywords: item.meta_keywords || '',
       sku: item.sku || '',
-      productType: item.productType || 'tangible',
-      digitalDataSize: parsedDigitalData?.size || '',
+      productType: 'tangible',
     });
     setExistingImages((Array.isArray(item.images) ? item.images : []).map((img) => img.url).filter(Boolean));
-    setExistingDigitalFiles(
-      (parsedDigitalData?.files || []).map(f => (typeof f === 'string' ? f : (f?.url || ''))).filter(Boolean)
-    );
-    setDigitalFiles([]);
-    setDigitalDimensions(parsedDigitalData?.dimensions || { height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
   };
 
   const handleFormChange = (e) => {
@@ -448,38 +430,13 @@ const FilterableTable = ({
         })
       );
 
-      // Upload new digital files if digital product
-      let digitalDataPayload = null;
-      if (productForm.productType === 'digital') {
-        const uploadedDigitalFiles = await Promise.all(
-          digitalFiles.map(async (file) => {
-            const fileBase64 = await convertToBase64(file);
-            const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
-            const response = await fetch('/api/upload', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ image: fileBase64, type: ext }),
-            });
-            const result = await response.json();
-            if (response.ok) return result.image_url;
-            throw new Error(result.error || 'Failed to upload digital file');
-          })
-        );
-        digitalDataPayload = {
-          files: [...existingDigitalFiles, ...uploadedDigitalFiles],
-          dimensions: digitalDimensions,
-          size: productForm.digitalDataSize,
-        };
-      }
-
       const productData = {
         ...productForm,
-        stock: productForm.productType === 'tangible' ? parseInt(productForm.stock) || 0 : 0,
+        stock: parseInt(productForm.stock) || 0,
         images: [...existingImages, ...uploadedImages],
         discount: productForm.discount ? productForm.discount : null,
-        colors: productForm.productType === 'tangible' ? productForm.colors.map((color) => color.value) : [],
-        sizes: productForm.productType === 'tangible' ? productForm.sizes.map((size) => size.value) : [],
-        digitalData: digitalDataPayload,
+        colors: productForm.colors.map((color) => color.value),
+        sizes: productForm.sizes.map((size) => size.value),
       };
 
       const response = await fetch(`/api/products/${editProduct.slug}`, {
@@ -495,12 +452,9 @@ const FilterableTable = ({
           name: '', slug: '', description: '', price: '', stock: '',
           subcategorySlug: '', colors: [], sizes: [], discount: '',
           isTopRated: false, isActive: true, images: [], meta_title: '', meta_description: '',
-          meta_keywords: '', sku: '', productType: 'tangible', digitalDataSize: '',
+          meta_keywords: '', sku: '', productType: 'tangible',
         });
         setExistingImages([]);
-        setExistingDigitalFiles([]);
-        setDigitalFiles([]);
-        setDigitalDimensions({ height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         const errData = await response.json().catch(() => ({}));
@@ -519,11 +473,8 @@ const FilterableTable = ({
       name: '', slug: '', description: '', price: '', stock: '',
       subcategorySlug: '', colors: [], sizes: [], discount: '',
       isTopRated: false, isActive: true, images: [], meta_title: '', meta_description: '',
-      meta_keywords: '', sku: '', productType: 'tangible', digitalDataSize: '',
+      meta_keywords: '', sku: '', productType: 'tangible',
     });
-    setExistingDigitalFiles([]);
-    setDigitalFiles([]);
-    setDigitalDimensions({ height: { value: '', unit: 'px' }, width: { value: '', unit: 'px' } });
   };
 
   const handleImageChange = (e) => {
@@ -935,15 +886,9 @@ const FilterableTable = ({
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Typography variant="h6" sx={{ fontWeight: 800, color: '#111827' }}>Edit Product</Typography>
                 <Chip
-                  label={productForm.productType === 'digital' ? 'Digital' : 'Tangible'}
+                  label="Tangible"
                   size="small"
-                  sx={{
-                    borderRadius: 0,
-                    fontWeight: 700,
-                    fontSize: '0.7rem',
-                    bgcolor: productForm.productType === 'digital' ? '#EFF6FF' : '#ECFDF5',
-                    color: productForm.productType === 'digital' ? '#1D4ED8' : '#059669',
-                  }}
+                  sx={{ borderRadius: 0, fontWeight: 700, fontSize: '0.7rem', bgcolor: '#ECFDF5', color: '#059669' }}
                 />
               </Box>
               <Typography variant="caption" sx={{ color: '#6B7280' }}>Product ID: #{editProduct.id}</Typography>
@@ -1054,20 +999,16 @@ const FilterableTable = ({
                   <Paper square elevation={0} sx={{ p: 3, border: '1px solid #E5E7EB' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
                       {sectionIcon('#DCFCE7', '#16A34A', LocalOfferIcon)}
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#111827' }}>
-                        {productForm.productType === 'digital' ? 'Pricing' : 'Pricing & Stock'}
-                      </Typography>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#111827' }}>Pricing & Stock</Typography>
                     </Box>
                     <Divider sx={{ mb: 2 }} />
                     <Stack spacing={2}>
                       <TextField fullWidth size="small" label="Price (CA$)" name="price" type="number" value={productForm.price} onChange={handleFormChange} sx={inputStyles} />
                       <TextField fullWidth size="small" label="Discount (%)" name="discount" type="number" value={productForm.discount} onChange={(e) => setProductForm({ ...productForm, discount: roundToTwoDecimalPlaces(parseFloat(e.target.value) || 0) })} sx={inputStyles} />
-                      {productForm.productType === 'tangible' && (
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 1.5, border: '1px solid #E5E7EB', bgcolor: '#F9FAFB' }}>
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>Stock</Typography>
-                          <TextField type="number" size="small" name="stock" value={productForm.stock} onChange={handleFormChange} sx={{ width: '80px', '& .MuiOutlinedInput-root': { borderRadius: 0 } }} />
-                        </Box>
-                      )}
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 1.5, border: '1px solid #E5E7EB', bgcolor: '#F9FAFB' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>Stock</Typography>
+                        <TextField type="number" size="small" name="stock" value={productForm.stock} onChange={handleFormChange} sx={{ width: '80px', '& .MuiOutlinedInput-root': { borderRadius: 0 } }} />
+                      </Box>
                       <FormControlLabel
                         control={<Checkbox checked={productForm.isTopRated} onChange={handleFormChange} name="isTopRated" size="small" sx={{ color: '#3B82F6', '&.Mui-checked': { color: '#3B82F6' } }} />}
                         label={<Typography variant="body2" sx={{ fontWeight: 600, color: '#4B5563' }}>Top Rated</Typography>}
@@ -1114,140 +1055,65 @@ const FilterableTable = ({
                     </Grid>
                   </Paper>
 
-                  {/* Attributes – tangible only */}
-                  {productForm.productType === 'tangible' && (
-                    <Paper square elevation={0} sx={{ p: 3, border: '1px solid #E5E7EB' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                        {sectionIcon('#FEF3C7', '#D97706', StyleIcon)}
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#111827' }}>Attributes</Typography>
-                      </Box>
-                      <Divider sx={{ mb: 2 }} />
-                      <Stack spacing={2}>
-                        <FormControl fullWidth size="small" sx={inputStyles}>
-                          <InputLabel>Colors</InputLabel>
-                          <MuiSelect
-                            multiple
-                            value={productForm.colors}
-                            onChange={(e) => setProductForm({ ...productForm, colors: e.target.value })}
-                            label="Colors"
-                            MenuProps={selectMenuProps}
-                            renderValue={(selected) => (
-                              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {selected.map((color) => (
-                                  <Chip key={color.value} label={color.label} size="small" sx={{ borderRadius: 0, fontWeight: 600 }} />
-                                ))}
-                              </Box>
-                            )}
-                          >
-                            {(Array.isArray(colors) ? colors : []).map((color) => (
-                              <MenuItem key={color.id} value={{ value: color.id, label: color.name, hex: color.hex }}>
-                                <Checkbox checked={productForm.colors.some((c) => c.value === color.id)} size="small" />
-                                <Box sx={{ width: 10, height: 10, bgcolor: color.hex, mr: 1, border: '1px solid #E5E7EB', flexShrink: 0 }} />
-                                {color.name}
-                              </MenuItem>
-                            ))}
-                          </MuiSelect>
-                        </FormControl>
-                        <FormControl fullWidth size="small" sx={inputStyles}>
-                          <InputLabel>Sizes</InputLabel>
-                          <MuiSelect
-                            multiple
-                            value={productForm.sizes}
-                            onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value })}
-                            label="Sizes"
-                            MenuProps={selectMenuProps}
-                            renderValue={(selected) => (
-                              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {selected.map((size) => (
-                                  <Chip key={size.value} label={size.label} size="small" sx={{ borderRadius: 0, fontWeight: 600 }} />
-                                ))}
-                              </Box>
-                            )}
-                          >
-                            {(Array.isArray(sizes) ? sizes : []).map((size) => (
-                              <MenuItem key={size.id} value={{ value: size.id, label: size.name }}>
-                                <Checkbox checked={productForm.sizes.some((s) => s.value === size.id)} size="small" />
-                                {size.name}
-                              </MenuItem>
-                            ))}
-                          </MuiSelect>
-                        </FormControl>
-                      </Stack>
-                    </Paper>
-                  )}
-
-                  {/* Digital Files – digital only */}
-                  {productForm.productType === 'digital' && (
-                    <Paper square elevation={0} sx={{ p: 3, border: '1px solid #E5E7EB' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                        {sectionIcon('#DBEAFE', '#1D4ED8', CloudUploadIcon)}
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#111827' }}>Digital Files</Typography>
-                      </Box>
-                      <Divider sx={{ mb: 2 }} />
-                      <Stack spacing={2}>
-                        <TextField
-                          fullWidth size="small"
-                          label="Product Size / Dimensions (e.g. 1920x1080, A4, 5MB)"
-                          value={productForm.digitalDataSize}
-                          onChange={(e) => setProductForm({ ...productForm, digitalDataSize: e.target.value })}
-                          sx={inputStyles}
-                        />
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <TextField
-                              fullWidth size="small" label="Height"
-                              value={digitalDimensions.height.value}
-                              onChange={(e) => setDigitalDimensions({ ...digitalDimensions, height: { ...digitalDimensions.height, value: e.target.value } })}
-                              sx={inputStyles}
-                            />
-                          </Grid>
-                          <Grid item xs={6}>
-                            <TextField
-                              fullWidth size="small" label="Width"
-                              value={digitalDimensions.width.value}
-                              onChange={(e) => setDigitalDimensions({ ...digitalDimensions, width: { ...digitalDimensions.width, value: e.target.value } })}
-                              sx={inputStyles}
-                            />
-                          </Grid>
-                        </Grid>
-                        {/* Existing digital files */}
-                        {existingDigitalFiles.length > 0 && (
-                          <Box>
-                            <Typography variant="caption" sx={{ fontWeight: 700, color: '#4B5563', mb: 1, display: 'block' }}>Current Files</Typography>
-                            <Stack spacing={1}>
-                              {existingDigitalFiles.map((url, i) => (
-                                <Box key={i} sx={{ p: 1.5, border: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: '#F9FAFB' }}>
-                                  <Typography variant="caption" sx={{ color: '#374151', wordBreak: 'break-all' }}>
-                                    {String(url).split('/').pop()}
-                                  </Typography>
-                                  <IconButton size="small" onClick={() => setExistingDigitalFiles((prev) => prev.filter((_, idx) => idx !== i))} sx={{ borderRadius: 0, color: '#EF4444' }}>
-                                    <CloseIcon sx={{ fontSize: '0.8rem' }} />
-                                  </IconButton>
-                                </Box>
+                  {/* Attributes */}
+                  <Paper square elevation={0} sx={{ p: 3, border: '1px solid #E5E7EB' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+                      {sectionIcon('#FEF3C7', '#D97706', StyleIcon)}
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#111827' }}>Attributes</Typography>
+                    </Box>
+                    <Divider sx={{ mb: 2 }} />
+                    <Stack spacing={2}>
+                      <FormControl fullWidth size="small" sx={inputStyles}>
+                        <InputLabel>Colors</InputLabel>
+                        <MuiSelect
+                          multiple
+                          value={productForm.colors}
+                          onChange={(e) => setProductForm({ ...productForm, colors: e.target.value })}
+                          label="Colors"
+                          MenuProps={selectMenuProps}
+                          renderValue={(selected) => (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                              {selected.map((color) => (
+                                <Chip key={color.value} label={color.label} size="small" sx={{ borderRadius: 0, fontWeight: 600 }} />
                               ))}
-                            </Stack>
-                          </Box>
-                        )}
-                        {/* Upload new digital files */}
-                        <Box
-                          onClick={() => digitalFileInputRef.current?.click()}
-                          sx={{ border: '2px dashed #D1D5DB', p: 2, textAlign: 'center', cursor: 'pointer', '&:hover': { bgcolor: '#F9FAFB', borderColor: '#3B82F6' } }}
+                            </Box>
+                          )}
                         >
-                          <CloudUploadIcon sx={{ fontSize: '1.5rem', color: '#9CA3AF', mb: 0.5 }} />
-                          <Typography variant="caption" sx={{ display: 'block', fontWeight: 600, color: '#6B7280' }}>Click to add new digital files</Typography>
-                          <input type="file" hidden ref={digitalFileInputRef} multiple onChange={(e) => setDigitalFiles((prev) => [...prev, ...Array.from(e.target.files)])} />
-                        </Box>
-                        {digitalFiles.map((file, i) => (
-                          <Box key={i} sx={{ p: 1.5, border: '2px solid #3B82F6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography variant="caption" sx={{ color: '#374151' }}>{file.name}</Typography>
-                            <IconButton size="small" onClick={() => setDigitalFiles((prev) => prev.filter((_, idx) => idx !== i))} sx={{ borderRadius: 0, color: '#EF4444' }}>
-                              <CloseIcon sx={{ fontSize: '0.8rem' }} />
-                            </IconButton>
-                          </Box>
-                        ))}
-                      </Stack>
-                    </Paper>
-                  )}
+                          {(Array.isArray(colors) ? colors : []).map((color) => (
+                            <MenuItem key={color.id} value={{ value: color.id, label: color.name, hex: color.hex }}>
+                              <Checkbox checked={productForm.colors.some((c) => c.value === color.id)} size="small" />
+                              <Box sx={{ width: 10, height: 10, bgcolor: color.hex, mr: 1, border: '1px solid #E5E7EB', flexShrink: 0 }} />
+                              {color.name}
+                            </MenuItem>
+                          ))}
+                        </MuiSelect>
+                      </FormControl>
+                      <FormControl fullWidth size="small" sx={inputStyles}>
+                        <InputLabel>Sizes</InputLabel>
+                        <MuiSelect
+                          multiple
+                          value={productForm.sizes}
+                          onChange={(e) => setProductForm({ ...productForm, sizes: e.target.value })}
+                          label="Sizes"
+                          MenuProps={selectMenuProps}
+                          renderValue={(selected) => (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                              {selected.map((size) => (
+                                <Chip key={size.value} label={size.label} size="small" sx={{ borderRadius: 0, fontWeight: 600 }} />
+                              ))}
+                            </Box>
+                          )}
+                        >
+                          {(Array.isArray(sizes) ? sizes : []).map((size) => (
+                            <MenuItem key={size.id} value={{ value: size.id, label: size.name }}>
+                              <Checkbox checked={productForm.sizes.some((s) => s.value === size.id)} size="small" />
+                              {size.name}
+                            </MenuItem>
+                          ))}
+                        </MuiSelect>
+                      </FormControl>
+                    </Stack>
+                  </Paper>
                 </Stack>
               </Grid>
             </Grid>

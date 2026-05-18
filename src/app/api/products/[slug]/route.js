@@ -24,8 +24,6 @@ export async function PUT(request, { params }) {
       meta_description,
       meta_keywords,
       sku,
-      productType,
-      digitalData,
     } = await request.json();
 
     // Preserve full URLs (https://...), strip path only from relative paths
@@ -52,8 +50,7 @@ export async function PUT(request, { params }) {
       meta_description,
       meta_keywords,
       sku: sku || null,
-      productType: productType || 'tangible',
-      digitalData: digitalData ? JSON.stringify(digitalData) : null,
+      productType: 'tangible',
       images: {
         deleteMany: {},
         create: imageUrls.map((url) => ({ url })),
