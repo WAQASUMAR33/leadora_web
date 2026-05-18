@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -119,7 +119,7 @@ const Products = () => {
     return (
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <ThreeDots height="60" width="60" color="#f97316" />
+          <ThreeDots height="60" width="60" color="#c46cf7" />
         </div>
       </section>
     );
@@ -218,11 +218,11 @@ const Products = () => {
 
                             {/* Floating Icons */}
                             <div className="absolute top-3 right-3 z-30 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                              <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110">
+                              <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110">
                                 <FiMaximize2 size={14} />
                               </button>
                               <button
-                                className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110"
+                                className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110"
                                 onClick={(e) => handleAddToCart(product, e)}
                                 title="Add to Cart"
                               >
@@ -264,7 +264,7 @@ const Products = () => {
                             </div>
 
                             <h4
-                              className="text-sm font-bold text-[#2D2D2D] mb-2 leading-snug cursor-pointer group-hover:text-orange-500 transition-all line-clamp-2 h-[2.8em] overflow-hidden"
+                              className="text-sm font-bold text-[#2D2D2D] mb-2 leading-snug cursor-pointer group-hover:text-[#c46cf7] transition-all line-clamp-2 h-[2.8em] overflow-hidden"
                             >
                               {product.name}
                             </h4>
@@ -282,13 +282,13 @@ const Products = () => {
                             {/* Action Buttons */}
                             <div className="grid grid-cols-2 gap-2">
                               <button
-                                className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                                className="flex items-center justify-center gap-1.5 border border-[#c46cf7] text-[#c46cf7] text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#c46cf7] hover:text-white transition-all"
                                 onClick={(e) => handleAddToCart(product, e)}
                               >
                                 <FiShoppingCart size={12} /> Add
                               </button>
                               <button
-                                className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                                className="bg-[#c46cf7] text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#b355f0] transition-all shadow-lg active:scale-95"
                                 onClick={(e) => handleBuyNow(product, e)}
                               >
                                 Buy Now

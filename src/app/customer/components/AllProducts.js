@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -136,7 +136,7 @@ const TopRatedProducts = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[40vh]">
-        <ThreeDots height="60" width="60" color="#f97316" />
+        <ThreeDots height="60" width="60" color="#c46cf7" />
       </div>
     );
   }
@@ -145,7 +145,7 @@ const TopRatedProducts = () => {
     <div className="container mx-auto px-4 pb-12">
       <div className="flex flex-col items-center mb-10">
         <h3 className="text-[1.5rem] md:text-[2rem] font-black uppercase tracking-tighter mb-4">Top Rated</h3>
-        <div className="h-1.5 w-24 bg-orange-500 rounded-full shadow-lg shadow-orange-500/20"></div>
+        <div className="h-1.5 w-24 bg-[#c46cf7] rounded-full shadow-lg shadow-[#c46cf7]/20"></div>
       </div>
 
       {/* Modern Filter Bar */}
@@ -155,7 +155,7 @@ const TopRatedProducts = () => {
           <div className="relative w-full md:w-auto" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className={`flex items-center gap-3 px-8 py-2.5 bg-white border border-gray-200 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-sm ${isDropdownOpen || activeFilters.category ? 'border-orange-500 text-orange-500' : 'text-gray-400 hover:border-black hover:text-black'
+              className={`flex items-center gap-3 px-8 py-2.5 bg-white border border-gray-200 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-sm ${isDropdownOpen || activeFilters.category ? 'border-[#c46cf7] text-[#c46cf7]' : 'text-gray-400 hover:border-black hover:text-black'
                 }`}
             >
               <span>{activeFilters.category ? categories.find(c => c.id == activeFilters.category)?.name : 'All Categories'}</span>
@@ -170,7 +170,7 @@ const TopRatedProducts = () => {
                       handleFilterChange('category', '');
                       setIsDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-6 py-3 text-[11px] font-black uppercase tracking-wider transition-colors border-b border-gray-50 ${!activeFilters.category ? 'bg-orange-50 text-orange-600' : 'text-gray-500 hover:bg-gray-50 hover:text-orange-600'}`}
+                    className={`w-full text-left px-6 py-3 text-[11px] font-black uppercase tracking-wider transition-colors border-b border-gray-50 ${!activeFilters.category ? 'bg-[#f5e6fd] text-[#b355f0]' : 'text-gray-500 hover:bg-gray-50 hover:text-[#b355f0]'}`}
                   >
                     All Categories
                   </button>
@@ -181,7 +181,7 @@ const TopRatedProducts = () => {
                         handleFilterChange('category', c.id);
                         setIsDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-6 py-3 text-[11px] font-black uppercase tracking-wider transition-colors border-b border-gray-50 last:border-0 ${activeFilters.category == c.id ? 'bg-orange-50 text-orange-600' : 'text-gray-500 hover:bg-gray-50 hover:text-orange-600'}`}
+                      className={`w-full text-left px-6 py-3 text-[11px] font-black uppercase tracking-wider transition-colors border-b border-gray-50 last:border-0 ${activeFilters.category == c.id ? 'bg-[#f5e6fd] text-[#b355f0]' : 'text-gray-500 hover:bg-gray-50 hover:text-[#b355f0]'}`}
                     >
                       {c.name}
                     </button>
@@ -207,7 +207,7 @@ const TopRatedProducts = () => {
         <div className="hidden md:flex items-center gap-3 bg-gray-50 p-1.5 rounded-2xl">
           <button
             onClick={() => setGridCols(4)}
-            className={`p-2.5 rounded-xl transition-all ${gridCols === 4 ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+            className={`p-2.5 rounded-xl transition-all ${gridCols === 4 ? 'bg-white text-[#c46cf7] shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
             title="4 Columns"
           >
             <div className="grid grid-cols-2 gap-0.5 w-4 h-4">
@@ -219,7 +219,7 @@ const TopRatedProducts = () => {
           </button>
           <button
             onClick={() => setGridCols(5)}
-            className={`p-2.5 rounded-xl transition-all ${gridCols === 5 ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+            className={`p-2.5 rounded-xl transition-all ${gridCols === 5 ? 'bg-white text-[#c46cf7] shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
             title="5 Columns"
           >
             <div className="grid grid-cols-3 gap-0.5 w-4 h-4">
@@ -237,13 +237,13 @@ const TopRatedProducts = () => {
         <div className="flex md:hidden items-center gap-2 bg-gray-50 p-1 rounded-xl">
           <button
             onClick={() => setMobileGridCols(1)}
-            className={`p-2 rounded-lg transition-all ${mobileGridCols === 1 ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400'}`}
+            className={`p-2 rounded-lg transition-all ${mobileGridCols === 1 ? 'bg-white text-[#c46cf7] shadow-sm' : 'text-gray-400'}`}
           >
             <div className="w-4 h-4 border-2 border-current rounded-[2px]"></div>
           </button>
           <button
             onClick={() => setMobileGridCols(2)}
-            className={`p-2 rounded-lg transition-all ${mobileGridCols === 2 ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400'}`}
+            className={`p-2 rounded-lg transition-all ${mobileGridCols === 2 ? 'bg-white text-[#c46cf7] shadow-sm' : 'text-gray-400'}`}
           >
             <div className="grid grid-cols-2 gap-0.5 w-4 h-4">
               <div className="border border-current rounded-[1px]"></div>
@@ -275,11 +275,11 @@ const TopRatedProducts = () => {
 
                 {/* Floating Icons */}
                 <div className="absolute top-3 right-3 z-30 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110">
+                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110">
                     <FiMaximize2 size={14} />
                   </button>
                   <button
-                    className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110"
+                    className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110"
                     onClick={(e) => handleAddToCart(product, e)}
                     title="Add to Cart"
                   >
@@ -317,7 +317,7 @@ const TopRatedProducts = () => {
                 </div>
 
                 <h3
-                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-orange-500 transition-colors leading-snug h-[2.8em] overflow-hidden"
+                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-[#c46cf7] transition-colors leading-snug h-[2.8em] overflow-hidden"
                 >
                   {product.name}
                 </h3>
@@ -335,13 +335,13 @@ const TopRatedProducts = () => {
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                    className="flex items-center justify-center gap-1.5 border border-[#c46cf7] text-[#c46cf7] text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#c46cf7] hover:text-white transition-all"
                     onClick={(e) => handleAddToCart(product, e)}
                   >
                     <FiShoppingCart size={12} /> Add
                   </button>
                   <button
-                    className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                    className="bg-[#c46cf7] text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#b355f0] transition-all shadow-lg active:scale-95"
                     onClick={(e) => handleBuyNow(product, e)}
                   >
                     Buy Now
@@ -357,7 +357,7 @@ const TopRatedProducts = () => {
         <div className="text-center mt-24">
           <button
             onClick={() => setVisibleProducts(prev => prev + 10)}
-            className="px-12 py-5 bg-white text-orange-500 border-2 border-orange-500 text-xs font-black uppercase tracking-[0.3em] hover:bg-orange-500 hover:text-white transition-all shadow-xl shadow-orange-500/10"
+            className="px-12 py-5 bg-white text-[#c46cf7] border-2 border-[#c46cf7] text-xs font-black uppercase tracking-[0.3em] hover:bg-[#c46cf7] hover:text-white transition-all shadow-xl shadow-[#c46cf7]/10"
           >
             Load More Collection
           </button>

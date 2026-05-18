@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useEffect, useState } from "react";
 import { RxGlobe } from "react-icons/rx";
 import { MdKeyboardArrowDown, MdCopyright } from "react-icons/md";
@@ -176,7 +176,7 @@ const Footer = () => {
             <Link
               key={link.id}
               href={link.path}
-              className={`text-sm transition-all duration-300 hover:text-orange-500 font-medium ${hoveredLink === link.id ? 'text-orange-500 translate-x-1 font-bold' : 'text-gray-600'}`}
+              className={`text-sm transition-all duration-300 hover:text-[#c46cf7] font-medium ${hoveredLink === link.id ? 'text-[#c46cf7] translate-x-1 font-bold' : 'text-gray-600'}`}
               onMouseEnter={() => setHoveredLink(link.id)}
               onMouseLeave={() => setHoveredLink(null)}
             >
@@ -196,7 +196,7 @@ const Footer = () => {
             <Link
               key={link.id}
               href={link.path}
-              className={`text-sm transition-all duration-300 hover:text-orange-500 font-medium ${hoveredLink === link.id ? 'text-orange-500 translate-x-1 font-bold' : 'text-gray-600'}`}
+              className={`text-sm transition-all duration-300 hover:text-[#c46cf7] font-medium ${hoveredLink === link.id ? 'text-[#c46cf7] translate-x-1 font-bold' : 'text-gray-600'}`}
               onMouseEnter={() => setHoveredLink(link.id)}
               onMouseLeave={() => setHoveredLink(null)}
             >
@@ -239,13 +239,13 @@ const Footer = () => {
 
           {/* Social Icons */}
           <div className="flex gap-4 text-black">
-            <a href={socialMediaLinks.facebook || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-transform hover:scale-110">
+            <a href={socialMediaLinks.facebook || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-[#c46cf7] transition-transform hover:scale-110">
               <FaFacebook size={20} />
             </a>
-            <a href={socialMediaLinks.instagram || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-transform hover:scale-110">
+            <a href={socialMediaLinks.instagram || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-[#c46cf7] transition-transform hover:scale-110">
               <FaInstagram size={20} />
             </a>
-            <a href={socialMediaLinks.tiktok || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-transform hover:scale-110">
+            <a href={socialMediaLinks.tiktok || '#'} target="_blank" rel="noopener noreferrer" className="hover:text-[#c46cf7] transition-transform hover:scale-110">
               <FaTiktok size={20} />
             </a>
           </div>

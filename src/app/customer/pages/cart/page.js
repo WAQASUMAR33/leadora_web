@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -504,7 +504,7 @@ const CartPage = () => {
             {/* Customer & Shipping Details */}
             <div className="bg-white p-8 rounded-3xl shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
+                <span className="w-1.5 h-6 bg-[#c46cf7] rounded-full"></span>
                 Shipping Information
               </h4>
 
@@ -522,7 +522,7 @@ const CartPage = () => {
                       placeholder="Full Name"
                       value={shippingAddress.recipientName}
                       onChange={handleInputChange}
-                      className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.recipientName ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                      className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.recipientName ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                     />
                     {formErrors.recipientName && <FiX className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />}
                   </div>
@@ -541,7 +541,7 @@ const CartPage = () => {
                       placeholder="email@example.com"
                       value={shippingAddress.email}
                       onChange={handleInputChange}
-                      className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.email || formErrors.emailInvalid ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                      className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.email || formErrors.emailInvalid ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                     />
                     {(formErrors.email || formErrors.emailInvalid) && <FiX className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />}
                   </div>
@@ -562,7 +562,7 @@ const CartPage = () => {
                           placeholder="+92XXXXXXXXXX"
                           value={shippingAddress.phoneNumber}
                           onChange={handleInputChange}
-                          className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.phoneNumber || formErrors.phoneNumberInvalid ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                          className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.phoneNumber || formErrors.phoneNumberInvalid ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                         />
                         {(formErrors.phoneNumber || formErrors.phoneNumberInvalid) && <FiX className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />}
                       </div>
@@ -581,7 +581,7 @@ const CartPage = () => {
                           placeholder="Street, House No."
                           value={shippingAddress.streetAddress}
                           onChange={handleInputChange}
-                          className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.streetAddress ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                          className={`w-full bg-gray-50 border-2 rounded-2xl py-4 pl-12 pr-10 text-sm focus:ring-4 transition-all outline-none ${formErrors.streetAddress ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                         />
                         {formErrors.streetAddress && <FiX className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />}
                       </div>
@@ -600,7 +600,7 @@ const CartPage = () => {
                         placeholder="City"
                         value={shippingAddress.city}
                         onChange={handleInputChange}
-                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.city ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.city ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                       />
                     </div>
 
@@ -615,7 +615,7 @@ const CartPage = () => {
                         placeholder="State"
                         value={shippingAddress.state}
                         onChange={handleInputChange}
-                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.state ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.state ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                       />
                     </div>
 
@@ -630,7 +630,7 @@ const CartPage = () => {
                         placeholder="Postal Code"
                         value={shippingAddress.zip}
                         onChange={handleInputChange}
-                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.zip ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-orange-500/10 focus:bg-white'}`}
+                        className={`w-full bg-gray-50 border-2 rounded-2xl py-4 px-6 text-sm focus:ring-4 transition-all outline-none ${formErrors.zip ? 'border-red-500 bg-red-50 focus:ring-red-100' : 'border-transparent focus:ring-[#c46cf7]/10 focus:bg-white'}`}
                       />
                     </div>
 
@@ -642,7 +642,7 @@ const CartPage = () => {
                         name="country"
                         value={shippingAddress.country}
                         onChange={handleInputChange}
-                        className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 text-sm focus:ring-4 focus:ring-orange-500/10 focus:bg-white transition-all outline-none"
+                        className="w-full bg-gray-50 border-2 border-transparent rounded-2xl py-4 px-6 text-sm focus:ring-4 focus:ring-[#c46cf7]/10 focus:bg-white transition-all outline-none"
                       >
                         <option value="Pakistan">Pakistan</option>
                       </select>
@@ -653,23 +653,23 @@ const CartPage = () => {
             {/* Payment Method */}
             <div className="bg-white p-8 rounded-3xl shadow-sm">
               <h4 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <span className="w-1.5 h-6 bg-orange-500 rounded-full"></span>
+                <span className="w-1.5 h-6 bg-[#c46cf7] rounded-full"></span>
                 Payment Method
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <label className={`flex items-center justify-between p-5 rounded-2xl cursor-pointer border-2 transition-all ${paymentMethod === 'Credit Card' ? 'border-orange-500 bg-orange-50' : 'border-gray-100 hover:border-orange-200'}`}>
+                <label className={`flex items-center justify-between p-5 rounded-2xl cursor-pointer border-2 transition-all ${paymentMethod === 'Credit Card' ? 'border-[#c46cf7] bg-[#f5e6fd]' : 'border-gray-100 hover:border-orange-200'}`}>
                   <div className="flex items-center gap-4">
-                    <input type="radio" name="payment" checked={paymentMethod === 'Credit Card'} onChange={() => setPaymentMethod('Credit Card')} className="accent-orange-500 w-4 h-4" />
+                    <input type="radio" name="payment" checked={paymentMethod === 'Credit Card'} onChange={() => setPaymentMethod('Credit Card')} className="accent-[#c46cf7] w-4 h-4" />
                     <span className="text-sm font-black uppercase tracking-widest">Credit Card</span>
                   </div>
-                  <FiCreditCard className={paymentMethod === 'Credit Card' ? 'text-orange-500' : 'text-gray-400'} size={20} />
+                  <FiCreditCard className={paymentMethod === 'Credit Card' ? 'text-[#c46cf7]' : 'text-gray-400'} size={20} />
                 </label>
-                <label className={`flex items-center justify-between p-5 rounded-2xl cursor-pointer border-2 transition-all ${paymentMethod === 'Cash on Delivery' ? 'border-orange-500 bg-orange-50' : 'border-gray-100 hover:border-orange-200'}`}>
+                <label className={`flex items-center justify-between p-5 rounded-2xl cursor-pointer border-2 transition-all ${paymentMethod === 'Cash on Delivery' ? 'border-[#c46cf7] bg-[#f5e6fd]' : 'border-gray-100 hover:border-orange-200'}`}>
                   <div className="flex items-center gap-4">
-                    <input type="radio" name="payment" checked={paymentMethod === 'Cash on Delivery'} onChange={() => setPaymentMethod('Cash on Delivery')} className="accent-orange-500 w-4 h-4" />
+                    <input type="radio" name="payment" checked={paymentMethod === 'Cash on Delivery'} onChange={() => setPaymentMethod('Cash on Delivery')} className="accent-[#c46cf7] w-4 h-4" />
                     <span className="text-sm font-black uppercase tracking-widest">COD</span>
                   </div>
-                  <FiMapPin className={paymentMethod === 'Cash on Delivery' ? 'text-orange-500' : 'text-gray-400'} size={20} />
+                  <FiMapPin className={paymentMethod === 'Cash on Delivery' ? 'text-[#c46cf7]' : 'text-gray-400'} size={20} />
                 </label>
               </div>
             </div>
@@ -678,8 +678,8 @@ const CartPage = () => {
               <div id="paypal-button-container" className="mt-8 p-8 bg-white rounded-[2.5rem] border-2 border-dashed border-orange-200/50 shadow-sm transition-all animate-in fade-in slide-in-from-bottom-4 duration-700">
                 {!isScriptLoaded && (
                   <div className="flex flex-col items-center gap-4 py-8">
-                    <div className="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
-                    <p className="text-center text-[10px] font-black uppercase tracking-widest text-orange-500 animate-pulse">Initializing Secure Payment...</p>
+                    <div className="w-12 h-12 border-4 border-[#c46cf7]/20 border-t-[#c46cf7] rounded-full animate-spin"></div>
+                    <p className="text-center text-[10px] font-black uppercase tracking-widest text-[#c46cf7] animate-pulse">Initializing Secure Payment...</p>
                   </div>
                 )}
               </div>
@@ -687,7 +687,7 @@ const CartPage = () => {
 
             {!isReadyForPayment && (
               <button
-                className="w-full bg-black text-white hover:bg-orange-600 font-black uppercase tracking-[0.2em] py-5 rounded-3xl shadow-xl shadow-black/10 transition-all transform active:scale-[0.98]"
+                className="w-full bg-black text-white hover:bg-[#b355f0] font-black uppercase tracking-[0.2em] py-5 rounded-3xl shadow-xl shadow-black/10 transition-all transform active:scale-[0.98]"
                 onClick={handlePlaceOrder}
               >
                 {paymentMethod === 'Credit Card' ? 'Proceed to Payment' : 'Place Order Now'}
@@ -726,7 +726,7 @@ const CartPage = () => {
 
                     <div className="flex-grow flex flex-col justify-center">
                       <div className="flex justify-between items-start">
-                        <Link href={`/customer/pages/products/${item.slug || ''}`} className="hover:text-orange-500 transition-colors">
+                        <Link href={`/customer/pages/products/${item.slug || ''}`} className="hover:text-[#c46cf7] transition-colors">
                           <h4 className="text-[11px] font-black uppercase tracking-tight text-gray-800 line-clamp-1">{item.name}</h4>
                         </Link>
                         <button onClick={() => handleRemoveFromCart(item.id)} className="text-gray-300 hover:text-red-500 transition-colors">
@@ -755,17 +755,17 @@ const CartPage = () => {
                     placeholder="COUPON CODE"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
-                    className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-11 pr-4 text-[10px] font-black tracking-widest outline-none focus:ring-2 focus:ring-orange-500/20"
+                    className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-11 pr-4 text-[10px] font-black tracking-widest outline-none focus:ring-2 focus:ring-[#c46cf7]/20"
                   />
                 </div>
                 <button
                   onClick={handleApplyCoupon}
-                  className="bg-black text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-500 transition-all shadow-lg"
+                  className="bg-black text-white px-6 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[#c46cf7] transition-all shadow-lg"
                 >
                   Apply
                 </button>
               </div>
-              {couponMessage && <p className="text-[9px] font-black uppercase text-orange-600 mb-4 px-2">{couponMessage}</p>}
+              {couponMessage && <p className="text-[9px] font-black uppercase text-[#b355f0] mb-4 px-2">{couponMessage}</p>}
 
               {/* Totals */}
               <div className="space-y-4 border-t border-gray-100 pt-8 mt-2">
@@ -774,7 +774,7 @@ const CartPage = () => {
                   <span className="text-black font-black">{formatPrice(subtotal)}</span>
                 </div>
                 {discount > 0 && (
-                  <div className="flex justify-between text-orange-600 text-[11px] font-black uppercase tracking-widest">
+                  <div className="flex justify-between text-[#b355f0] text-[11px] font-black uppercase tracking-widest">
                     <span>Discount</span>
                     <span>-{formatPrice(discount)}</span>
                   </div>
@@ -786,7 +786,7 @@ const CartPage = () => {
                 {paymentMethod === 'Cash on Delivery' && (
                   <div className="flex justify-between text-gray-400 text-[11px] font-black uppercase tracking-widest">
                     <span>COD Surcharge</span>
-                    <span className="text-orange-500 font-black">+{formatPrice(extraDeliveryCharge)}</span>
+                    <span className="text-[#c46cf7] font-black">+{formatPrice(extraDeliveryCharge)}</span>
                   </div>
                 )}
                 {taxRate > 0 && (
@@ -797,7 +797,7 @@ const CartPage = () => {
                 )}
                 <div className="flex justify-between items-center pt-6 mt-6 border-t-2 border-dashed border-gray-100">
                   <span className="font-black text-sm uppercase tracking-widest">Final Total</span>
-                  <span className="font-black text-2xl text-orange-500">{formatPrice(total)}</span>
+                  <span className="font-black text-2xl text-[#c46cf7]">{formatPrice(total)}</span>
                 </div>
               </div>
 
@@ -824,7 +824,7 @@ const CartPage = () => {
           </p>
           <button
             onClick={() => { setIsModalOpen(false); router.push('/'); }}
-            className="w-full bg-orange-500 text-white font-black uppercase tracking-widest py-4 rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20"
+            className="w-full bg-[#c46cf7] text-white font-black uppercase tracking-widest py-4 rounded-2xl hover:bg-[#b355f0] transition-all shadow-xl shadow-[#c46cf7]/20"
           >
             Back to Shop
           </button>

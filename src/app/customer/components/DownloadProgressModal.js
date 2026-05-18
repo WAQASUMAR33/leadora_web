@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
@@ -45,22 +45,22 @@ const DownloadProgressModal = ({ isOpen, onRequestClose, fileName, onComplete })
                 {/* Progress Bar Container */}
                 <div className="w-full bg-gray-100 h-4 rounded-full mb-4 overflow-hidden relative">
                     <div
-                        className="bg-orange-500 h-full transition-all duration-200 ease-out flex items-center justify-center text-[10px] text-white font-bold"
+                        className="bg-[#c46cf7] h-full transition-all duration-200 ease-out flex items-center justify-center text-[10px] text-white font-bold"
                         style={{ width: `${progress}%` }}
                     >
                         {progress > 10 && `${progress}%`}
                     </div>
                 </div>
 
-                <div className="text-sm font-bold text-orange-600 mb-4 animate-pulse uppercase tracking-widest">
+                <div className="text-sm font-bold text-[#b355f0] mb-4 animate-pulse uppercase tracking-widest">
                     {progress < 100 ? 'Syncing with secure server...' : 'Download Ready!'}
                 </div>
 
                 <hr className="w-full border-gray-100 mb-6" />
 
-                <div className="bg-orange-50 p-4 rounded-2xl w-full">
+                <div className="bg-[#f5e6fd] p-4 rounded-2xl w-full">
                     <p className="text-orange-800 font-bold mb-1">Thank you for shopping with Store2U! 🧡</p>
-                    <p className="text-orange-600/70 text-xs">Your file "{fileName}" will be saved to your device shortly.</p>
+                    <p className="text-[#b355f0]/70 text-xs">Your file "{fileName}" will be saved to your device shortly.</p>
                 </div>
             </div>
         </Modal>

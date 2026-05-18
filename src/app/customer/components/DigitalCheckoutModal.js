@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState, useEffect } from 'react';
 import DownloadProgressModal from './DownloadProgressModal';
 import { FiX, FiCheck } from 'react-icons/fi';
@@ -235,7 +235,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
                         {downloadUrl ? (
                             <button
                                 onClick={() => triggerDownload(downloadUrl)}
-                                className="bg-orange-500 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20 active:scale-95 flex items-center gap-2"
+                                className="bg-[#c46cf7] text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-[#b355f0] transition-all shadow-xl shadow-[#c46cf7]/20 active:scale-95 flex items-center gap-2"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -279,7 +279,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
                             )}
                             <div>
                                 <h4 className="font-bold text-sm text-gray-900 line-clamp-1">{product.name}</h4>
-                                <p className="text-orange-600 font-black">
+                                <p className="text-[#b355f0] font-black">
                                     {product.discount
                                         ? formatPrice(product.price - (product.price * product.discount / 100))
                                         : formatPrice(product.price)}
@@ -291,7 +291,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
                         <div className="min-h-[150px] relative">
                             {!isScriptLoaded && (
                                 <div className="flex flex-col items-center justify-center h-full gap-3 py-8">
-                                    <ThreeDots color="#f97316" height={40} width={40} />
+                                    <ThreeDots color="#c46cf7" height={40} width={40} />
                                     <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Loading Secure Payment...</span>
                                 </div>
                             )}
@@ -300,7 +300,7 @@ const DigitalCheckoutModal = ({ isOpen, onRequestClose, product, onSuccess }) =>
 
                         {loading && (
                             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-3xl">
-                                <ThreeDots color="#f97316" height={50} width={50} />
+                                <ThreeDots color="#c46cf7" height={50} width={50} />
                                 <p className="mt-4 font-bold text-gray-800 animate-pulse">Processing Transaction...</p>
                             </div>
                         )}

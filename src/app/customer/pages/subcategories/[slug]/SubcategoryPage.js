@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -109,7 +109,7 @@ const SubcategoryPage = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <ThreeDots height="80" width="80" radius="9" color="#f97316" ariaLabel="three-dots-loading" visible={true} />
+        <ThreeDots height="80" width="80" radius="9" color="#c46cf7" ariaLabel="three-dots-loading" visible={true} />
       </div>
     );
   }
@@ -125,10 +125,10 @@ const SubcategoryPage = () => {
         {/* Price Filter */}
         <div className="flex flex-wrap items-center gap-6 w-full md:w-auto">
           <div className="flex items-center gap-3">
-            <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
+            <div className="w-1.5 h-6 bg-[#c46cf7] rounded-full"></div>
             <span className="text-xs font-black uppercase tracking-widest text-gray-900">Price Range</span>
           </div>
-          <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
+          <div className="flex items-center gap-4 bg-white px-6 py-3 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-[#c46cf7]/20 transition-all">
             <input
               type="number"
               value={minPrice}
@@ -155,7 +155,7 @@ const SubcategoryPage = () => {
               setTempStatusFilter(statusFilter);
               setShowFilters(true);
             }}
-            className="flex items-center justify-center gap-3 bg-white text-[#f97316] px-6 py-3.5 rounded-2xl border border-gray-100 active:scale-95 transition-all shadow-sm group hover:border-orange-500/20"
+            className="flex items-center justify-center gap-3 bg-white text-[#c46cf7] px-6 py-3.5 rounded-2xl border border-gray-100 active:scale-95 transition-all shadow-sm group hover:border-[#c46cf7]/20"
           >
             <FiFilter size={18} className="group-hover:rotate-12 transition-transform" />
             <span className="text-[10px] font-black uppercase tracking-widest px-2 border-l border-gray-100">Open Filters</span>
@@ -244,13 +244,13 @@ const SubcategoryPage = () => {
                   </h4>
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <button
-                      className="flex-1 border border-orange-500 text-orange-500 text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center gap-1.5"
+                      className="flex-1 border border-[#c46cf7] text-[#c46cf7] text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-[#c46cf7] hover:text-white transition-all flex items-center justify-center gap-1.5"
                       onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); }}
                     >
                       <FiShoppingCart size={12} /> Add
                     </button>
                     <button
-                      className="flex-1 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                      className="flex-1 bg-[#c46cf7] text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-[#b355f0] transition-all shadow-lg active:scale-95"
                       onClick={(e) => { e.stopPropagation(); dispatch(addToCart(product)); router.push('/customer/pages/cart'); }}
                     >
                       Buy Now
@@ -364,7 +364,7 @@ const SubcategoryPage = () => {
                     setStatusFilter(tempStatusFilter);
                     setShowFilters(false);
                   }}
-                  className="flex-1 py-4 bg-[#f97316] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-orange-500/20 active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-[#c46cf7] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-[#c46cf7]/20 active:scale-95 transition-all"
                 >
                   Save
                 </button>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -60,7 +60,7 @@ const TopCategories = () => {
     <div className="container mx-auto pb-12 px-4 bg-white sm:max-w-full lg:max-w-[1440px]">
       <div className="mb-16 px-2 md:px-4">
         <h3 className="text-[1.5rem] md:text-[2rem] font-black text-black text-center uppercase tracking-tighter">Shop by Categories</h3>
-        <div className="h-1.5 w-24 bg-orange-500 mx-auto mt-6 rounded-full shadow-lg shadow-orange-500/20"></div>
+        <div className="h-1.5 w-24 bg-[#c46cf7] mx-auto mt-6 rounded-full shadow-lg shadow-[#c46cf7]/20"></div>
       </div>
 
       {/* Categories Grid - Mobile 2-column, Desktop 8-column */}
@@ -104,7 +104,7 @@ const TopCategories = () => {
                   </div>
                 )}
               </div>
-              <h4 className="text-[10px] md:text-[11px] font-black text-black group-hover:text-orange-500 transition-colors uppercase tracking-[0.1em] leading-tight">
+              <h4 className="text-[10px] md:text-[11px] font-black text-black group-hover:text-[#c46cf7] transition-colors uppercase tracking-[0.1em] leading-tight">
                 {category.name}
               </h4>
               {category.tagline && (

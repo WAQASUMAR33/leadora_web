@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -63,7 +63,7 @@ const ModernProgress = styled(Box)(() => ({
     left: 0,
     width: '100%',
     height: '100%',
-    background: 'linear-gradient(90deg, #F25C2C, #F97316, #FB923C, #FBBF24, #F25C2C)',
+    background: 'linear-gradient(90deg, #F25C2C, #c46cf7, #FB923C, #FBBF24, #F25C2C)',
     backgroundSize: '200% 100%',
     animation: 'flow 1.5s infinite ease-in-out',
   },

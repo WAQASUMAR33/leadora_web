@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState, useMemo, useCallback, memo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -261,7 +261,7 @@ const ProductPage = ({ productData }) => {
 
 
 
-  if (!product && loading) return <div className="h-screen flex items-center justify-center"><ThreeDots color="#f97316" /></div>;
+  if (!product && loading) return <div className="h-screen flex items-center justify-center"><ThreeDots color="#c46cf7" /></div>;
   if (error) return <div className="text-center mt-20">{error}</div>;
 
   return (
@@ -285,7 +285,7 @@ const ProductPage = ({ productData }) => {
             {product?.images?.map((img, idx) => (
               <button
                 key={idx}
-                className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 border-2 rounded-lg overflow-hidden transition-all duration-200 ${currentImageIndex === idx ? 'border-orange-500 ring-2 ring-orange-100' : 'border-gray-100 hover:border-gray-300'
+                className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 border-2 rounded-lg overflow-hidden transition-all duration-200 ${currentImageIndex === idx ? 'border-[#c46cf7] ring-2 ring-orange-100' : 'border-gray-100 hover:border-gray-300'
                   }`}
                 onClick={() => handleThumbnailClick(idx)}
               >
@@ -352,7 +352,7 @@ const ProductPage = ({ productData }) => {
         {/* Right Column: details */}
         <div className="w-full lg:flex-[2] min-w-0 flex flex-col">
           <div className="mb-6">
-            <p className="text-[10px] font-black text-orange-600 uppercase tracking-[0.2em] mb-3">{product?.category?.name || 'Collection'}</p>
+            <p className="text-[10px] font-black text-[#b355f0] uppercase tracking-[0.2em] mb-3">{product?.category?.name || 'Collection'}</p>
             <h1 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight mb-2">{product?.name}</h1>
 
             <div className="flex items-center gap-3">
@@ -408,7 +408,7 @@ const ProductPage = ({ productData }) => {
                   ))}
                 </div>
               ) : (
-                <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center gap-2 text-sm font-bold text-gray-500 ring-1 ring-orange-50/50">
+                <div className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl px-4 flex items-center gap-2 text-sm font-bold text-gray-500 ring-1 ring-[#f5e6fd]/50">
                   <div className="w-3 h-3 rounded-full bg-orange-400" /> Neutral (Standard)
                 </div>
               )}
@@ -472,7 +472,7 @@ const ProductPage = ({ productData }) => {
             <button
               onClick={handleBuyNow}
               disabled={loading || product?.stock === 0}
-              className="w-full bg-orange-600 text-white h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-orange-700 transition-all shadow-xl shadow-orange-900/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#b355f0] text-white h-14 rounded-lg uppercase font-black text-xs tracking-[0.2em] hover:bg-orange-700 transition-all shadow-xl shadow-orange-900/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Buy it now
             </button>
@@ -556,7 +556,7 @@ const ProductPage = ({ productData }) => {
               <button
                 onClick={handleReviewSubmit}
                 disabled={reviewLoading}
-                className="bg-orange-600 text-white px-8 py-3 rounded-lg text-xs font-black uppercase tracking-[0.1em] hover:bg-orange-700 disabled:opacity-50 transition-all shadow-lg shadow-orange-600/20"
+                className="bg-[#b355f0] text-white px-8 py-3 rounded-lg text-xs font-black uppercase tracking-[0.1em] hover:bg-orange-700 disabled:opacity-50 transition-all shadow-lg shadow-[#b355f0]/20"
               >
                 {reviewLoading ? 'Submitting...' : 'Submit Review'}
               </button>
@@ -655,7 +655,7 @@ const ProductPage = ({ productData }) => {
               <button
                 key={cat.id || cat.slug}
                 onClick={() => router.push(`/customer/pages/category/${cat.slug}`)}
-                className="px-5 py-2.5 bg-gray-50 hover:bg-orange-50 border border-gray-200 hover:border-orange-300 text-gray-700 hover:text-orange-600 text-xs font-bold rounded-full transition-all active:scale-95 uppercase tracking-wider"
+                className="px-5 py-2.5 bg-gray-50 hover:bg-[#f5e6fd] border border-gray-200 hover:border-orange-300 text-gray-700 hover:text-[#b355f0] text-xs font-bold rounded-full transition-all active:scale-95 uppercase tracking-wider"
               >
                 {cat.name}
               </button>
@@ -681,7 +681,7 @@ const ProductPage = ({ productData }) => {
             <p className="text-gray-600 mb-6">You have added {product?.name} to your bag.</p>
             <div className="flex gap-4">
               <button onClick={() => setIsModalOpen(false)} className="px-6 py-2 border border-gray-300 text-sm font-bold uppercase tracking-wider hover:border-black">Continue Shopping</button>
-              <button onClick={() => router.push('/customer/pages/cart')} className="px-6 py-2 bg-orange-600 text-white text-sm font-bold uppercase tracking-wider hover:bg-orange-700 rounded-lg shadow-lg shadow-orange-600/20">View Bag</button>
+              <button onClick={() => router.push('/customer/pages/cart')} className="px-6 py-2 bg-[#b355f0] text-white text-sm font-bold uppercase tracking-wider hover:bg-orange-700 rounded-lg shadow-lg shadow-[#b355f0]/20">View Bag</button>
             </div>
           </div>
         </Modal>

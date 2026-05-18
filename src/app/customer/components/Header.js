@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -606,7 +606,7 @@ const Header = () => {
                           ))}
                           <div
                             onClick={handleSearch}
-                            className="p-3 text-center text-xs font-bold text-[#F25C2C] hover:bg-orange-50 cursor-pointer transition-colors border-t border-gray-100"
+                            className="p-3 text-center text-xs font-bold text-[#F25C2C] hover:bg-[#f5e6fd] cursor-pointer transition-colors border-t border-gray-100"
                           >
                             VIEW ALL RESULTS
                           </div>
@@ -676,7 +676,7 @@ const Header = () => {
                       <button
                         key={c.code}
                         onClick={() => { dispatch(setCurrency(c)); setIsCurrencyDropdownOpen(false); setCurrencySearch(''); }}
-                        className={`w-full text-left px-3.5 py-1.5 text-[11px] transition-colors flex items-center justify-between gap-2 ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-orange-50' : 'text-gray-700 hover:bg-gray-50'}`}
+                        className={`w-full text-left px-3.5 py-1.5 text-[11px] transition-colors flex items-center justify-between gap-2 ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-[#f5e6fd]' : 'text-gray-700 hover:bg-gray-50'}`}
                       >
                         <span className="truncate">{c.name}</span>
                         <span className="font-bold shrink-0">{c.symbol} {c.code}</span>
@@ -722,12 +722,12 @@ const Header = () => {
                   /* Admin Profile Icon */
                   <Link
                     href="/admin/pages/Main"
-                    className="group flex items-center space-x-2 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-full transition-all border border-orange-100"
+                    className="group flex items-center space-x-2 bg-[#f5e6fd] hover:bg-orange-100 px-3 py-1.5 rounded-full transition-all border border-orange-100"
                   >
-                    <div className="bg-orange-500 p-1.5 rounded-full text-white shadow-sm">
+                    <div className="bg-[#c46cf7] p-1.5 rounded-full text-white shadow-sm">
                       <FiUser className="w-4 h-4" />
                     </div>
-                    <span className="text-[11px] font-bold text-orange-600 uppercase tracking-tight hidden xl:block">Login</span>
+                    <span className="text-[11px] font-bold text-[#b355f0] uppercase tracking-tight hidden xl:block">Login</span>
                   </Link>
                 ) : (
                   /* Customer Profile Icon */
@@ -746,13 +746,13 @@ const Header = () => {
                   >
                     <Link
                       href="/customer/pages/orders"
-                      className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                      className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:bg-[#f5e6fd] hover:text-[#b355f0] rounded-lg transition-colors"
                     >
                       My Orders
                     </Link>
                     <Link
                       href="/customer/pages/profile"
-                      className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                      className="flex items-center px-3.5 py-2 text-sm text-gray-600 hover:bg-[#f5e6fd] hover:text-[#b355f0] rounded-lg transition-colors"
                     >
                       Profile
                     </Link>
@@ -911,7 +911,7 @@ const Header = () => {
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="text-xs font-bold text-gray-900 truncate">{product.name}</h4>
-                              <p className="text-[10px] font-bold text-orange-500">
+                              <p className="text-[10px] font-bold text-[#c46cf7]">
                                 {formatPrice(product.price - (product.price * product.discount) / 100)}
                               </p>
                             </div>
@@ -954,7 +954,7 @@ const Header = () => {
                         <button
                           key={c.code}
                           onClick={() => { dispatch(setCurrency(c)); setCurrencySearch(''); }}
-                          className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between transition-colors ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-orange-50' : 'text-gray-700 hover:bg-gray-50'}`}
+                          className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between transition-colors ${currencyCode === c.code ? 'font-bold text-[#F25C2C] bg-[#f5e6fd]' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
                           <span className="truncate">{c.name}</span>
                           <span className="font-bold shrink-0 ml-2">{c.symbol} {c.code}</span>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { FiChevronRight, FiFacebook, FiInstagram } from 'react-icons/fi';
@@ -71,11 +71,11 @@ const TopBar = () => {
         {/* Left Side: Static Links */}
         <div className="flex items-center space-x-4 xl:space-x-6 flex-grow">
           <div className="flex items-center space-x-4 whitespace-nowrap border-r border-gray-200 pr-6 leading-none">
-            <Link href="/customer/pages/aboutus" className="hover:text-orange-500 transition-colors">
+            <Link href="/customer/pages/aboutus" className="hover:text-[#c46cf7] transition-colors">
               About Us
             </Link>
             <div className="w-[1px] h-3 bg-gray-300 mx-1"></div>
-            <Link href="/customer/pages/contactus" className="hover:text-orange-500 transition-colors">
+            <Link href="/customer/pages/contactus" className="hover:text-[#c46cf7] transition-colors">
               Contact Us
             </Link>
           </div>
@@ -89,11 +89,11 @@ const TopBar = () => {
               onMouseEnter={() => animationControls.stop()}
               onMouseLeave={() => startAnimation()}
             >
-              <FiChevronRight className="text-[13px] mr-2 text-orange-500" />
+              <FiChevronRight className="text-[13px] mr-2 text-[#c46cf7]" />
               <span>Free returns on all orders above $100</span>
               <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
               <span>Get great devices up to 50% off</span>
-              <button onClick={handleViewDetailsClick} className="text-orange-500 font-semibold hover:underline">
+              <button onClick={handleViewDetailsClick} className="text-[#c46cf7] font-semibold hover:underline">
                 View details
               </button>
             </motion.div>
@@ -111,7 +111,7 @@ const TopBar = () => {
                   href={socialMediaLinks.facebook || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-500 transition-transform hover:scale-110"
+                  className="hover:text-[#c46cf7] transition-transform hover:scale-110"
                 >
                   <FiFacebook />
                 </a>
@@ -119,7 +119,7 @@ const TopBar = () => {
                   href={socialMediaLinks.instagram || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-orange-500 transition-transform hover:scale-110"
+                  className="hover:text-[#c46cf7] transition-transform hover:scale-110"
                 >
                   <FiInstagram />
                 </a>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -83,7 +83,7 @@ const CategoryPage = () => {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <ThreeDots color="#f97316" height={80} width={80} />
+      <ThreeDots color="#c46cf7" height={80} width={80} />
     </div>
   );
 
@@ -135,7 +135,7 @@ const CategoryPage = () => {
                 setTempStatusFilter(statusFilter);
                 setShowFilters(true);
               }}
-              className="md:hidden flex items-center justify-center bg-white text-[#f97316] w-10 h-10 rounded-xl border border-gray-100 active:scale-95 transition-all shadow-sm"
+              className="md:hidden flex items-center justify-center bg-white text-[#c46cf7] w-10 h-10 rounded-xl border border-gray-100 active:scale-95 transition-all shadow-sm"
             >
               <FiFilter size={18} />
             </button>
@@ -152,7 +152,7 @@ const CategoryPage = () => {
                 placeholder="SEARCH IN THIS SHOP..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-50 border-none rounded-2xl py-3.5 pl-12 pr-6 text-[10px] font-black tracking-widest focus:ring-2 focus:ring-orange-500/20 transition-all outline-none w-full md:w-[280px]"
+                className="bg-gray-50 border-none rounded-2xl py-3.5 pl-12 pr-6 text-[10px] font-black tracking-widest focus:ring-2 focus:ring-[#c46cf7]/20 transition-all outline-none w-full md:w-[280px]"
               />
             </div>
           </div>
@@ -164,22 +164,22 @@ const CategoryPage = () => {
         <aside className={`${showFilters ? 'block' : 'hidden'} md:block md:col-span-3 space-y-6 md:space-y-12`}>
           <div className="bg-white border border-gray-100 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 sticky top-32 shadow-sm">
             <h3 className="text-sm md:text-base font-black uppercase tracking-[0.15em] mb-6 md:mb-12 flex items-center gap-3">
-              <span className="w-1 md:w-1.5 h-5 md:h-6 bg-orange-500 rounded-full"></span>
+              <span className="w-1 md:w-1.5 h-5 md:h-6 bg-[#c46cf7] rounded-full"></span>
               Categories
             </h3>
 
             <div className="space-y-3">
               <div
-                className={`group flex items-center justify-between p-3.5 rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300 ${!activeSubcategory ? 'bg-white border-2 border-orange-500 shadow-lg shadow-orange-100' : 'hover:bg-orange-50/50'}`}
+                className={`group flex items-center justify-between p-3.5 rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300 ${!activeSubcategory ? 'bg-white border-2 border-[#c46cf7] shadow-lg shadow-orange-100' : 'hover:bg-[#f5e6fd]/50'}`}
                 onClick={() => setActiveSubcategory(null)}
               >
                 <div className="flex items-center gap-3 md:gap-4">
-                  <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center transition-all ${!activeSubcategory ? 'border-orange-500 bg-orange-500' : 'border-gray-200 group-hover:border-orange-500'}`}>
+                  <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center transition-all ${!activeSubcategory ? 'border-[#c46cf7] bg-[#c46cf7]' : 'border-gray-200 group-hover:border-[#c46cf7]'}`}>
                     {!activeSubcategory && <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full"></div>}
                   </div>
-                  <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest ${!activeSubcategory ? 'text-orange-600' : 'text-gray-600'}`}>All Items</span>
+                  <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest ${!activeSubcategory ? 'text-[#b355f0]' : 'text-gray-600'}`}>All Items</span>
                 </div>
-                <span className={`text-[8px] md:text-[9px] font-black px-1.5 md:px-2 py-0.5 rounded-lg ${!activeSubcategory ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-400 group-hover:bg-orange-100 group-hover:text-orange-600'}`}>
+                <span className={`text-[8px] md:text-[9px] font-black px-1.5 md:px-2 py-0.5 rounded-lg ${!activeSubcategory ? 'bg-orange-100 text-[#b355f0]' : 'bg-gray-100 text-gray-400 group-hover:bg-orange-100 group-hover:text-[#b355f0]'}`}>
                   {products.length}
                 </span>
               </div>
@@ -187,16 +187,16 @@ const CategoryPage = () => {
               {subcategories.map(sub => (
                 <div
                   key={sub.id}
-                  className={`group flex items-center justify-between p-3.5 rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300 ${activeSubcategory === sub.id ? 'bg-white border-2 border-orange-500 shadow-lg shadow-orange-100' : 'hover:bg-orange-50/50'}`}
+                  className={`group flex items-center justify-between p-3.5 rounded-xl md:rounded-2xl cursor-pointer transition-all duration-300 ${activeSubcategory === sub.id ? 'bg-white border-2 border-[#c46cf7] shadow-lg shadow-orange-100' : 'hover:bg-[#f5e6fd]/50'}`}
                   onClick={() => setActiveSubcategory(sub.id)}
                 >
                   <div className="flex items-center gap-3 md:gap-4">
-                    <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center transition-all ${activeSubcategory === sub.id ? 'border-orange-500 bg-orange-500' : 'border-gray-200 group-hover:border-orange-500'}`}>
+                    <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center transition-all ${activeSubcategory === sub.id ? 'border-[#c46cf7] bg-[#c46cf7]' : 'border-gray-200 group-hover:border-[#c46cf7]'}`}>
                       {activeSubcategory === sub.id && <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full"></div>}
                     </div>
-                    <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest ${activeSubcategory === sub.id ? 'text-orange-600' : 'text-gray-600'}`}>{sub.name}</span>
+                    <span className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest ${activeSubcategory === sub.id ? 'text-[#b355f0]' : 'text-gray-600'}`}>{sub.name}</span>
                   </div>
-                  <span className={`text-[8px] md:text-[9px] font-black px-2 py-0.5 md:px-2.5 md:py-1 rounded-full ${activeSubcategory === sub.id ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-400'}`}>
+                  <span className={`text-[8px] md:text-[9px] font-black px-2 py-0.5 md:px-2.5 md:py-1 rounded-full ${activeSubcategory === sub.id ? 'bg-orange-100 text-[#b355f0]' : 'bg-gray-100 text-gray-400'}`}>
                     {products.filter(p => p.subCategoryId === sub.id).length}
                   </span>
                 </div>
@@ -204,12 +204,12 @@ const CategoryPage = () => {
             </div>
 
             <div className="mt-8 md:mt-16 pt-8 md:pt-12 border-t border-gray-100">
-              <div className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-white border-2 border-orange-500 p-6 md:p-8 group">
+              <div className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-white border-2 border-[#c46cf7] p-6 md:p-8 group">
                 <Image fill src="/feature1.jpg" alt="Promo" className="object-cover opacity-10 group-hover:scale-110 transition-transform duration-1000" />
                 <div className="relative z-10">
-                  <span className="text-[8px] md:text-[9px] font-black text-white bg-orange-500 px-2 md:px-3 py-0.5 md:py-1 rounded-full uppercase tracking-widest mb-3 md:mb-4 inline-block shadow-lg">Special Offer</span>
+                  <span className="text-[8px] md:text-[9px] font-black text-white bg-[#c46cf7] px-2 md:px-3 py-0.5 md:py-1 rounded-full uppercase tracking-widest mb-3 md:mb-4 inline-block shadow-lg">Special Offer</span>
                   <h3 className="text-lg md:text-[2rem] font-black mb-4 md:mb-6 leading-tight uppercase tracking-tighter">Get 30% Off</h3>
-                  <button className="text-orange-500 text-[9px] md:text-[10px] font-black uppercase tracking-widest border-b-2 border-orange-500/30 pb-1 hover:border-orange-500 transition-all">Shop Now</button>
+                  <button className="text-[#c46cf7] text-[9px] md:text-[10px] font-black uppercase tracking-widest border-b-2 border-[#c46cf7]/30 pb-1 hover:border-[#c46cf7] transition-all">Shop Now</button>
                 </div>
               </div>
             </div>
@@ -248,14 +248,14 @@ const CategoryPage = () => {
                           loading="lazy"
                         />
                       )}  {product.discount > 0 && (
-                        <div className="absolute top-3 right-3 bg-orange-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-tighter shadow-lg">
+                        <div className="absolute top-3 right-3 bg-[#c46cf7] text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-tighter shadow-lg">
                           -{product.discount.toFixed(0)}%
                         </div>
                       )}
 
                       {/* Floating Actions for Desktop */}
                       <div className="absolute top-3 left-3 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                        <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110">
+                        <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110">
                           <FiMaximize2 size={14} />
                         </button>
                       </div>
@@ -274,7 +274,7 @@ const CategoryPage = () => {
                         </div>
                       </div>
                       <h4
-                        className="mb-1.5 line-clamp-2 text-[#2D2D2D] group-hover:text-orange-500 transition-colors leading-tight h-[2.5em] overflow-hidden"
+                        className="mb-1.5 line-clamp-2 text-[#2D2D2D] group-hover:text-[#c46cf7] transition-colors leading-tight h-[2.5em] overflow-hidden"
                       >
                         {product.name}
                       </h4>
@@ -292,13 +292,13 @@ const CategoryPage = () => {
                       {/* Actions */}
                       <div className="grid grid-cols-2 gap-2 mt-2">
                         <button
-                          className="flex-1 border border-orange-500 text-orange-500 text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-500 hover:text-white transition-all flex items-center justify-center gap-1.5"
+                          className="flex-1 border border-[#c46cf7] text-[#c46cf7] text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-[#c46cf7] hover:text-white transition-all flex items-center justify-center gap-1.5"
                           onClick={(e) => handleAddToCart(product, e)}
                         >
                           <FiShoppingCart size={12} /> <span className="hidden sm:inline">Add</span>
                         </button>
                         <button
-                          className="flex-1 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95 shadow-orange-500/20"
+                          className="flex-1 bg-[#c46cf7] text-white text-[8px] font-black uppercase tracking-widest py-2 rounded-lg hover:bg-[#b355f0] transition-all shadow-lg active:scale-95 shadow-[#c46cf7]/20"
                           onClick={(e) => handleBuyNow(product, e)}
                         >
                           Buy Now
@@ -322,7 +322,7 @@ const CategoryPage = () => {
               {[1, 2, 3].map((page) => (
                 <button
                   key={page}
-                  className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl text-[10px] font-black transition-all ${page === 1 ? 'bg-orange-500 text-white shadow-xl shadow-orange-500/20' : 'text-gray-400 hover:bg-gray-100'}`}
+                  className={`w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl text-[10px] font-black transition-all ${page === 1 ? 'bg-[#c46cf7] text-white shadow-xl shadow-[#c46cf7]/20' : 'text-gray-400 hover:bg-gray-100'}`}
                 >
                   {page}
                 </button>
@@ -363,7 +363,7 @@ const CategoryPage = () => {
                   />
                 )}
               </div>
-              <h4 className="text-[12px] md:text-base font-black truncate group-hover:text-orange-500 transition-colors uppercase tracking-tight mb-1">{p.name}</h4>
+              <h4 className="text-[12px] md:text-base font-black truncate group-hover:text-[#c46cf7] transition-colors uppercase tracking-tight mb-1">{p.name}</h4>
               <p className="text-lg md:text-xl font-black">{formatPrice(p.price)}</p>
             </div>
           ))}
@@ -381,9 +381,9 @@ const CategoryPage = () => {
               <input
                 type="email"
                 placeholder="YOUR EMAIL"
-                className="flex-1 bg-white border border-gray-200 rounded-2xl py-4 md:py-5 px-6 md:px-8 text-black text-[10px] font-black tracking-widest focus:ring-2 focus:ring-orange-500/20 transition-all outline-none"
+                className="flex-1 bg-white border border-gray-200 rounded-2xl py-4 md:py-5 px-6 md:px-8 text-black text-[10px] font-black tracking-widest focus:ring-2 focus:ring-[#c46cf7]/20 transition-all outline-none"
               />
-              <button className="bg-orange-500 text-white px-10 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-[0.2em] hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20">
+              <button className="bg-[#c46cf7] text-white px-10 md:px-12 py-4 md:py-5 rounded-2xl font-black text-[10px] md:text-[11px] uppercase tracking-[0.2em] hover:bg-[#b355f0] transition-all shadow-xl shadow-[#c46cf7]/20">
                 JOIN
               </button>
             </div>
@@ -490,7 +490,7 @@ const CategoryPage = () => {
                     setStatusFilter(tempStatusFilter);
                     setShowFilters(false);
                   }}
-                  className="flex-1 py-4 bg-[#f97316] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-orange-500/20 active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-[#c46cf7] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-[#c46cf7]/20 active:scale-95 transition-all"
                 >
                   Save
                 </button>

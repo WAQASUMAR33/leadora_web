@@ -1,4 +1,4 @@
-// components/Features.js
+﻿// components/Features.js
 'use client'
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -9,8 +9,8 @@ const features = [
     icon: FiTag,
     title: 'Best prices & offers',
     description: 'Orders $50 or more',
-    bgColor: 'bg-orange-50',
-    iconColor: 'text-orange-500'
+    bgColor: 'bg-[#f5e6fd]',
+    iconColor: 'text-[#c46cf7]'
   },
   {
     icon: FiTruck,

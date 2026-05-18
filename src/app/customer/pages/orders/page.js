@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -96,7 +96,7 @@ const UserOrders = () => {
         <ThreeDots
           height={80}
           width={80}
-          color="#f97316"
+          color="#c46cf7"
           ariaLabel="circle-loading"
           visible={true}
         />

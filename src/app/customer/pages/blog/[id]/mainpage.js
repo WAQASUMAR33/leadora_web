@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -80,7 +80,7 @@ const BlogDetailPage = ({ id }) => {
           height="80"
           width="80"
           radius="9"
-          color="#f97316"
+          color="#c46cf7"
           ariaLabel="three-dots-loading"
           visible={true}
         />

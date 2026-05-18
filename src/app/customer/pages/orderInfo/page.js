@@ -1,4 +1,4 @@
-// app/orderInfo/page.js
+﻿// app/orderInfo/page.js
 'use client';
 
 import React, { useState } from 'react';
@@ -46,7 +46,7 @@ const OrderInfoPage = () => {
             {/* Shipping Details Card */}
             <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center space-x-4">
-                <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
+                <div className="w-1.5 h-6 bg-[#c46cf7] rounded-full"></div>
                 <h2 className="text-xl font-bold text-gray-800">1. Shipping Details</h2>
               </div>
               <div className="p-8 space-y-6">
@@ -57,7 +57,7 @@ const OrderInfoPage = () => {
                     value={shippingAddress}
                     onChange={(e) => setShippingAddress(e.target.value)}
                     placeholder="Enter your full delivery address..."
-                    className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none resize-none text-sm text-gray-800"
+                    className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:ring-4 focus:ring-[#c46cf7]/10 focus:border-[#c46cf7] transition-all outline-none resize-none text-sm text-gray-800"
                     required
                   />
                 </div>
@@ -70,7 +70,7 @@ const OrderInfoPage = () => {
                         key={method}
                         onClick={() => setDeliveryMethod(method)}
                         className={`cursor-pointer p-5 rounded-2xl border-2 transition-all flex flex-col items-center justify-center space-y-1 ${deliveryMethod === method
-                          ? 'border-orange-500 bg-orange-50 text-orange-700'
+                          ? 'border-[#c46cf7] bg-[#f5e6fd] text-orange-700'
                           : 'border-transparent bg-gray-50 text-gray-400 hover:border-orange-200'
                           }`}
                       >
@@ -86,7 +86,7 @@ const OrderInfoPage = () => {
             {/* Payment Method Card */}
             <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-8 border-b border-gray-50 flex items-center space-x-4">
-                <div className="w-1.5 h-6 bg-orange-500 rounded-full"></div>
+                <div className="w-1.5 h-6 bg-[#c46cf7] rounded-full"></div>
                 <h2 className="text-xl font-bold text-gray-800">2. Payment Method</h2>
               </div>
               <div className="p-8">
@@ -96,13 +96,13 @@ const OrderInfoPage = () => {
                       key={method}
                       onClick={() => setPaymentMethod(method)}
                       className={`cursor-pointer flex items-center justify-between p-5 rounded-2xl border-2 transition-all ${paymentMethod === method
-                        ? 'border-orange-500 bg-orange-50'
+                        ? 'border-[#c46cf7] bg-[#f5e6fd]'
                         : 'border-transparent bg-gray-50 hover:border-orange-200 text-gray-400'
                         }`}
                     >
                       <div className="flex items-center space-x-4">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === method ? 'border-orange-600' : 'border-gray-300'}`}>
-                          {paymentMethod === method && <div className="w-2.5 h-2.5 rounded-full bg-orange-600" />}
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === method ? 'border-[#b355f0]' : 'border-gray-300'}`}>
+                          {paymentMethod === method && <div className="w-2.5 h-2.5 rounded-full bg-[#b355f0]" />}
                         </div>
                         <span className={`text-[11px] font-black uppercase tracking-widest ${paymentMethod === method ? 'text-orange-900' : 'text-gray-400'}`}>{method}</span>
                       </div>
@@ -127,7 +127,7 @@ const OrderInfoPage = () => {
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-[11px] font-black uppercase tracking-widest text-gray-400">Status</span>
                   <div className="text-right">
-                    <p className="text-2xl font-black text-orange-500 italic leading-none">SECURE</p>
+                    <p className="text-2xl font-black text-[#c46cf7] italic leading-none">SECURE</p>
                     <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Payment</p>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ const OrderInfoPage = () => {
 
               <button
                 onClick={handlePlaceOrder}
-                className="w-full py-5 bg-black text-white rounded-3xl font-black uppercase tracking-[0.2em] text-sm hover:bg-orange-600 transition-all shadow-xl shadow-black/5 active:scale-[0.98]"
+                className="w-full py-5 bg-black text-white rounded-3xl font-black uppercase tracking-[0.2em] text-sm hover:bg-[#b355f0] transition-all shadow-xl shadow-black/5 active:scale-[0.98]"
               >
                 Place Order
               </button>
@@ -149,7 +149,7 @@ const OrderInfoPage = () => {
             </div>
 
             {/* Help Card */}
-            <div className="bg-orange-500 rounded-[2.5rem] p-8 text-white shadow-xl shadow-orange-500/10">
+            <div className="bg-[#c46cf7] rounded-[2.5rem] p-8 text-white shadow-xl shadow-[#c46cf7]/10">
               <h3 className="font-black text-lg uppercase tracking-tight mb-2">Need Help?</h3>
               <p className="text-orange-100 text-xs font-medium mb-8 leading-relaxed">Our support team is available 24/7 for any assistance.</p>
               <button className="w-full py-4 bg-white/20 hover:bg-white/30 rounded-2xl text-white text-[10px] font-black uppercase tracking-widest transition-all backdrop-blur-md border border-white/20">

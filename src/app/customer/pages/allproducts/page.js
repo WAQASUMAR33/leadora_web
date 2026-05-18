@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
@@ -87,7 +87,7 @@ const AllProducts = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[80vh]">
-        <ThreeDots height="60" width="60" color="#f97316" />
+        <ThreeDots height="60" width="60" color="#c46cf7" />
       </div>
     );
   }
@@ -140,7 +140,7 @@ const AllProducts = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
-                className="bg-[#F25C2C] text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#E04E1D] transition-colors shrink-0 shadow-lg shadow-orange-500/30"
+                className="bg-[#F25C2C] text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#E04E1D] transition-colors shrink-0 shadow-lg shadow-[#c46cf7]/30"
                 onClick={() => fetchProducts(searchQuery)}
               >
                 Search
@@ -158,7 +158,7 @@ const AllProducts = () => {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${activeFilter === filter ? 'bg-[#F25C2C] text-white shadow-lg shadow-orange-500/30' : 'bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
+                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${activeFilter === filter ? 'bg-[#F25C2C] text-white shadow-lg shadow-[#c46cf7]/30' : 'bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-600'}`}
               >
                 {filter}
               </button>
@@ -171,7 +171,7 @@ const AllProducts = () => {
               setTempStatusFilter(statusFilter);
               setShowFilters(true);
             }}
-            className="md:hidden flex items-center justify-center bg-white text-[#f97316] w-10 h-10 rounded-xl border border-gray-100 active:scale-95 transition-all shadow-sm shrink-0"
+            className="md:hidden flex items-center justify-center bg-white text-[#c46cf7] w-10 h-10 rounded-xl border border-gray-100 active:scale-95 transition-all shadow-sm shrink-0"
           >
             <FiFilter size={18} />
           </button>
@@ -196,7 +196,7 @@ const AllProducts = () => {
               return (
                 <div
                   key={product.id}
-                  className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300 cursor-pointer"
+                  className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-[#c46cf7]/5 transition-all duration-300 cursor-pointer"
                   onClick={() => handleProductClick(product.slug)}
                 >
                   <div
@@ -265,7 +265,7 @@ const AllProducts = () => {
                         <FiShoppingCart size={12} /> <span className="hidden sm:inline">Add</span>
                       </button>
                       <button
-                        className="flex-1 bg-[#F25C2C] text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#E04E1D] transition-all shadow-lg active:scale-95 shadow-orange-500/20"
+                        className="flex-1 bg-[#F25C2C] text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#E04E1D] transition-all shadow-lg active:scale-95 shadow-[#c46cf7]/20"
                         onClick={(e) => handleBuyNow(product, e)}
                       >
                         Buy Now
@@ -298,7 +298,7 @@ const AllProducts = () => {
             {[1, 2, 3].map((page) => (
               <button
                 key={page}
-                className={`w-10 h-10 rounded-xl text-xs font-bold transition-all ${page === 1 ? 'bg-[#F25C2C] text-white shadow-lg shadow-orange-500/30' : 'text-gray-500 hover:bg-gray-50'}`}
+                className={`w-10 h-10 rounded-xl text-xs font-bold transition-all ${page === 1 ? 'bg-[#F25C2C] text-white shadow-lg shadow-[#c46cf7]/30' : 'text-gray-500 hover:bg-gray-50'}`}
               >
                 {page}
               </button>
@@ -320,7 +320,7 @@ const AllProducts = () => {
                 placeholder="ENTER YOUR EMAIL"
                 className="flex-1 bg-gray-50 border border-gray-200 rounded-xl py-4 px-6 text-black text-xs font-bold tracking-wider placeholder:text-gray-400 focus:ring-2 focus:ring-[#F25C2C]/20 outline-none transition-all"
               />
-              <button className="bg-[#F25C2C] text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#E04E1D] transition-all shadow-lg shadow-orange-500/30">
+              <button className="bg-[#F25C2C] text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#E04E1D] transition-all shadow-lg shadow-[#c46cf7]/30">
                 Subscribe
               </button>
             </div>
@@ -427,7 +427,7 @@ const AllProducts = () => {
                     setStatusFilter(tempStatusFilter);
                     setShowFilters(false);
                   }}
-                  className="flex-1 py-4 bg-[#f97316] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-orange-500/20 active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-[#c46cf7] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-[#c46cf7]/20 active:scale-95 transition-all"
                 >
                   Save
                 </button>

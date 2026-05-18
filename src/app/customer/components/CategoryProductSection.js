@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import Image from 'next/image';
@@ -13,7 +13,7 @@ const CategoryProductSection = ({ categoryImage, products }) => {
           <h3 className="text-[1.5rem] md:text-[2rem] font-black uppercase tracking-tighter">
             Upto 15% Sale!
           </h3>
-          <div className="h-1 w-12 bg-orange-500 mt-2 rounded-full"></div>
+          <div className="h-1 w-12 bg-[#c46cf7] mt-2 rounded-full"></div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">

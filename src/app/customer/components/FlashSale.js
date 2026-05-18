@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React from 'react';
 import Image from 'next/image';
 import { useCurrency } from '../../../lib/useCurrency';
@@ -56,7 +56,7 @@ const FlashSale = () => {
       <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-6">
         <div>
           <h3 className="text-[1.5rem] md:text-[2rem] font-black uppercase tracking-tighter mb-2">Flash Sale</h3>
-          <span className="text-orange-500 font-bold uppercase tracking-[0.2em] text-xs">On Sale Now</span>
+          <span className="text-[#c46cf7] font-bold uppercase tracking-[0.2em] text-xs">On Sale Now</span>
         </div>
 
         <div className="flex items-center gap-6">
@@ -70,7 +70,7 @@ const FlashSale = () => {
               <div className="bg-black text-white px-2.5 py-1.5 rounded-lg text-xs font-black">47</div>
             </div>
           </div>
-          <button className="text-orange-500 border-2 border-orange-500 px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all shadow-lg active:scale-95 shadow-orange-500/10">Shop More</button>
+          <button className="text-[#c46cf7] border-2 border-[#c46cf7] px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-[#c46cf7] hover:text-white transition-all shadow-lg active:scale-95 shadow-[#c46cf7]/10">Shop More</button>
         </div>
       </div>
 
@@ -93,7 +93,7 @@ const FlashSale = () => {
                 unoptimized
                 loading="lazy"
               />
-              <div className="absolute top-2 left-2 bg-orange-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full">
+              <div className="absolute top-2 left-2 bg-[#c46cf7] text-white text-[8px] font-black px-2 py-0.5 rounded-full">
                 {product.discount}
               </div>
             </div>

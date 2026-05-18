@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -64,9 +64,9 @@ const NewArrivals = () => {
     return (
       <div className="flex items-center justify-center min-h-[40vh]">
         <div className="flex gap-2">
-          <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce"></div>
-          <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce delay-100"></div>
-          <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce delay-200"></div>
+          <div className="w-3 h-3 bg-[#c46cf7] rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-[#c46cf7] rounded-full animate-bounce delay-100"></div>
+          <div className="w-3 h-3 bg-[#c46cf7] rounded-full animate-bounce delay-200"></div>
         </div>
       </div>
     );
@@ -78,12 +78,12 @@ const NewArrivals = () => {
         <div>
           <h3 className="text-[1.5rem] md:text-[2rem] font-black uppercase tracking-tighter leading-none mb-6">New Arrivals</h3>
           <p className="text-gray-400 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] max-w-lg relative pl-12">
-            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-[2px] bg-orange-500"></span>
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-[2px] bg-[#c46cf7]"></span>
             Discover the latest additions to our curated collection
           </p>
         </div>
         <button
-          className="flex items-center gap-3 text-xs font-black uppercase tracking-widest group hover:text-orange-600 transition-colors"
+          className="flex items-center gap-3 text-xs font-black uppercase tracking-widest group hover:text-[#b355f0] transition-colors"
           onClick={() => router.push('/customer/pages/allproducts')}
         >
           View More New Stuff <FiChevronRight className="group-hover:translate-x-2 transition-transform" />
@@ -109,11 +109,11 @@ const NewArrivals = () => {
 
                 {/* Floating Icons */}
                 <div className="absolute top-3 right-3 z-30 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110">
+                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110">
                     <FiMaximize2 size={14} />
                   </button>
                   <button
-                    className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110"
+                    className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110"
                     onClick={(e) => handleAddToCart(product, e)}
                     title="Add to Cart"
                   >
@@ -151,7 +151,7 @@ const NewArrivals = () => {
                 </div>
 
                 <h3
-                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-orange-500 transition-colors leading-snug h-[2.8em] overflow-hidden"
+                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-[#c46cf7] transition-colors leading-snug h-[2.8em] overflow-hidden"
                 >
                   {product.name}
                 </h3>
@@ -169,13 +169,13 @@ const NewArrivals = () => {
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    className="flex items-center justify-center gap-1.5 border border-orange-500 text-orange-500 text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-500 hover:text-white transition-all"
+                    className="flex items-center justify-center gap-1.5 border border-[#c46cf7] text-[#c46cf7] text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#c46cf7] hover:text-white transition-all"
                     onClick={(e) => handleAddToCart(product, e)}
                   >
                     <FiShoppingCart size={12} /> Add
                   </button>
                   <button
-                    className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-orange-600 transition-all shadow-lg active:scale-95"
+                    className="bg-[#c46cf7] text-white text-[9px] font-black uppercase tracking-widest py-2.5 rounded-lg hover:bg-[#b355f0] transition-all shadow-lg active:scale-95"
                     onClick={(e) => handleBuyNow(product, e)}
                   >
                     Buy Now

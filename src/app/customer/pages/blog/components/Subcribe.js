@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -60,7 +60,7 @@ export default function Subscribe() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-8 py-3 bg-orange-500 text-white text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-orange-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
+              className="px-8 py-3 bg-[#c46cf7] text-white text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-[#b355f0] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#c46cf7]/20"
             >
               {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               {!isSubmitting && <FiSend className="w-3.5 h-3.5" />}

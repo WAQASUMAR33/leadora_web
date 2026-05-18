@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -208,7 +208,7 @@ function BlogPosts({ blogs, calculateReadingTime, formatDate }) {
               loading="lazy"
             />
             <div className="absolute top-4 right-4 bg-white/90 backdrop-blur rounded-full px-3 py-1">
-              <span className="text-xs font-bold text-orange-500">🔥</span>
+              <span className="text-xs font-bold text-[#c46cf7]">🔥</span>
             </div>
           </Link>
 

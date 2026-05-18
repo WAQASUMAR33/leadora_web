@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState, useEffect } from 'react';
 import { FiPlus, FiX } from 'react-icons/fi';
 import axios from 'axios';
@@ -28,19 +28,19 @@ const FaqSection = () => {
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
           <h3 className="text-[1.5rem] md:text-[2rem] font-black text-black mb-6 uppercase tracking-tighter">Frequently Asked Questions</h3>
-          <div className="h-1.5 w-24 bg-orange-500 mx-auto rounded-full shadow-lg shadow-orange-500/20"></div>
+          <div className="h-1.5 w-24 bg-[#c46cf7] mx-auto rounded-full shadow-lg shadow-[#c46cf7]/20"></div>
         </div>
 
         {/* Category Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <button className="px-10 py-3.5 bg-orange-500 text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-full shadow-xl shadow-orange-500/20 transition-all hover:scale-105 active:scale-95 hover:bg-orange-600">General Info</button>
+          <button className="px-10 py-3.5 bg-[#c46cf7] text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-full shadow-xl shadow-[#c46cf7]/20 transition-all hover:scale-105 active:scale-95 hover:bg-[#b355f0]">General Info</button>
         </div>
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div
               key={faq.id || index}
-              className={`border rounded-lg bg-white overflow-hidden transition-all duration-300 ${activeIndex === index ? 'shadow-lg border-l-4 border-l-orange-500' : 'border-gray-100'}`}
+              className={`border rounded-lg bg-white overflow-hidden transition-all duration-300 ${activeIndex === index ? 'shadow-lg border-l-4 border-l-[#c46cf7]' : 'border-gray-100'}`}
             >
               <button
                 className="w-full px-6 py-5 text-left flex items-center justify-between focus:outline-none"
@@ -57,7 +57,7 @@ const FaqSection = () => {
               <div
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
               >
-                <div className="px-6 pb-6 pt-0 text-orange-500 text-sm font-medium leading-relaxed border-t border-transparent">
+                <div className="px-6 pb-6 pt-0 text-[#c46cf7] text-sm font-medium leading-relaxed border-t border-transparent">
                   {faq.answer}
                 </div>
               </div>

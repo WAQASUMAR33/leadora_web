@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -42,13 +42,13 @@ export default function BlogSlider({ blogs }) {
       {/* <div className="flex absolute z-50 w-full h-full justify-between mb-4 pr-8"> */}
       <button
         onClick={handlePrevious}
-        className="text-white p-2 absolute z-40 bg-orange-500 left-5 rounded-full hover:scale-110 transition duration-300 shadow-lg shadow-orange-500/20"
+        className="text-white p-2 absolute z-40 bg-[#c46cf7] left-5 rounded-full hover:scale-110 transition duration-300 shadow-lg shadow-[#c46cf7]/20"
       >
         <span className='text-white font-bold hover:scale-110'>&#10094;</span>
       </button>
       <button
         onClick={handleNext}
-        className="text-white p-2 absolute z-40 bg-orange-500 right-5 rounded-full hover:scale-110 transition duration-300 shadow-lg shadow-orange-500/20"
+        className="text-white p-2 absolute z-40 bg-[#c46cf7] right-5 rounded-full hover:scale-110 transition duration-300 shadow-lg shadow-[#c46cf7]/20"
       >
         <span className='text-white font-bold hover:scale-110'>&#10095;</span>
       </button>

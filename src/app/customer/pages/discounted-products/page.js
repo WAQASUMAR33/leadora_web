@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -57,7 +57,7 @@ const DiscountedProducts = () => {
           height="80"
           width="80"
           radius="9"
-          color="#f97316"
+          color="#c46cf7"
           ariaLabel="three-dots-loading"
           visible={true}
         />
@@ -87,7 +87,7 @@ const DiscountedProducts = () => {
 
                 {/* Floating Icons */}
                 <div className="absolute top-3 right-3 z-30 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-orange-500 hover:text-white transition-all transform hover:scale-110">
+                  <button className="bg-white p-2 rounded-full shadow-lg text-gray-700 hover:bg-[#c46cf7] hover:text-white transition-all transform hover:scale-110">
                     <FiMaximize2 size={14} className="mx-auto" />
                   </button>
                 </div>
@@ -114,7 +114,7 @@ const DiscountedProducts = () => {
                 </div>
 
                 <h4
-                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-orange-500 transition-colors leading-snug h-[2.8em] overflow-hidden"
+                  className="text-sm font-bold mb-2 line-clamp-2 text-[#2D2D2D] group-hover:text-[#c46cf7] transition-colors leading-snug h-[2.8em] overflow-hidden"
                 >
                   {product.name}
                 </h4>
